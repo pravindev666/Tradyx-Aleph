@@ -120,7 +120,7 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
           }}
         />
 
-        {/* Google tag (gtag.js) - GA4 */}
+        {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-YRNPEZK1GW"></script>
         <script
           dangerouslySetInnerHTML={{
@@ -128,7 +128,7 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-YRNPEZK1GW', { anonymize_ip: true });
+              gtag('config', 'G-YRNPEZK1GW');
             `
           }}
         />
