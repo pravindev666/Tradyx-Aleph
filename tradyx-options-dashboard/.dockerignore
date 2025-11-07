@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.git
+.github
+.env*.local
+*.log
+.DS_Store
+scripts/data/*.json
+scripts/public/data/*.json
+__pycache__
+*.pyc
+.venv
+venv
+

@@ -1,0 +1,163 @@
+.mesh-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.animated-mesh {
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent;
+  animation: mesh-move 15s linear infinite;
+  opacity: 0;
+}
+
+.animated-mesh.dark {
+  background: transparent;
+  opacity: 0;
+}
+
+.mesh-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.mesh-gradient-1,
+.mesh-gradient-2,
+.mesh-gradient-3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.7;
+  mix-blend-mode: soft-light;
+  animation: blob-bounce 8s ease-in-out infinite alternate;
+}
+
+.mesh-gradient-1 {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+  width: 50%;
+  height: 50%;
+  left: 10%;
+  top: 20%;
+  animation-delay: 0s;
+}
+
+.mesh-gradient-2 {
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.2) 0%, transparent 70%);
+  width: 45%;
+  height: 45%;
+  right: 20%;
+  top: 30%;
+  animation-delay: -2s;
+}
+
+.mesh-gradient-3 {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+  width: 40%;
+  height: 40%;
+  left: 30%;
+  bottom: 20%;
+  animation-delay: -4s;
+}
+
+@keyframes mesh-move {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+@keyframes blob-bounce {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(5%, 5%) scale(1.1);
+  }
+  66% {
+    transform: translate(-5%, -5%) scale(0.9);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* neural pathway lightning overlay - lighter and follows mesh */
+.lightning-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.neural-pathway {
+  fill: none;
+  stroke: rgba(14, 165, 233, 0.95);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.9)) drop-shadow(0 0 8px rgba(56, 189, 248, 0.7));
+  transition: opacity 0.05s ease-out;
+}
+
+/* Dark mode - brighter neural pathway */
+:root[data-theme="dark"] .neural-pathway {
+  stroke: rgba(34, 211, 238, 0.95);
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.9)) drop-shadow(0 0 10px rgba(34, 211, 238, 0.7));
+}
+
+/* Light mode - brighter neural pathway */
+:root:not([data-theme="dark"]) .neural-pathway {
+  stroke: rgba(8, 145, 178, 0.85);
+  filter: drop-shadow(0 0 4px rgba(8, 145, 178, 0.8)) drop-shadow(0 0 8px rgba(8, 145, 178, 0.6));
+}
+
+/* Dark mode adjustments - brighter */
+:root[data-theme="dark"] .mesh-gradient-1 {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+}
+
+:root[data-theme="dark"] .mesh-gradient-2 {
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.2) 0%, transparent 70%);
+}
+
+:root[data-theme="dark"] .mesh-gradient-3 {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+}
+
+/* Light mode - brighter mesh */
+:root:not([data-theme="dark"]) {
+  --mesh-opacity: 0.6;
+  --mesh-stroke: #0891b2;
+  --mesh-fill: #0891b2;
+}
+
+/* Dark mode - brighter mesh */
+:root[data-theme="dark"] {
+  --mesh-opacity: 0.75;
+  --mesh-stroke: #22d3ee;
+  --mesh-fill: #22d3ee;
+}
+
+/* Light mode gradient adjustments - brighter */
+:root:not([data-theme="dark"]) .mesh-gradient-1 {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+  opacity: 0.8;
+}
+
+:root:not([data-theme="dark"]) .mesh-gradient-2 {
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, transparent 70%);
+  opacity: 0.8;
+}
+
+:root:not([data-theme="dark"]) .mesh-gradient-3 {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
+  opacity: 0.8;
+}
