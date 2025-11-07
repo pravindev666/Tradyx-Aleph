@@ -132,18 +132,17 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
           }}
         /> */}
 
-        {/* AdSense loader – replace ca-pub-XXXXXXXXXXXXXXX with your publisher ID */}
+        {/* AdSense loader */}
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3773170640876257"
           crossOrigin="anonymous"
         ></script>
 
         {/* Google Funding Choices — certified CMP (IAB TCF v2.2) for EEA/UK */}
-        {/* Replace ca-pub-XXXXXXXXXXXXXXX with your AdSense publisher ID */}
         <script
           async
-          src="https://fundingchoicesmessages.google.com/i/ca-pub-XXXXXXXXXXXXXXX?ers=1"
+          src="https://fundingchoicesmessages.google.com/i/ca-pub-3773170640876257?ers=1"
         ></script>
         <script
           dangerouslySetInnerHTML={{
