@@ -459,14 +459,14 @@ const OptionsDashboard = () => {
             </div>
 
 
-            {/* Ad Space - Below Expiry Countdown */}
+            {/* Ad Space - Below Expiry Countdown (Horizontal 1) */}
             <div className="flex justify-center">
               <div className="w-full max-w-full sm:max-w-[728px]">
                 <div className={`${cardBg} rounded-lg shadow-lg p-2 sm:p-3 border-2 border-dashed ${darkMode ? 'border-blue-500/30' : 'border-blue-300'} text-center`}>
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
                   <div className="w-full h-16 sm:h-20 md:h-[90px]">
                     <AdSlot
-                      slot="XXXXXXXXXX"
+                      slot="1174991657"
                       style={{ display: 'block', width: '100%', minHeight: 90 }}
                       format="auto"
                       fullWidthResponsive="true"
@@ -483,13 +483,13 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Advertisement before Prediction Models */}
+            {/* Advertisement before Prediction Models (Horizontal 2) */}
             <div className="w-full">
               <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-2 border-dashed text-center`}>
                 <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
                 <div className="w-full h-16 sm:h-20 md:h-[90px]">
                   <AdSlot
-                    slot="XXXXXXXXXX"
+                    slot="8861909987"
                     style={{ display: 'block', width: '100%', minHeight: 90 }}
                     format="auto"
                     fullWidthResponsive="true"
@@ -534,7 +534,7 @@ const OptionsDashboard = () => {
             />
 
             {/* Ad Space 2 - Sidebar */}
-            <AdSidebar />
+            <AdSidebar slot="6427318333" />
 
             {/* Drift Direction Indicator */}
             <DriftDirectionIndicator 
@@ -544,7 +544,7 @@ const OptionsDashboard = () => {
             />
 
             {/* Ad Space 3 - Sidebar */}
-            <AdSidebar />
+            <AdSidebar slot="3801154996" />
 
             {/* Momentum Strength Meter */}
             <MomentumStrengthMeter 
