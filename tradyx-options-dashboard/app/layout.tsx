@@ -120,17 +120,18 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
           }}
         />
 
-        {/* GA4 (optional) – respects Consent Mode */}
-        {/* Uncomment and add your GA4 ID when ready */}
-        {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        {/* Google tag (gtag.js) - GA4 */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-YRNPEZK1GW"></script>
         <script
           dangerouslySetInnerHTML={{
-            __html: \`
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
-            \`
+              gtag('config', 'G-YRNPEZK1GW', { anonymize_ip: true });
+            `
           }}
-        /> */}
+        />
 
         {/* AdSense loader */}
         <script
