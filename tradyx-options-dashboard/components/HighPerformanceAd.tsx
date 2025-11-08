@@ -77,40 +77,41 @@ export default function HighPerformanceAd({
       if (!containerRef.current) return;
 
       try {
-        // FIXED: Use innerHTML method which works reliably in React/Next.js
-        // This ensures scripts execute in the correct order
+        // Create config script - EXACT format from user's working code
+        const configScript = document.createElement('script');
+        configScript.type = 'text/javascript';
+        configScript.id = configScriptId;
+        configScript.textContent = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
         
-        // Create wrapper div for scripts
-        const scriptWrapper = document.createElement('div');
-        scriptWrapper.id = `ad-wrapper-${adKey}`;
+        // Append config script directly to container
+        containerRef.current.appendChild(configScript);
         
-        // Insert both scripts as HTML (this WILL execute them)
-        scriptWrapper.innerHTML = `
-          <script type="text/javascript" id="${configScriptId}">
-            atOptions = {
-              'key': '${adKey}',
-              'format': 'iframe',
-              'height': ${height},
-              'width': ${width},
-              'params': {}
-            };
-          </script>
-          <script type="text/javascript" id="${invokeScriptId}" src="//www.highperformanceformat.com/${adKey}/invoke.js" async></script>
-        `;
-        
-        // Append to container
-        containerRef.current.appendChild(scriptWrapper);
-        
-        // Alternative method: manually execute scripts (fallback)
-        const scripts = scriptWrapper.getElementsByTagName('script');
-        Array.from(scripts).forEach((oldScript) => {
-          const newScript = document.createElement('script');
-          Array.from(oldScript.attributes).forEach(attr => {
-            newScript.setAttribute(attr.name, attr.value);
-          });
-          newScript.textContent = oldScript.textContent;
-          oldScript.parentNode?.replaceChild(newScript, oldScript);
-        });
+        // Force script execution by removing and re-adding
+        // This ensures the script executes even in React's virtual DOM
+        setTimeout(() => {
+          // Create invoke script - EXACT format from user's working code
+          const invokeScript = document.createElement('script');
+          invokeScript.type = 'text/javascript';
+          invokeScript.id = invokeScriptId;
+          invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
+          invokeScript.async = true;
+          
+          // Append invoke script to container
+          containerRef.current?.appendChild(invokeScript);
+          
+          // Also append to document.head as fallback to ensure execution
+          // Scripts in head execute more reliably than in divs
+          const headConfig = document.createElement('script');
+          headConfig.type = 'text/javascript';
+          headConfig.textContent = configScript.textContent;
+          document.head.appendChild(headConfig);
+          
+          const headInvoke = document.createElement('script');
+          headInvoke.type = 'text/javascript';
+          headInvoke.src = invokeScript.src;
+          headInvoke.async = true;
+          document.head.appendChild(headInvoke);
+        }, 50);
         
         loadedRef.current = true;
       } catch (e) {
