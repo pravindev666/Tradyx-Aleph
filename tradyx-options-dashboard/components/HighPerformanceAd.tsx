@@ -40,7 +40,7 @@ function processNextAd() {
     setTimeout(() => {
       window.adsterraProcessing = false;
       processNextAd();
-    }, 500);
+    }, 400);
   } else {
     window.adsterraProcessing = false;
   }
@@ -77,41 +77,21 @@ export default function HighPerformanceAd({
       if (!containerRef.current) return;
 
       try {
-        // Create config script - EXACT format from user's working code
-        const configScript = document.createElement('script');
-        configScript.type = 'text/javascript';
-        configScript.id = configScriptId;
-        configScript.textContent = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+        // EXACT format from user's working code
+        // The solution: Use eval to execute the config script, then load invoke script
         
-        // Append config script directly to container
-        containerRef.current.appendChild(configScript);
+        // Step 1: Execute config script using eval (ensures it runs)
+        const configCode = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+        eval(configCode);
         
-        // Force script execution by removing and re-adding
-        // This ensures the script executes even in React's virtual DOM
-        setTimeout(() => {
-          // Create invoke script - EXACT format from user's working code
-          const invokeScript = document.createElement('script');
-          invokeScript.type = 'text/javascript';
-          invokeScript.id = invokeScriptId;
-          invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
-          invokeScript.async = true;
-          
-          // Append invoke script to container
-          containerRef.current?.appendChild(invokeScript);
-          
-          // Also append to document.head as fallback to ensure execution
-          // Scripts in head execute more reliably than in divs
-          const headConfig = document.createElement('script');
-          headConfig.type = 'text/javascript';
-          headConfig.textContent = configScript.textContent;
-          document.head.appendChild(headConfig);
-          
-          const headInvoke = document.createElement('script');
-          headInvoke.type = 'text/javascript';
-          headInvoke.src = invokeScript.src;
-          headInvoke.async = true;
-          document.head.appendChild(headInvoke);
-        }, 50);
+        // Step 2: Create and append invoke script to container
+        const invokeScript = document.createElement('script');
+        invokeScript.type = 'text/javascript';
+        invokeScript.id = invokeScriptId;
+        invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
+        
+        // Append to container - Adsterra will render ad here
+        containerRef.current.appendChild(invokeScript);
         
         loadedRef.current = true;
       } catch (e) {
@@ -145,9 +125,7 @@ export default function HighPerformanceAd({
         width: '100%',
         maxWidth: `${width}px`,
         height: `${height}px`, 
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        display: 'block',
         margin: '0 auto',
         minHeight: `${height}px`,
         overflow: 'hidden',

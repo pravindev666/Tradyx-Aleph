@@ -364,7 +364,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           onClick={() => onOpenModal(
             'Volatility Risk Premium (VRP)',
             'VRP = VIX² - RV². Shows whether implied volatility is rich or cheap relative to realized volatility.',
-            'VRP > 0 → implied vol > realized → Sell Vol Environment (credit spreads, condors). VRP < 0 → realized > implied → Buy Vol Environment (straddles, long gamma).'
+            'VRP > 0 = sell vol (credit spreads); VRP < 0 = buy vol (straddles, long gamma).'
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Volatility Risk Premium</div>

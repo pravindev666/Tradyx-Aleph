@@ -204,7 +204,7 @@ const OptionsDashboard = () => {
                 onClick={() => openModal(
                   'Spot Price',
                   'This is the current price of the NIFTY index - like checking the price tag on a stock market item! It\'s the number that all other calculations are based on. Think of it as your starting point - everything else (like which options to buy or sell) depends on where the spot price is right now.',
-                  'This number tells you where the market is RIGHT NOW. You\'ll use this to decide which option strikes (price levels) to trade. If spot is at ₹24,000, you might want to buy options at ₹24,500 (if you think it will go up) or ₹23,500 (if you think it will go down). Always compare this spot price to other important numbers like "Max Pain" (where options sellers want prices to stay) to understand who\'s controlling the market - big traders or regular investors!'
+                  'Use this price to choose your option strikes: buy calls above spot if bullish, buy puts below spot if bearish.'
                 )}
               >
                 <div className={`text-sm sm:text-base font-semibold ${textSecondary} mb-1.5`}>Spot Price</div>
@@ -267,7 +267,7 @@ const OptionsDashboard = () => {
                 onClick={() => openModal(
                   'India VIX (Fear Gauge)',
                   'VIX is like a "fear meter" for the stock market! It measures how scared or calm investors are. When VIX is LOW (green), people are relaxed and confident - prices move slowly and steadily. When VIX is HIGH (red), people are panicking - prices jump around wildly. Think of it like a weather forecast: low VIX = calm sunny day, high VIX = stormy weather ahead!',
-                  'If VIX is LOW (below 13% - green): The market is calm and peaceful. Options are cheaper, so you might try selling them (like being an insurance seller). But be careful - calm can turn into a storm quickly! If VIX is RISING (getting higher): Investors are getting nervous. Don\'t be too aggressive with your trades - the market might explode! If VIX is HIGH (above 20% - red): Panic mode! Prices are jumping everywhere. Options are expensive now, and you need to be extra careful. Use wider price targets and don\'t risk too much money. Remember: VIX tells you the market\'s mood, but it doesn\'t tell you which direction prices will go - just how wild the ride will be!'
+                  'Low VIX (<13%) = sell options; High VIX (>20%) = buy options or use wider targets; Rising VIX = be cautious.'
                 )}
               >
                 <div className={`text-sm sm:text-base font-semibold ${textSecondary} mb-1.5`}>India VIX</div>
@@ -366,7 +366,7 @@ const OptionsDashboard = () => {
                 onClick={() => openModal(
                   'IV Rank (How Expensive Are Options?)',
                   'IV Rank tells you if options are EXPENSIVE or CHEAP right now, compared to the last year! It\'s like checking if a pizza costs ₹200 (expensive) or ₹100 (cheap) compared to what it usually costs. Rank above 50% = options are expensive (sell them like expensive pizza!). Rank below 20% = options are cheap (buy them like a discount!).',
-                  'If IV Rank is ABOVE 50% (high number, green): Options are EXPENSIVE right now! This is a good time to SELL options (be an insurance seller) because you can charge high prices. But remember - expensive things can become cheap quickly, so manage your risk! If IV Rank is BELOW 20% (low number, yellow/red): Options are CHEAP! This might be a good time to BUY options (like buying insurance when it\'s on sale), or if you sell options, be very careful and conservative. Between 20-50%: Options are at normal prices - nothing special, just average. Use this to decide WHEN to trade: sell when expensive, buy when cheap, but always have a plan and never risk more than you can afford to lose!'
+                  'IVR ≥50% = sell options (expensive); IVR <20% = buy options (cheap); 20-50% = normal prices.'
                 )}
               >
                 <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-1`}>IV Rank</div>
@@ -399,7 +399,7 @@ const OptionsDashboard = () => {
                 onClick={() => openModal(
                   'Expected Move (How Far Will Prices Move?)',
                   'This tool predicts how much the market price might move up or down in the next day or week! It\'s like a weather forecast saying "temperature might change by 5°C" - but for stock prices. The "Expected Move" shows you the range where prices will probably stay (about 70% sure). It uses math and current market conditions to make this guess.',
-                  'The "1-Day" number shows how much prices might move TOMORROW. If it says ±200 points, the market might go up 200 points OR down 200 points tomorrow. The "Weekly" number shows how much prices might move over the NEXT WEEK. This is usually bigger because there\'s more time for things to happen! Use this to set your trading targets: If you\'re selling options (being an insurance seller), place your strikes BEYOND the expected move - like putting a safety net far away from where the market probably won\'t reach. This gives you about 70% chance of success! If the expected move is BIG: The market will be jumpy - be more careful and use wider targets. If it\'s SMALL: The market will be calm - you can use tighter targets. Remember: This is just a prediction based on math - real markets can surprise you!'
+                  'Place option strikes beyond the expected move when selling - big move = wider targets, small move = tighter targets.'
                 )}
               >
                 <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Range Forecast / Expected Move</div>

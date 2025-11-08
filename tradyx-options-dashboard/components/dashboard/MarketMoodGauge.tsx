@@ -25,7 +25,7 @@ export default function MarketMoodGauge({ mood, darkMode, onOpenModal }: { mood:
           onOpenModal(
             'Market Mood Index (How Do Investors Feel?)',
             'This is like a "mood ring" for the entire stock market! It combines many different signals (fear levels, option prices, how many stocks are going up vs down, foreign investor activity, and more) into one easy-to-read number from 0-100. Think of it as checking the "emotional temperature" of all investors combined. Low numbers (red) = everyone is scared and panicking. High numbers (green) = everyone is excited and greedy. Middle numbers (yellow) = people are calm and balanced.',
-            'If MMI is LOW (below 35 - red "Fear"): Investors are SCARED! This is like a panic sale at a store - everyone is selling because they\'re worried. This can be risky, but also creates opportunities. Be extra careful with your trades - scared markets can be unpredictable! If MMI is in the MIDDLE (35-65 - yellow "Neutral"): Investors are CALM and balanced. Not too excited, not too scared. This is a normal, stable market. Good for beginners to practice! If MMI is HIGH (above 65 - green "Greed"): Investors are EXCITED and greedy! Everyone wants to buy because they think prices will keep going up. This feels great, but be careful - when everyone is greedy, the market might be getting too expensive. Remember: This is just a MOOD indicator, not a guarantee! Use it to understand how investors FEEL, but always combine it with other tools before making trading decisions. Don\'t trade based only on mood!'
+            'Low (<35, red) = fear, be cautious; High (>65, green) = greed, market may be expensive; Middle (35-65, yellow) = neutral, stable market.'
           );
         }
       }}
