@@ -124,18 +124,6 @@ export default function TermsPage() {
             </ul>
           </section>
 
-          {/* Ads & Third-Party Content */}
-          <section>
-            <h2 className={`text-2xl font-bold ${textPrimary} mb-3 flex items-center gap-2`}>
-              <AlertTriangle size={24} />
-              Ads & Third-Party Content
-            </h2>
-            <p className={`${textSecondary} leading-relaxed`}>
-              Advertising is provided by third parties (e.g., Google AdSense). We do not control or endorse
-              third-party content and are not responsible for claims made in ads. Ads personalization depends
-              on your consent via the cookie banner/CMP.
-            </p>
-          </section>
 
           {/* Jurisdiction & Contact */}
           <section>

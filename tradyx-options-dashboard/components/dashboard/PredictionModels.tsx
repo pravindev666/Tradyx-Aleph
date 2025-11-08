@@ -134,9 +134,9 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
         <div 
           className={`${cardBg} rounded-lg shadow-lg p-3 sm:p-4 border-l-4 border-blue-500 tile-hover-gold cursor-pointer`}
           onClick={() => onOpenModal?.(
-            'Next-Day Direction Bias (Linear Regression)',
-            'Predicts next day NIFTY return using past returns, VIX level, and VIX change. Uses features: Return_t, VIX_t, ΔVIX_t, RV20, Corr30.',
-            'Positive bias → bullish next-day expectation. Negative bias → bearish next-day expectation. β(VIX_Change) < 0 → next-day bearish bias when VIX rises. Use sign(pred) → buy/sell bias.'
+            'Next-Day Direction Bias',
+            'This is like a crystal ball that tries to predict if the NIFTY index (the main Indian stock market) will go up or down tomorrow. It looks at what happened today, how scared or calm investors are (VIX), and past patterns to make a guess. Think of it like predicting if it will rain tomorrow by looking at today\'s weather and past rain patterns.',
+            'If you see a positive number with green color: The model thinks the market will go UP tomorrow. This means prices might rise, so you might want to consider strategies that profit from rising prices. If you see a negative number with red color: The model thinks the market will go DOWN tomorrow. Prices might fall, so strategies that profit from falling prices might work better. The bigger the number, the stronger the prediction. But remember - this is just a prediction, not a guarantee! Always use this along with other information and never risk more than you can afford to lose.'
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Next-Day Bias</div>
@@ -170,15 +170,14 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
         <div 
           className={`${cardBg} rounded-lg shadow-lg p-4 border-l-4 border-green-500 tile-hover-gold cursor-pointer`}
           onClick={() => onOpenModal?.(
-            'Market Probability Gauge (Logistic Regression)',
-            'Predicts if next day\'s return > 0 or < 0 using binary classification. Uses same features as Linear Regression.',
-            '> 0.6 → Bull bias (60%+ probability of positive return). < 0.4 → Bear bias (40%- probability of positive return). 0.4–0.6 → Range (neutral).'
+            'Market Probability Gauge',
+            'This tool predicts whether the market will go up or down tomorrow. Think of it like a weather forecast, but for stock prices! It uses a special math technique called "Logistic Regression" that looks at patterns from the past to guess what might happen next.',
+            'If the number is above 60% (green): The model thinks the market will probably go up tomorrow. This is like a "bullish" signal - bulls push prices up! If it\'s below 40% (red): The model thinks the market will probably go down. This is "bearish" - bears push prices down! Between 40-60% (yellow): The model isn\'t sure - it\'s neutral, meaning anything could happen. Use this as one clue, but always combine it with other information before making trading decisions!'
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Market Probability</div>
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <div className={`text-sm ${textSecondary} mb-1`}>P(Bullish)</div>
               <div className={`text-base font-semibold mb-1 ${
                 predictions.marketProbabilityRegime === 'Bullish' ? 'text-green-500' :
                 predictions.marketProbabilityRegime === 'Bearish' ? 'text-red-500' :
@@ -206,9 +205,9 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
         <div 
           className={`${cardBg} rounded-lg shadow-lg p-4 border-l-4 border-purple-500 tile-hover-gold cursor-pointer`}
           onClick={() => onOpenModal?.(
-            'Volatility Forecast (Random Forest)',
-            'Predicts next 3-day realized volatility (RVₜ₊₃) using past 20 days of VIX, RV, and returns. Nonlinear model captures volatility-return dynamics.',
-            'High predicted volatility → volatility spike probability. Low predicted volatility → calm period expected. Use to anticipate short-term volatility regime changes.'
+            'Volatility Forecast',
+            'Volatility means how much prices are jumping around - like a calm sea vs choppy waves! This tool predicts how "choppy" the market will be over the next 3 days. It looks at how jumpy the market has been recently and uses a smart computer program (Random Forest) to guess what might happen. High volatility = big price swings (scary but can be profitable). Low volatility = calm, steady prices (safer but less exciting).',
+            'If the forecast shows a HIGH number (red "Stress"): Get ready for big price moves! The market might swing up and down a lot. This is risky but can also create opportunities. If it shows a LOW number (green "Calm"): The market should be pretty stable. Prices won\'t jump around much. This is safer but might be boring for traders. If it\'s in the middle (yellow "Normal"): Expect normal, everyday market movements. Use this to prepare yourself - if volatility is high, be more careful. If it\'s low, you might be able to try different strategies. Always remember: forecasts aren\'t perfect, so stay flexible!'
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Volatility Forecast</div>
@@ -237,9 +236,9 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
         <div 
           className={`${cardBg} rounded-lg shadow-lg p-4 border-l-4 border-cyan-500 tile-hover-gold cursor-pointer`}
           onClick={() => onOpenModal?.(
-            '5-day Predicted Range (Quantile Regression)',
-            'Forecasts upper (95%) and lower (5%) quantile of next 5-day return distribution. Probabilistic price range model.',
-            'Upper band > 1.5% → bullish range. Lower band < -1.5% → bearish range. Narrow range → consolidation expected. Wide range → high volatility period.'
+            '5-day Predicted Range',
+            'This tool shows you where the market price might go over the next 5 days. Think of it like a weather forecast that says "temperature will be between 20°C and 30°C" - but for stock prices! It gives you an upper limit (how high prices might go) and a lower limit (how low prices might go). The model is pretty confident (95% sure) that prices will stay within this range.',
+            'Green "Upper" number is big (+1.5% or more): The model thinks prices could go UP quite a bit. This is bullish - good news for people betting on price increases! Red "Lower" number is very negative (-1.5% or less): The model thinks prices could drop significantly. This is bearish - prices might fall. If the range is NARROW (upper and lower are close): The market will probably stay in a small price zone - it\'s consolidating, meaning it\'s taking a break from big moves. If the range is WIDE (big difference between upper and lower): Expect big swings! High volatility is coming. Use this to set your expectations: if the range is wide, be prepared for big moves. If it\'s narrow, prices should be calmer.'
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>5-day Predicted Range</div>
@@ -280,9 +279,9 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
         <div 
           className={`${cardBg} rounded-lg shadow-lg p-4 border-l-4 border-orange-500 tile-hover-gold cursor-pointer`}
           onClick={() => onOpenModal?.(
-            'Volatility Regime Forecast (LSTM)',
-            'Predicts the volatility regime (Calm / Normal / Stress) 3 days ahead using sequence of [VIX, RV20, ΔVIX] over last 30 days.',
-            'Calm → Normal: Volatility increasing gradually. Normal → Stress: Volatility spike likely. Stress → Calm: Volatility compression expected. Use to anticipate regime transitions.'
+            'Volatility Regime Forecast',
+            'This tool predicts what "mood" the market will be in 3 days from now - will it be calm and peaceful, normal and steady, or stressed and jumpy? It uses a super smart AI system (LSTM - like a computer brain that remembers patterns) to look at the last 30 days of market data and guess what\'s coming. Think of it like predicting if you\'ll have a calm week or a stressful week based on your recent schedule!',
+            'If it says "Calm" (green): The market will be peaceful - prices won\'t jump around much. It\'s like a calm lake. Good for beginners! If it says "Normal" (yellow): Regular, everyday market behavior. Nothing too crazy, nothing too boring. If it says "Stress" (red): Get ready for a wild ride! Prices will jump around a lot. This is like a stormy sea - risky but can be profitable if you know what you\'re doing. The arrows (→) show if the market mood is changing: Calm → Normal means it\'s getting a bit more active. Normal → Stress means trouble might be coming! Stress → Calm means things are calming down. Use this to mentally prepare: if Stress is coming, be extra careful. If Calm is coming, you might try different strategies.'
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Vol Regime Forecast</div>

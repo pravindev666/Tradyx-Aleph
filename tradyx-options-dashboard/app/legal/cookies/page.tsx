@@ -76,7 +76,7 @@ export default function CookiesPage() {
           <section>
             <p className={`${textSecondary} leading-relaxed`}>
               We use a minimal set of cookies and similar technologies to operate this site. Some
-              cookies are strictly necessary; others (analytics and advertising) are used only with your consent.
+              cookies are strictly necessary; others (analytics) are used only with your consent.
             </p>
           </section>
 
@@ -90,7 +90,6 @@ export default function CookiesPage() {
               <li><strong>Strictly Necessary / Security</strong>: required for basic operation and security; always enabled.</li>
               <li><strong>Functionality</strong>: theme preference (dark/light), UI settings.</li>
               <li><strong>Analytics</strong>: anonymized traffic/performance metrics (enabled only with consent).</li>
-              <li><strong>Advertising</strong>: Google AdSense may use cookies to show ads; personalization happens only with consent.</li>
             </ul>
           </section>
 
@@ -101,10 +100,8 @@ export default function CookiesPage() {
               Consent Management
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              For visitors in the EEA/UK, we present a Google-certified Consent Management Platform
-              (Funding Choices) implementing <strong>IAB TCF v2.2</strong>. Your choices generate a
-              TCF consent string and update <strong>Google Consent Mode v2</strong>. Outside the EEA/UK,
-              we provide a compact banner to manage analytics/ads preferences.
+              We provide a consent banner to manage your preferences. Your choices are stored locally
+              in your browser and will persist until you change them or clear your browser data.
             </p>
             <div className={`mt-4 p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
               <button
@@ -128,7 +125,6 @@ export default function CookiesPage() {
               Third Parties
             </h2>
             <ul className={`list-disc pl-5 ${textSecondary} space-y-2`}>
-              <li><strong>Google AdSense</strong> — advertising; personalization depends on your consent.</li>
               <li><strong>Vercel</strong> — hosting and performance; may log IPs for security.</li>
               <li><strong>Optional Google Analytics</strong> — anonymized analytics with Consent Mode v2.</li>
             </ul>

@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 
 type ConsentChoices = {
   analytics: boolean;
-  adsPersonalization: boolean;
 };
 
 const KEY = 'tradyx-consent';
-const defaultChoices: ConsentChoices = { analytics: false, adsPersonalization: false };
+const defaultChoices: ConsentChoices = { analytics: false };
 
 export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
   const [show, setShow] = useState(false);
@@ -17,11 +16,7 @@ export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
   useEffect(() => {
     const saved = localStorage.getItem(KEY);
     if (!saved) {
-      // Check if Funding Choices is handling (EEA/UK users)
-      // @ts-ignore
-      if (typeof window !== 'undefined' && !window.frames['__fc_frame']) {
-        setShow(true);
-      }
+      setShow(true);
     }
 
     // Listen for custom event to re-open consent
@@ -39,30 +34,26 @@ export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
 
   function updateMode(c: ConsentChoices) {
     const analytics = c.analytics ? 'granted' : 'denied';
-    const ads = c.adsPersonalization ? 'granted' : 'denied';
     
     // @ts-ignore
     if (typeof window !== 'undefined' && window.gtag) {
       // @ts-ignore
       window.gtag('consent', 'update', {
-        analytics_storage: analytics,
-        ad_storage: ads,
-        ad_user_data: ads,
-        ad_personalization: ads
+        analytics_storage: analytics
       });
     }
     localStorage.setItem(KEY, JSON.stringify(c));
   }
 
   function acceptAll() {
-    const c = { analytics: true, adsPersonalization: true };
+    const c = { analytics: true };
     updateMode(c);
     setChoices(c);
     setShow(false);
   }
 
   function rejectAll() {
-    const c = { analytics: false, adsPersonalization: false };
+    const c = { analytics: false };
     updateMode(c);
     setChoices(c);
     setShow(false);
@@ -81,9 +72,9 @@ export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
 
   return (
     <div className={`fixed bottom-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 z-[10000] rounded-2xl border-2 ${bgClass} p-4 sm:p-5 shadow-2xl ${darkMode ? 'backdrop-blur-sm' : ''}`}>
-      <div className={`text-sm sm:text-base font-semibold mb-2 ${textPrimary}`}>Cookies & Consent</div>
+      <div className={`text-sm sm:text-base font-semibold mb-2 ${textPrimary}`}>Cookies & Advertising Consent</div>
       <p className={`text-xs sm:text-sm ${textSecondary} mb-3`}>
-        We use minimal cookies for theme and performance; analytics/ads run only with your consent.
+        We use cookies for theme preferences and performance. Our advertising partner (Adsterra) may also use cookies to show you relevant ads. You can control this below.
       </p>
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 text-sm mb-3">
         <label className="flex items-center gap-2 cursor-pointer">
@@ -93,16 +84,7 @@ export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
             onChange={(e) => setChoices((c) => ({ ...c, analytics: e.target.checked }))}
             className="w-4 h-4"
           />
-          <span className={textSecondary}>Analytics</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={choices.adsPersonalization}
-            onChange={(e) => setChoices((c) => ({ ...c, adsPersonalization: e.target.checked }))}
-            className="w-4 h-4"
-          />
-          <span className={textSecondary}>Ads Personalization</span>
+          <span className={textSecondary}>Allow Analytics & Advertising (Adsterra)</span>
         </label>
       </div>
       <div className="flex flex-wrap items-center gap-2">

@@ -15,6 +15,8 @@ import MomentumStrengthMeter from './MomentumStrengthMeter';
 import HowToUseGuide from './HowToUseGuide';
 import ConsentBanner from '@/components/ConsentBanner';
 import AdSlot from '@/components/AdSlot';
+import HighPerformanceAd from '@/components/HighPerformanceAd';
+import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import { computeMMI } from './mmi';
 
 const OptionsDashboard = () => {
@@ -97,7 +99,7 @@ const OptionsDashboard = () => {
     });
   }, [data, ivRank]);
 
-  const MiniSparkline = ({ data: historyData, color = '#3b82f6', height = 40 }) => {
+  const MiniSparkline = ({ data: historyData, color = '#3b82f6', height = 35 }) => {
     if (!historyData || historyData.length === 0) return null;
     const max = Math.max(...historyData);
     const min = Math.min(...historyData);
@@ -122,7 +124,7 @@ const OptionsDashboard = () => {
         </defs>
         <polygon points={areaPoints} fill={`url(#gradient-${color})`} />
         <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" />
-        <circle cx={width} cy={height - (((historyData[historyData.length - 1] ?? min) - min) / range) * height} r="3.5" fill={color} />
+        <circle cx={width} cy={height - (((historyData[historyData.length - 1] ?? min) - min) / range) * height} r="3" fill={color} />
       </svg>
     );
   };
@@ -150,7 +152,7 @@ const OptionsDashboard = () => {
       <div className={`${darkMode ? 'bg-gradient-to-r from-blue-900 to-blue-950' : 'bg-gradient-to-r from-blue-600 to-blue-800'} text-white px-6 py-4 shadow-lg relative z-10`}>
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 px-3 sm:px-4 md:px-6">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab</h1>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab</h1>
             <p className={`${darkMode ? 'text-blue-200' : 'text-blue-100'} text-xs sm:text-sm mt-1`}>Advanced Options Analytics & Machine Learning Forecasts</p>
           </div>
           <div className="flex items-center gap-4">
@@ -198,15 +200,15 @@ const OptionsDashboard = () => {
             {/* Row 1: Spot Price and India VIX */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div 
-                className={`${cardBg} rounded-lg shadow-lg p-4 sm:p-5 md:p-6 border-l-4 border-blue-500 tile-hover-gold cursor-pointer overflow-hidden`}
+                className={`${cardBg} rounded-lg shadow-lg p-3 sm:p-4 md:p-5 border-l-4 border-blue-500 tile-hover-gold cursor-pointer overflow-hidden`}
                 onClick={() => openModal(
-                  'Spot Price (₹)',
-                  'Current index level. This is the anchor for strikes, distance bands, and risk zones.',
-                  'Compare spot to Max Pain and to Top OI strikes to see who\'s in control (dealers vs. directional flow). Use this as your reference point for all strike selections and risk calculations.'
+                  'Spot Price',
+                  'This is the current price of the NIFTY index - like checking the price tag on a stock market item! It\'s the number that all other calculations are based on. Think of it as your starting point - everything else (like which options to buy or sell) depends on where the spot price is right now.',
+                  'This number tells you where the market is RIGHT NOW. You\'ll use this to decide which option strikes (price levels) to trade. If spot is at ₹24,000, you might want to buy options at ₹24,500 (if you think it will go up) or ₹23,500 (if you think it will go down). Always compare this spot price to other important numbers like "Max Pain" (where options sellers want prices to stay) to understand who\'s controlling the market - big traders or regular investors!'
                 )}
               >
-                <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Spot Price</div>
-                <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-2`}>{Number.isFinite(data?.spot) ? `₹${(data!.spot as number).toFixed(2)}` : '—'}</div>
+                <div className={`text-sm sm:text-base font-semibold ${textSecondary} mb-1.5`}>Spot Price</div>
+                <div className={`text-xl sm:text-2xl font-bold ${textPrimary} mb-1.5`}>{Number.isFinite(data?.spot) ? `₹${(data!.spot as number).toFixed(2)}` : '—'}</div>
                 {(() => {
                   const changePct = (data as any)?.spotChangePct;
                   if (Number.isFinite(changePct)) {
@@ -255,21 +257,21 @@ const OptionsDashboard = () => {
                   )}
               </div>
 
-                <div className="mt-3 -mx-6 -mb-6">
-                  <MiniSparkline data={spotSeries} color="#3b82f6" height={50} />
+                <div className="mt-2 -mx-5 -mb-5">
+                  <MiniSparkline data={spotSeries} color="#3b82f6" height={35} />
                 </div>
               </div>
 
               <div 
-                className={`${cardBg} rounded-lg shadow-lg p-4 sm:p-5 md:p-6 border-l-4 border-red-500 tile-hover-gold cursor-pointer overflow-hidden`}
+                className={`${cardBg} rounded-lg shadow-lg p-3 sm:p-4 md:p-5 border-l-4 border-red-500 tile-hover-gold cursor-pointer overflow-hidden`}
                 onClick={() => openModal(
-                  'India VIX (%)',
-                  'Implied volatility of NIFTY options. This is a regime detector (calm vs. storm) that drives option premiums and "room to move."',
-                  'Low VIX (< 13): calmer tape, short-premium strategies fare better but are vulnerable to volatility shocks. Rising VIX + negative breadth = don\'t be cute with tight shorts. High VIX suggests wider strikes and defined risk strategies.'
+                  'India VIX (Fear Gauge)',
+                  'VIX is like a "fear meter" for the stock market! It measures how scared or calm investors are. When VIX is LOW (green), people are relaxed and confident - prices move slowly and steadily. When VIX is HIGH (red), people are panicking - prices jump around wildly. Think of it like a weather forecast: low VIX = calm sunny day, high VIX = stormy weather ahead!',
+                  'If VIX is LOW (below 13% - green): The market is calm and peaceful. Options are cheaper, so you might try selling them (like being an insurance seller). But be careful - calm can turn into a storm quickly! If VIX is RISING (getting higher): Investors are getting nervous. Don\'t be too aggressive with your trades - the market might explode! If VIX is HIGH (above 20% - red): Panic mode! Prices are jumping everywhere. Options are expensive now, and you need to be extra careful. Use wider price targets and don\'t risk too much money. Remember: VIX tells you the market\'s mood, but it doesn\'t tell you which direction prices will go - just how wild the ride will be!'
                 )}
               >
-                <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>India VIX</div>
-                <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-2`}>{Number.isFinite(data?.vix) ? `${(data!.vix as number).toFixed(2)}%` : '—'}</div>
+                <div className={`text-sm sm:text-base font-semibold ${textSecondary} mb-1.5`}>India VIX</div>
+                <div className={`text-xl sm:text-2xl font-bold ${textPrimary} mb-1.5`}>{Number.isFinite(data?.vix) ? `${(data!.vix as number).toFixed(2)}%` : '—'}</div>
                 {(() => {
                   const changePct = (data as any)?.vixChangePct;
                   if (Number.isFinite(changePct)) {
@@ -316,8 +318,8 @@ const OptionsDashboard = () => {
                   </div>
                 )}
                 
-                <div className="mt-3 -mx-6 -mb-6">
-                  <MiniSparkline data={vixSeries} color="#ef4444" height={50} />
+                <div className="mt-2 -mx-5 -mb-5">
+                  <MiniSparkline data={vixSeries} color="#ef4444" height={35} />
                 </div>
                 </div>
               </div>
@@ -362,9 +364,9 @@ const OptionsDashboard = () => {
               <div 
                 className={`${cardBg} rounded-lg shadow-lg p-4 sm:p-5 md:p-6 border-l-4 border-purple-500 tile-hover-gold cursor-pointer`}
                 onClick={() => openModal(
-                  'IV Rank (%)',
-                  'Position of current IV in its 52-week range. This helps with premium selection.',
-                  'IVR > 50: vols elevated → sell premium (strangles/condors) has edge if you can risk-manage. IVR < 20: vols cheap → prefer debits or keep shorts very conservative. Use IV Rank to time your premium selling strategies.'
+                  'IV Rank (How Expensive Are Options?)',
+                  'IV Rank tells you if options are EXPENSIVE or CHEAP right now, compared to the last year! It\'s like checking if a pizza costs ₹200 (expensive) or ₹100 (cheap) compared to what it usually costs. Rank above 50% = options are expensive (sell them like expensive pizza!). Rank below 20% = options are cheap (buy them like a discount!).',
+                  'If IV Rank is ABOVE 50% (high number, green): Options are EXPENSIVE right now! This is a good time to SELL options (be an insurance seller) because you can charge high prices. But remember - expensive things can become cheap quickly, so manage your risk! If IV Rank is BELOW 20% (low number, yellow/red): Options are CHEAP! This might be a good time to BUY options (like buying insurance when it\'s on sale), or if you sell options, be very careful and conservative. Between 20-50%: Options are at normal prices - nothing special, just average. Use this to decide WHEN to trade: sell when expensive, buy when cheap, but always have a plan and never risk more than you can afford to lose!'
                 )}
               >
                 <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-1`}>IV Rank</div>
@@ -373,18 +375,18 @@ const OptionsDashboard = () => {
                 {(() => {
                   const ivrValue = Number.isFinite((data as any)?.ivRank) ? (data as any).ivRank : Number.isFinite(ivRank) ? ivRank : null;
                   if (ivrValue === null) return null;
-                  if (ivrValue > 50) {
+                  if (ivrValue >= 50) {
                     return (
                       <div className={`mt-2 p-2 rounded ${darkMode ? 'bg-green-900/30 border border-green-700' : 'bg-green-50 border border-green-200'}`}>
-                        <div className={`text-sm font-semibold text-green-500`}>Vols Elevated → Sell Premium</div>
-                        <div className={`text-sm ${textSecondary} mt-0.5`}>Consider Short Strangles</div>
+                        <div className={`text-sm font-semibold text-green-500`}>Sell Strangles</div>
+                        <div className={`text-xs ${textSecondary} mt-0.5`}>IVR ≥ 50% - Vols Elevated</div>
                       </div>
                     );
                   } else if (ivrValue < 20) {
                     return (
                       <div className={`mt-2 p-2 rounded ${darkMode ? 'bg-yellow-900/30 border border-yellow-700' : 'bg-yellow-50 border border-yellow-200'}`}>
-                        <div className={`text-sm font-semibold text-yellow-500`}>Be Cautious in Short Strangles</div>
-                        <div className={`text-sm ${textSecondary} mt-0.5`}>Vols are cheap</div>
+                        <div className={`text-sm font-semibold text-yellow-500`}>Don&apos;t Sell Strangles</div>
+                        <div className={`text-xs ${textSecondary} mt-0.5`}>IVR &lt; 20% - Vols are cheap</div>
                       </div>
                     );
                   }
@@ -395,9 +397,9 @@ const OptionsDashboard = () => {
               <div 
                 className={`${cardBg} rounded-lg shadow-lg p-4 sm:p-5 md:p-6 border-l-4 border-cyan-500 tile-hover-gold cursor-pointer`}
                 onClick={() => openModal(
-                  'Range Forecast / Expected Move',
-                  'Statistical expected range for NIFTY based on current spot price and implied volatility. Helps set strike placement for short premium strategies.',
-                  'Set short strikes beyond the weekly expected move (±360 points in this example) for ~70% probability containment if short straddle or strangle. The 1-day expected move shows daily volatility expectations, while the weekly move accounts for time decay and multiple day movements.'
+                  'Expected Move (How Far Will Prices Move?)',
+                  'This tool predicts how much the market price might move up or down in the next day or week! It\'s like a weather forecast saying "temperature might change by 5°C" - but for stock prices. The "Expected Move" shows you the range where prices will probably stay (about 70% sure). It uses math and current market conditions to make this guess.',
+                  'The "1-Day" number shows how much prices might move TOMORROW. If it says ±200 points, the market might go up 200 points OR down 200 points tomorrow. The "Weekly" number shows how much prices might move over the NEXT WEEK. This is usually bigger because there\'s more time for things to happen! Use this to set your trading targets: If you\'re selling options (being an insurance seller), place your strikes BEYOND the expected move - like putting a safety net far away from where the market probably won\'t reach. This gives you about 70% chance of success! If the expected move is BIG: The market will be jumpy - be more careful and use wider targets. If it\'s SMALL: The market will be calm - you can use tighter targets. Remember: This is just a prediction based on math - real markets can surprise you!'
                 )}
               >
                 <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Range Forecast / Expected Move</div>
@@ -464,12 +466,11 @@ const OptionsDashboard = () => {
               <div className="w-full max-w-full sm:max-w-[728px]">
                 <div className={`${cardBg} rounded-lg shadow-lg p-2 sm:p-3 border-2 border-dashed ${darkMode ? 'border-blue-500/30' : 'border-blue-300'} text-center`}>
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
-                  <div className="w-full h-16 sm:h-20 md:h-[90px]">
-                    <AdSlot
-                      slot="1174991657"
-                      style={{ display: 'block', width: '100%', minHeight: 90 }}
-                      format="auto"
-                      fullWidthResponsive="true"
+                  <div className="w-full h-16 sm:h-20 md:h-[90px] flex justify-center items-center">
+                    <HighPerformanceAd 
+                      adKey="b4903cf5635d652e019f9cf30ea1cd88"
+                      width={728}
+                      height={90}
                     />
                   </div>
                 </div>
@@ -483,17 +484,18 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Advertisement before Prediction Models (Horizontal 2) */}
-            <div className="w-full">
-              <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-2 border-dashed text-center`}>
-                <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
-                <div className="w-full h-16 sm:h-20 md:h-[90px]">
-                  <AdSlot
-                    slot="8861909987"
-                    style={{ display: 'block', width: '100%', minHeight: 90 }}
-                    format="auto"
-                    fullWidthResponsive="true"
-                  />
+            {/* Advertisement before Prediction Models (Horizontal 2) - 468x60 */}
+            <div className="w-full flex justify-center">
+              <div className="w-full max-w-[468px]">
+                <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-2 border-dashed text-center`}>
+                  <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
+                  <div className="w-full flex justify-center items-center" style={{ minHeight: '60px' }}>
+                    <HighPerformanceAd 
+                      adKey="d8c93074244d311adc394f3a309c3118"
+                      width={468}
+                      height={60}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -533,8 +535,8 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Ad Space 2 - Sidebar */}
-            <AdSidebar slot="6427318333" />
+            {/* Ad Space 2 - Sidebar (300x250) - Keep as is */}
+            <AdSidebar slot="6427318333" width={300} height={250} />
 
             {/* Drift Direction Indicator */}
             <DriftDirectionIndicator 
@@ -543,8 +545,12 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Ad Space 3 - Sidebar */}
-            <AdSidebar slot="3801154996" />
+            {/* Ad Space 3 - Sidebar (320x50) */}
+            <HighPerformanceAdSidebar 
+              adKey="35bb5972176687c2571d4f6e436e1f71"
+              width={320}
+              height={50}
+            />
 
             {/* Momentum Strength Meter */}
             <MomentumStrengthMeter 
@@ -568,10 +574,6 @@ const OptionsDashboard = () => {
           </p>
           <p className="text-xs text-gray-500 mt-2">
             Visual models and code protected under Copyright Act, 1957 (India). Unauthorized use of the Tradyx name, logo, or visuals is strictly prohibited.
-          </p>
-          <p className={`text-xs mt-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-            Ads Disclosure: This site uses Google AdSense. Ads personalization depends on your consent. 
-            You can change preferences anytime via <a href="/legal/cookies" className="hover:text-blue-400 underline">Cookie Settings</a>.
           </p>
           <div className={`flex flex-wrap justify-center gap-3 mt-3 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             <a href="/legal/privacy" className="hover:text-blue-400 underline">Privacy Policy</a>

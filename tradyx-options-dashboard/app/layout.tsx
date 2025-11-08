@@ -102,16 +102,13 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={arteks.variable}>
       <head>
-        {/* Google Consent Mode v2 defaults: deny everything except security BEFORE any tags */}
+        {/* Google Consent Mode v2 defaults: deny analytics before any tags */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('consent', 'default', {
-                ad_storage: 'denied',
-                ad_user_data: 'denied',
-                ad_personalization: 'denied',
                 analytics_storage: 'denied',
                 functionality_storage: 'denied',
                 security_storage: 'granted'
@@ -133,39 +130,6 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
           }}
         />
 
-        {/* AdSense loader */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3773170640876257"
-          crossOrigin="anonymous"
-        ></script>
-
-        {/* Google Funding Choices — certified CMP (IAB TCF v2.2) for EEA/UK */}
-        <script
-          async
-          src="https://fundingchoicesmessages.google.com/i/ca-pub-3773170640876257?ers=1"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                function signalGooglefcPresent() {
-                  if (!window.frames['__fc_frame']) {
-                    if (document.body) {
-                      const iframe = document.createElement('iframe');
-                      iframe.style = 'width:0;height:0;border:0;display:none';
-                      iframe.name = '__fc_frame';
-                      document.body.appendChild(iframe);
-                    } else {
-                      setTimeout(signalGooglefcPresent, 50);
-                    }
-                  }
-                }
-                signalGooglefcPresent();
-              })();
-            `
-          }}
-        />
       </head>
       <body className={`${arteks.className} bg-zinc-50 dark:bg-zinc-950`}>{children}</body>
     </html>

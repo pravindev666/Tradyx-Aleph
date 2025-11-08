@@ -19,13 +19,13 @@ export default function MarketMoodGauge({ mood, darkMode, onOpenModal }: { mood:
 
   return (
     <div 
-      className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-4 sm:p-5 md:p-6 tile-hover-gold cursor-pointer`}
+      className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-3 sm:p-4 md:p-5 tile-hover-gold cursor-pointer`}
       onClick={() => {
         if (onOpenModal) {
           onOpenModal(
-            'Market Mood Index (MMI)',
-            'Composite indicator combining VIX, PCR, IVR, Advance/Decline ratio, FII flows, and Realized/Implied Volatility ratio. Provides a holistic view of market sentiment.',
-            'MMI < 35 → Fear regime. Avoid tight naked short gamma. Prefer credit spreads or small directional debits. 35–65 → Neutral. With GEX positive and IVR 40–60, classic short strangles outside Expected Move make sense. > 65 → Greed. Trend extension likely; if IVR is low, debit spreads beat premium shorts; if IVR high, short premium still OK but watch squeezes. MMI ≠ trade signal. It\'s a context filter. Confirm with GEX, Expected Move, Top OI walls, and OI momentum.'
+            'Market Mood Index (How Do Investors Feel?)',
+            'This is like a "mood ring" for the entire stock market! It combines many different signals (fear levels, option prices, how many stocks are going up vs down, foreign investor activity, and more) into one easy-to-read number from 0-100. Think of it as checking the "emotional temperature" of all investors combined. Low numbers (red) = everyone is scared and panicking. High numbers (green) = everyone is excited and greedy. Middle numbers (yellow) = people are calm and balanced.',
+            'If MMI is LOW (below 35 - red "Fear"): Investors are SCARED! This is like a panic sale at a store - everyone is selling because they\'re worried. This can be risky, but also creates opportunities. Be extra careful with your trades - scared markets can be unpredictable! If MMI is in the MIDDLE (35-65 - yellow "Neutral"): Investors are CALM and balanced. Not too excited, not too scared. This is a normal, stable market. Good for beginners to practice! If MMI is HIGH (above 65 - green "Greed"): Investors are EXCITED and greedy! Everyone wants to buy because they think prices will keep going up. This feels great, but be careful - when everyone is greedy, the market might be getting too expensive. Remember: This is just a MOOD indicator, not a guarantee! Use it to understand how investors FEEL, but always combine it with other tools before making trading decisions. Don\'t trade based only on mood!'
           );
         }
       }}
@@ -41,7 +41,7 @@ export default function MarketMoodGauge({ mood, darkMode, onOpenModal }: { mood:
         Composite of VIX, PCR, IVR, Breadth, FII flows, RV/IV
       </p>
 
-      <div className="relative w-64 h-32 mx-auto" aria-label="Market Mood Gauge">
+      <div className="relative w-56 h-28 mx-auto" aria-label="Market Mood Gauge">
         <svg viewBox="0 0 200 100" className="w-full">
           <defs>
             <linearGradient id="moodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -71,9 +71,9 @@ export default function MarketMoodGauge({ mood, darkMode, onOpenModal }: { mood:
         </svg>
       </div>
 
-      <div className="text-center mt-4">
-        <div className="text-2xl sm:text-3xl font-bold" style={{ color }}>{pct.toFixed(0)}</div>
-        <div className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mood.regime}</div>
+      <div className="text-center mt-3">
+        <div className="text-xl sm:text-2xl font-bold" style={{ color }}>{pct.toFixed(0)}</div>
+        <div className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mood.regime}</div>
       </div>
     </div>
   );

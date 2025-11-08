@@ -38,9 +38,9 @@ export default function DriftDirectionIndicator({ value, darkMode, onOpenModal }
     <div 
       className={`${cardBg} rounded-lg shadow-lg p-3 sm:p-4 border-l-4 ${isBullish ? 'border-green-500' : isBearish ? 'border-red-500' : 'border-gray-500'} tile-hover-gold cursor-pointer`}
       onClick={() => onOpenModal?.(
-        'Drift Direction Indicator',
-        'Measures the directional bias of the market using the sign of (EMA20 − EMA50). Positive value indicates bullish drift (EMA20 above EMA50), negative indicates bearish drift (EMA20 below EMA50).',
-        'Bullish drift (↑ Green): EMA20 > EMA50 → Market trending up → Bias short strikes slightly OTM on call side, prefer put spreads. Bearish drift (↓ Red): EMA20 < EMA50 → Market trending down → Bias short strikes slightly OTM on put side, prefer call spreads. Neutral: EMAs close together → No clear drift → Use symmetric strangles/straddles. Helps short option traders bias their strike placement in the drift direction.'
+        'Drift Direction (Which Way Is The Market Moving?)',
+        'This tool shows you which direction the market is "drifting" - like which way a river is flowing! It compares two moving averages (EMA20 and EMA50) - think of them as "short-term trend" vs "long-term trend". When the short-term is above the long-term (green arrow up), the market is drifting UP (bullish). When short-term is below long-term (red arrow down), the market is drifting DOWN (bearish). When they\'re close together, there\'s no clear direction (neutral).',
+        'If you see a GREEN arrow pointing UP (Bullish Drift): The market is trending upward! Short-term prices are above long-term prices. This means the trend is UP, so if you\'re trading options, you might want to favor strategies that profit from rising prices. Be careful selling options that profit from falling prices - the market is moving against you! If you see a RED arrow pointing DOWN (Bearish Drift): The market is trending downward! Short-term prices are below long-term prices. The trend is DOWN, so strategies that profit from falling prices might work better. If you see a dash "—" (Neutral): There\'s no clear direction - the market is sideways. Prices aren\'t trending up or down clearly. Use balanced strategies that don\'t favor one direction. Remember: This tells you the TREND, not a guarantee of future direction. Use it as one clue, along with other information!'
       )}
     >
       <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-3`}>Drift Direction</div>

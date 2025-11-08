@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   slot: string;
@@ -17,29 +17,12 @@ export default function AdSlot({
   fullWidthResponsive = 'true',
   className = ''
 }: Props) {
-  const insRef = useRef<HTMLElement>(null);
-  const pushedRef = useRef(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // Only render on client to avoid hydration mismatch
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!mounted || pushedRef.current) return;
-    
-    try {
-      // @ts-ignore
-      if (window.adsbygoogle && insRef.current) {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        pushedRef.current = true;
-      }
-    } catch (e) {
-      console.error('AdSense error:', e);
-    }
-  }, [mounted]);
 
   // Don't render on server to prevent hydration mismatch
   if (!mounted) {
@@ -54,17 +37,16 @@ export default function AdSlot({
     );
   }
 
+  // Render placeholder div for ad slot
   return (
-    <ins
-      ref={insRef as any}
-      className={`adsbygoogle ${className}`}
+    <div
+      className={className}
       style={style}
-      data-ad-client="ca-pub-3773170640876257"
       data-ad-slot={slot}
-      data-ad-format={format}
-      data-full-width-responsive={fullWidthResponsive}
       suppressHydrationWarning
-    />
+    >
+      {/* Ad slot placeholder - slot: {slot} */}
+    </div>
   );
 }
 

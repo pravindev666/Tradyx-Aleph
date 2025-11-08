@@ -81,7 +81,7 @@ export default function CookieSettingsPage() {
             <p className={`${textSecondary} leading-relaxed`}>
               You can change your cookie and consent preferences at any time. Click the button below to
               open the consent management interface where you can accept, reject, or customize your preferences
-              for analytics and advertising cookies.
+              for analytics cookies.
             </p>
             <div className={`mt-4 p-4 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
               <button
@@ -121,10 +121,6 @@ export default function CookieSettingsPage() {
                 <p className="font-semibold mb-1">Analytics</p>
                 <p className="text-sm">Anonymized traffic and performance metrics. Enabled only with your consent.</p>
               </div>
-              <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
-                <p className="font-semibold mb-1">Advertising</p>
-                <p className="text-sm">Google AdSense may use cookies to show personalized ads. Personalization happens only with consent.</p>
-              </div>
             </div>
           </section>
 
@@ -135,13 +131,8 @@ export default function CookieSettingsPage() {
               Consent Management
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              For visitors in the EEA/UK, we use Google Funding Choices, a certified Consent Management Platform
-              implementing <strong>IAB TCF v2.2</strong>. Your choices generate a TCF consent string and update
-              <strong> Google Consent Mode v2</strong>. Outside the EEA/UK, we provide a custom consent banner.
-            </p>
-            <p className={`${textSecondary} leading-relaxed mt-3`}>
-              Your preferences are stored in your browser and will persist until you change them or clear your
-              browser data.
+              We provide a consent banner to manage your preferences. Your choices are stored locally
+              in your browser and will persist until you change them or clear your browser data.
             </p>
           </section>
 
