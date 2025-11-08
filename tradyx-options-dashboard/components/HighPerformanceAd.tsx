@@ -77,40 +77,40 @@ export default function HighPerformanceAd({
       if (!containerRef.current) return;
 
       try {
-        // Use EXACT format from user's working code
-        // Append scripts directly to container - they WILL execute in modern browsers
+        // FIXED: Use innerHTML method which works reliably in React/Next.js
+        // This ensures scripts execute in the correct order
         
-        // Create config script - EXACT format from user's code
-        const configScript = document.createElement('script');
-        configScript.type = 'text/javascript';
-        configScript.id = configScriptId;
-        configScript.textContent = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+        // Create wrapper div for scripts
+        const scriptWrapper = document.createElement('div');
+        scriptWrapper.id = `ad-wrapper-${adKey}`;
         
-        // Append config script to container
-        containerRef.current.appendChild(configScript);
+        // Insert both scripts as HTML (this WILL execute them)
+        scriptWrapper.innerHTML = `
+          <script type="text/javascript" id="${configScriptId}">
+            atOptions = {
+              'key': '${adKey}',
+              'format': 'iframe',
+              'height': ${height},
+              'width': ${width},
+              'params': {}
+            };
+          </script>
+          <script type="text/javascript" id="${invokeScriptId}" src="//www.highperformanceformat.com/${adKey}/invoke.js" async></script>
+        `;
         
-        // Force execution by cloning and re-appending (ensures script executes)
-        const configParent = configScript.parentNode;
-        if (configParent) {
-          const configClone = configScript.cloneNode(true);
-          configParent.removeChild(configScript);
-          configParent.appendChild(configClone);
-        }
+        // Append to container
+        containerRef.current.appendChild(scriptWrapper);
         
-        // Wait for config to execute, then load invoke script
-        setTimeout(() => {
-          if (!containerRef.current) return;
-          
-          // Create invoke script - EXACT format from user's code
-          const invokeScript = document.createElement('script');
-          invokeScript.type = 'text/javascript';
-          invokeScript.id = invokeScriptId;
-          invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
-          invokeScript.async = true;
-          
-          // Append invoke script to container
-          containerRef.current.appendChild(invokeScript);
-        }, 100);
+        // Alternative method: manually execute scripts (fallback)
+        const scripts = scriptWrapper.getElementsByTagName('script');
+        Array.from(scripts).forEach((oldScript) => {
+          const newScript = document.createElement('script');
+          Array.from(oldScript.attributes).forEach(attr => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+          newScript.textContent = oldScript.textContent;
+          oldScript.parentNode?.replaceChild(newScript, oldScript);
+        });
         
         loadedRef.current = true;
       } catch (e) {

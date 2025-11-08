@@ -464,7 +464,7 @@ const OptionsDashboard = () => {
             {/* Ad Space - Below Expiry Countdown (Horizontal 1) */}
             <div className="flex justify-center w-full">
               <div className="w-full max-w-full sm:max-w-[728px]">
-                <div className={`${cardBg} rounded-lg shadow-lg p-2 sm:p-3 border-none text-center`}>
+                <div className="ad-container-transparent p-2 sm:p-3 rounded-xl text-center">
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
                   <div className="w-full flex justify-center items-center overflow-hidden" style={{ minHeight: '90px' }}>
                     <HighPerformanceAd 
@@ -487,7 +487,7 @@ const OptionsDashboard = () => {
             {/* Advertisement before Prediction Models (Horizontal 2) - 468x60 */}
             <div className="w-full flex justify-center">
               <div className="w-full max-w-[468px]">
-                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-none text-center`}>
+                <div className="ad-container-transparent p-2 sm:p-3 md:p-4 rounded-xl text-center">
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
                   <div className="w-full flex justify-center items-center overflow-hidden" style={{ minHeight: '60px' }}>
                     <HighPerformanceAd 
