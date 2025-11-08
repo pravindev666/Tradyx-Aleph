@@ -466,7 +466,7 @@ const OptionsDashboard = () => {
               <div className="w-full max-w-full sm:max-w-[728px]">
                 <div className={`${cardBg} rounded-lg shadow-lg p-2 sm:p-3 border-2 border-dashed ${darkMode ? 'border-blue-500/30' : 'border-blue-300'} text-center`}>
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
-                  <div className="w-full h-16 sm:h-20 md:h-[90px] flex justify-center items-center">
+                  <div className="w-full flex justify-center items-center" style={{ minHeight: '90px', minWidth: '728px' }}>
                     <HighPerformanceAd 
                       adKey="b4903cf5635d652e019f9cf30ea1cd88"
                       width={728}
@@ -489,7 +489,7 @@ const OptionsDashboard = () => {
               <div className="w-full max-w-[468px]">
                 <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-2 border-dashed text-center`}>
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
-                  <div className="w-full flex justify-center items-center" style={{ minHeight: '60px' }}>
+                  <div className="w-full flex justify-center items-center" style={{ minHeight: '60px', minWidth: '468px' }}>
                     <HighPerformanceAd 
                       adKey="d8c93074244d311adc394f3a309c3118"
                       width={468}

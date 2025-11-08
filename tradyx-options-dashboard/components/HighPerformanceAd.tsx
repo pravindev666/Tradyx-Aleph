@@ -2,12 +2,57 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+// Global queue to ensure ads load sequentially and don't overwrite each other's atOptions
+declare global {
+  interface Window {
+    adsterraQueue?: Array<() => void>;
+    adsterraLoading?: boolean;
+  }
+}
+
 type Props = {
   adKey: string;
   width?: number;
   height?: number;
   className?: string;
 };
+
+function loadAdSequentially(loadFn: () => void) {
+  if (!window.adsterraQueue) {
+    window.adsterraQueue = [];
+    window.adsterraLoading = false;
+  }
+
+  window.adsterraQueue.push(loadFn);
+  processAdQueue();
+}
+
+function processAdQueue() {
+  if (window.adsterraLoading || !window.adsterraQueue || window.adsterraQueue.length === 0) {
+    return;
+  }
+
+  window.adsterraLoading = true;
+  const loadFn = window.adsterraQueue.shift();
+  
+  if (loadFn) {
+    try {
+      loadFn();
+      // Wait for the scripts to be added to DOM and start loading
+      // This ensures atOptions is set and invoke.js has started before next ad loads
+      setTimeout(() => {
+        window.adsterraLoading = false;
+        processAdQueue();
+      }, 100);
+    } catch (e) {
+      console.error('Error loading ad in queue:', e);
+      window.adsterraLoading = false;
+      processAdQueue();
+    }
+  } else {
+    window.adsterraLoading = false;
+  }
+}
 
 export default function HighPerformanceAd({
   adKey,
@@ -27,10 +72,11 @@ export default function HighPerformanceAd({
     if (!mounted || loadedRef.current || !containerRef.current) return;
 
     const containerId = `hpf-ad-${adKey}`;
-    const scriptId = `hpf-script-${adKey}`;
+    const configScriptId = `hpf-config-${adKey}`;
+    const invokeScriptId = `hpf-invoke-${adKey}`;
 
     // Check if already loaded
-    if (document.getElementById(scriptId)) {
+    if (document.getElementById(invokeScriptId)) {
       loadedRef.current = true;
       return;
     }
@@ -40,43 +86,63 @@ export default function HighPerformanceAd({
       containerRef.current.id = containerId;
     }
 
-    try {
-      // Set atOptions in an IIFE that immediately loads the invoke script
-      // This ensures atOptions is set right before the script executes
-      const configAndInvokeScript = document.createElement('script');
-      configAndInvokeScript.type = 'text/javascript';
-      configAndInvokeScript.id = scriptId;
-      configAndInvokeScript.innerHTML = `
-        (function() {
-          var container = document.getElementById('${containerId}');
-          if (!container) return;
-          
-          // Set atOptions for this specific ad
-          window.atOptions = {
-            'key': '${adKey}',
-            'format': 'iframe',
-            'height': ${height},
-            'width': ${width},
-            'params': {}
-          };
-          
-          // Immediately load the invoke script
-          var invokeScript = document.createElement('script');
-          invokeScript.type = 'text/javascript';
-          invokeScript.src = 'https://www.highperformanceformat.com/${adKey}/invoke.js';
-          invokeScript.async = true;
-          container.appendChild(invokeScript);
-        })();
-      `;
+    // Load ad through queue to prevent conflicts
+    loadAdSequentially(() => {
+      try {
+        if (!containerRef.current) return;
 
-      // Append to container
-      if (containerRef.current) {
-        containerRef.current.appendChild(configAndInvokeScript);
+        // Create an isolated execution context for this ad
+        // This ensures each ad's atOptions is set and its invoke script loads
+        // before the next ad starts loading
+        const adConfig = {
+          key: adKey,
+          format: 'iframe',
+          height: height,
+          width: width,
+          params: {}
+        };
+
+        // Create a wrapper script that sets atOptions and loads invoke.js
+        // All in one script to ensure atomicity
+        const wrapperScript = document.createElement('script');
+        wrapperScript.type = 'text/javascript';
+        wrapperScript.id = configScriptId;
+        wrapperScript.innerHTML = `
+          (function() {
+            var container = document.getElementById('${containerId}');
+            if (!container) return;
+            
+            // Set atOptions for this specific ad
+            atOptions = {
+              'key': '${adConfig.key}',
+              'format': '${adConfig.format}',
+              'height': ${adConfig.height},
+              'width': ${adConfig.width},
+              'params': {}
+            };
+            
+            // Create and append invoke script immediately
+            var invokeScript = document.createElement('script');
+            invokeScript.type = 'text/javascript';
+            invokeScript.id = '${invokeScriptId}';
+            invokeScript.src = 'https://www.highperformanceformat.com/${adConfig.key}/invoke.js';
+            invokeScript.async = true;
+            invokeScript.onerror = function() {
+              console.warn('Failed to load ad script for ${adConfig.key}');
+            };
+            container.appendChild(invokeScript);
+          })();
+        `;
+        
+        // Append wrapper script to container
+        containerRef.current.appendChild(wrapperScript);
+        
+        loadedRef.current = true;
+      } catch (e) {
+        console.error(`Failed to load HighPerformanceFormat ad script for ${adKey}:`, e);
         loadedRef.current = true;
       }
-    } catch (e) {
-      loadedRef.current = true;
-    }
+    });
   }, [mounted, adKey, width, height]);
 
   if (!mounted) {
@@ -108,7 +174,7 @@ export default function HighPerformanceAd({
         margin: '0 auto',
         minWidth: `${width}px`,
         minHeight: `${height}px`,
-        overflow: 'hidden',
+        overflow: 'visible',
         position: 'relative'
       }}
       suppressHydrationWarning
