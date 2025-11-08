@@ -26,13 +26,13 @@ const nextConfig = {
           { 
             key: "Content-Security-Policy",
             value: [
-              "default-src 'self';",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.highperformanceformat.com http://www.highperformanceformat.com http://highperformanceformat.com https://highperformanceformat.com;",
-              "img-src 'self' data: https://*.googleusercontent.com https://*.google.com https://*.gstatic.com https://*.highperformanceformat.com http://*.highperformanceformat.com;",
-              "style-src 'self' 'unsafe-inline';",
-              "connect-src 'self' https://raw.githubusercontent.com https://*.github.io https://www.google-analytics.com https://www.googletagmanager.com https://*.highperformanceformat.com http://*.highperformanceformat.com;",
-              "frame-src 'self' https://*.highperformanceformat.com http://*.highperformanceformat.com;",
-              "font-src 'self' data:;"
+              "default-src 'self' https: data: blob:",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+              "connect-src 'self' https:",
+              "img-src 'self' https: data: blob:",
+              "style-src 'self' 'unsafe-inline' https:",
+              "frame-src https: data:",
+              "font-src 'self' data: https:"
             ].join(' ')
           },
           {

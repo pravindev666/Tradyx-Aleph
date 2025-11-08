@@ -17,105 +17,82 @@ export default function HighPerformanceAd({
 }: Props) {
   const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const scriptLoadedRef = useRef(false);
-  const scriptRef = useRef<HTMLScriptElement | null>(null);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
-    // Only render on client to avoid hydration mismatch
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || scriptLoadedRef.current || !containerRef.current) return;
+    if (!mounted || loadedRef.current || !containerRef.current) return;
 
-    // Create a unique container ID for this ad
-    const containerId = `hpf-ad-container-${adKey}`;
+    const containerId = `hpf-ad-${adKey}`;
+    const scriptId = `hpf-script-${adKey}`;
+    
+    // Check if already loaded
+    if (document.getElementById(scriptId)) {
+      loadedRef.current = true;
+      return;
+    }
+    
+    // Set container ID
+    if (containerRef.current) {
+      containerRef.current.id = containerId;
+    }
 
     try {
-      // Check if script already exists for this specific ad
-      const existingScript = document.querySelector(`script[data-ad-key="${adKey}"]`);
-      if (existingScript && containerRef.current.querySelector(`#${containerId}`)) {
-        scriptLoadedRef.current = true;
-        return;
-      }
-
-      // Create container div for the ad
-      const adContainer = document.createElement('div');
-      adContainer.id = containerId;
-      containerRef.current.appendChild(adContainer);
-
-      // Create inline script to set atOptions BEFORE loading the invoke script
-      // This must be done inline because the invoke script reads atOptions immediately
-      const configScript = document.createElement('script');
-      configScript.type = 'text/javascript';
-      configScript.innerHTML = `
+      // Create a wrapper script that sets atOptions and then loads the invoke script
+      // This ensures each ad has its own isolated configuration
+      const wrapperScript = document.createElement('script');
+      wrapperScript.type = 'text/javascript';
+      wrapperScript.id = scriptId;
+      wrapperScript.innerHTML = `
         (function() {
-          var atOptions = {
-            'key': '${adKey}',
+          var adKey = '${adKey}';
+          var container = document.getElementById('${containerId}');
+          if (!container) return;
+          
+          // Set atOptions for this specific ad
+          window.atOptions = {
+            'key': adKey,
             'format': 'iframe',
             'height': ${height},
             'width': ${width},
             'params': {}
           };
-          window.atOptions_${adKey} = atOptions;
-          window.atOptions = atOptions;
+          
+          // Load the invoke script
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://www.highperformanceformat.com/' + adKey + '/invoke.js';
+          script.async = true;
+          container.appendChild(script);
         })();
       `;
-      document.head.appendChild(configScript);
 
-      // Create and load the invoke script
-      const invokeScript = document.createElement('script');
-      invokeScript.type = 'text/javascript';
-      invokeScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
-      invokeScript.async = true;
-      invokeScript.setAttribute('data-ad-key', adKey);
-      scriptRef.current = invokeScript;
-      
-      invokeScript.onload = () => {
-        scriptLoadedRef.current = true;
-      };
-
-      invokeScript.onerror = () => {
-        // Silently handle - ads may not always load due to network or ad availability
-        scriptLoadedRef.current = false;
-      };
-
-      // Small delay to ensure atOptions is set before script executes
-      setTimeout(() => {
-        if (containerRef.current) {
-          document.head.appendChild(invokeScript);
-        }
-      }, 10);
+      // Append wrapper script to container
+      if (containerRef.current) {
+        containerRef.current.appendChild(wrapperScript);
+        loadedRef.current = true;
+      }
     } catch (e) {
-      // Silently handle errors
-      scriptLoadedRef.current = false;
+      console.error('HighPerformanceAd error:', e);
+      loadedRef.current = true;
     }
 
-    // Cleanup function
+    // No cleanup needed - scripts persist
     return () => {
-      if (scriptRef.current && scriptRef.current.parentNode) {
-        scriptRef.current.parentNode.removeChild(scriptRef.current);
-        scriptRef.current = null;
-      }
-      // @ts-ignore
-      if (window[`atOptions_${adKey}`]) {
-        // @ts-ignore
-        delete window[`atOptions_${adKey}`];
-      }
-      scriptLoadedRef.current = false;
+      loadedRef.current = false;
     };
   }, [mounted, adKey, width, height]);
 
-  // Don't render on server to prevent hydration mismatch
   if (!mounted) {
     return (
       <div 
         className={className}
         style={{ width: `${width}px`, height: `${height}px`, display: 'block', minWidth: `${width}px`, minHeight: `${height}px` }}
         suppressHydrationWarning
-      >
-        {/* Placeholder for ad */}
-      </div>
+      />
     );
   }
 
@@ -130,10 +107,11 @@ export default function HighPerformanceAd({
         margin: '0 auto',
         minWidth: `${width}px`,
         minHeight: `${height}px`,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'relative'
       }}
       suppressHydrationWarning
-      id={`hpf-ad-${adKey}`}
+      data-ad-key={adKey}
     />
   );
 }

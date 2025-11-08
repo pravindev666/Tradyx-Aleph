@@ -535,8 +535,12 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Ad Space 2 - Sidebar (300x250) - Keep as is */}
-            <AdSidebar slot="6427318333" width={300} height={250} />
+            {/* Ad Space 2 - Sidebar (300x250) */}
+            <HighPerformanceAdSidebar 
+              adKey="2f370fd28cbdeb2108926fba77c70947"
+              width={300}
+              height={250}
+            />
 
             {/* Drift Direction Indicator */}
             <DriftDirectionIndicator 
