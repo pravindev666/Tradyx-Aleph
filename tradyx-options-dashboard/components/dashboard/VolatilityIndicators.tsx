@@ -17,15 +17,24 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
   // Helper to create sparkline
   const MiniSparkline = ({ values, color = '#3b82f6', height = 30 }: { values: number[]; color?: string; height?: number }) => {
     if (!values || values.length === 0) return null;
-    const max = Math.max(...values);
-    const min = Math.min(...values);
+    
+    // Filter out invalid values (NaN, null, undefined)
+    const validData = values.filter(val => typeof val === 'number' && !isNaN(val) && isFinite(val));
+    if (validData.length === 0) return null;
+    
+    const max = Math.max(...validData);
+    const min = Math.min(...validData);
     const range = max - min || 1;
     const width = 80;
-    const points = values.map((val, i) => {
-      const x = (i / (values.length - 1)) * width;
+    const dataLength = validData.length;
+    
+    const points = validData.map((val, i) => {
+      const x = dataLength > 1 ? (i / (dataLength - 1)) * width : width / 2;
       const y = height - ((val - min) / range) * height;
+      // Ensure valid numbers
+      if (!isFinite(x) || !isFinite(y)) return `0,${height}`;
       return `${x},${y}`;
-    }).join(' ');
+    }).filter(p => p && !p.includes('NaN')).join(' ');
     return (
       <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="opacity-70">
         <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" />

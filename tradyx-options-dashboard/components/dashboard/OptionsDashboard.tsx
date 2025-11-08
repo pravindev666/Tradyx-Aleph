@@ -101,16 +101,24 @@ const OptionsDashboard = () => {
 
   const MiniSparkline = ({ data: historyData, color = '#3b82f6', height = 35 }) => {
     if (!historyData || historyData.length === 0) return null;
-    const max = Math.max(...historyData);
-    const min = Math.min(...historyData);
+    
+    // Filter out invalid values (NaN, null, undefined)
+    const validData = historyData.filter(val => typeof val === 'number' && !isNaN(val) && isFinite(val));
+    if (validData.length === 0) return null;
+    
+    const max = Math.max(...validData);
+    const min = Math.min(...validData);
     const range = max - min || 1;
     const width = 100;
+    const dataLength = validData.length;
     
-    const points = historyData.map((val, i) => {
-      const x = (i / (historyData.length - 1)) * width;
+    const points = validData.map((val, i) => {
+      const x = dataLength > 1 ? (i / (dataLength - 1)) * width : width / 2;
       const y = height - ((val - min) / range) * height;
+      // Ensure valid numbers
+      if (!isFinite(x) || !isFinite(y)) return `0,${height}`;
       return `${x},${y}`;
-    }).join(' ');
+    }).filter(p => p && !p.includes('NaN')).join(' ');
 
     const areaPoints = `0,${height} ${points} ${width},${height}`;
 
@@ -124,7 +132,7 @@ const OptionsDashboard = () => {
         </defs>
         <polygon points={areaPoints} fill={`url(#gradient-${color})`} />
         <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" />
-        <circle cx={width} cy={height - (((historyData[historyData.length - 1] ?? min) - min) / range) * height} r="3" fill={color} />
+        <circle cx={width} cy={height - (((validData[validData.length - 1] ?? min) - min) / range) * height} r="3" fill={color} />
       </svg>
     );
   };

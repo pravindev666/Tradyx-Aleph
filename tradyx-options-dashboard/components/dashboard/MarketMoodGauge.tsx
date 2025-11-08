@@ -8,8 +8,8 @@ export type Mood = {
 };
 
 export default function MarketMoodGauge({ mood, darkMode, onOpenModal }: { mood: Mood; darkMode: boolean; onOpenModal?: (title: string, description: string, decision: string) => void }) {
-  const pct = Math.max(0, Math.min(100, mood.mmi));
-  const rotation = (pct / 100) * 180 - 90;
+  const pct = Math.max(0, Math.min(100, mood.mmi || 50));
+  const rotation = isFinite(pct) ? (pct / 100) * 180 - 90 : 0;
 
   const color =
     pct >= 75 ? '#22c55e' :
