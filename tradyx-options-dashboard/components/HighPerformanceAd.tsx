@@ -37,11 +37,10 @@ function processNextAd() {
   
   if (loadFn) {
     loadFn();
-    // Wait for scripts to load before processing next ad
     setTimeout(() => {
       window.adsterraProcessing = false;
       processNextAd();
-    }, 500); // Increased delay to ensure scripts execute
+    }, 500);
   } else {
     window.adsterraProcessing = false;
   }
@@ -78,7 +77,10 @@ export default function HighPerformanceAd({
       if (!containerRef.current) return;
 
       try {
-        // Create config script - EXACT format from user's working code
+        // Use EXACT format from user's working code
+        // Append scripts directly to container - they WILL execute in modern browsers
+        
+        // Create config script - EXACT format from user's code
         const configScript = document.createElement('script');
         configScript.type = 'text/javascript';
         configScript.id = configScriptId;
@@ -87,14 +89,22 @@ export default function HighPerformanceAd({
         // Append config script to container
         containerRef.current.appendChild(configScript);
         
+        // Force execution by cloning and re-appending (ensures script executes)
+        const configParent = configScript.parentNode;
+        if (configParent) {
+          const configClone = configScript.cloneNode(true);
+          configParent.removeChild(configScript);
+          configParent.appendChild(configClone);
+        }
+        
         // Wait for config to execute, then load invoke script
         setTimeout(() => {
           if (!containerRef.current) return;
           
+          // Create invoke script - EXACT format from user's code
           const invokeScript = document.createElement('script');
           invokeScript.type = 'text/javascript';
           invokeScript.id = invokeScriptId;
-          // Use protocol-relative URL exactly as user's working code
           invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
           invokeScript.async = true;
           
@@ -115,10 +125,10 @@ export default function HighPerformanceAd({
       <div 
         className={className}
         style={{ 
-          width: `${width}px`, 
+          width: '100%',
+          maxWidth: `${width}px`,
           height: `${height}px`, 
           display: 'block', 
-          minWidth: `${width}px`, 
           minHeight: `${height}px` 
         }}
         suppressHydrationWarning
@@ -131,17 +141,20 @@ export default function HighPerformanceAd({
       ref={containerRef}
       className={className}
       style={{ 
-        width: `${width}px`, 
+        width: '100%',
+        maxWidth: `${width}px`,
         height: `${height}px`, 
-        display: 'block',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         margin: '0 auto',
-        minWidth: `${width}px`,
         minHeight: `${height}px`,
         overflow: 'hidden',
         position: 'relative'
       }}
       suppressHydrationWarning
       data-ad-key={adKey}
+      id={`hpf-ad-container-${adKey}`}
     />
   );
 }

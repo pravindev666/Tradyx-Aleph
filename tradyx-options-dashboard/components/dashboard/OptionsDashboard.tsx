@@ -464,16 +464,14 @@ const OptionsDashboard = () => {
             {/* Ad Space - Below Expiry Countdown (Horizontal 1) */}
             <div className="flex justify-center w-full">
               <div className="w-full max-w-full sm:max-w-[728px]">
-                <div className={`${cardBg} rounded-lg shadow-lg p-2 sm:p-3 border-2 border-dashed ${darkMode ? 'border-blue-500/20' : 'border-blue-300/40'} text-center`}>
+                <div className={`${cardBg} rounded-lg shadow-lg p-2 sm:p-3 border-none text-center`}>
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
-                  <div className="w-full flex justify-center items-center overflow-x-auto" style={{ minHeight: '90px' }}>
-                    <div className="min-w-[320px] sm:min-w-[728px] flex justify-center">
-                      <HighPerformanceAd 
-                        adKey="b4903cf5635d652e019f9cf30ea1cd88"
-                        width={728}
-                        height={90}
-                      />
-                    </div>
+                  <div className="w-full flex justify-center items-center overflow-hidden" style={{ minHeight: '90px' }}>
+                    <HighPerformanceAd 
+                      adKey="b4903cf5635d652e019f9cf30ea1cd88"
+                      width={728}
+                      height={90}
+                    />
                   </div>
                 </div>
               </div>
@@ -489,16 +487,14 @@ const OptionsDashboard = () => {
             {/* Advertisement before Prediction Models (Horizontal 2) - 468x60 */}
             <div className="w-full flex justify-center">
               <div className="w-full max-w-[468px]">
-                <div className={`${darkMode ? 'bg-gray-800 border-gray-700/40' : 'bg-white border-gray-200/40'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-2 border-dashed text-center`}>
+                <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-2 sm:p-3 md:p-4 border-none text-center`}>
                   <div className="text-xs sm:text-sm font-medium mb-1 sm:mb-2 text-gray-600 dark:text-gray-400">Advertisement</div>
-                  <div className="w-full flex justify-center items-center overflow-x-auto" style={{ minHeight: '60px' }}>
-                    <div className="min-w-[320px] sm:min-w-[468px] flex justify-center">
-                      <HighPerformanceAd 
-                        adKey="d8c93074244d311adc394f3a309c3118"
-                        width={468}
-                        height={60}
-                      />
-                    </div>
+                  <div className="w-full flex justify-center items-center overflow-hidden" style={{ minHeight: '60px' }}>
+                    <HighPerformanceAd 
+                      adKey="d8c93074244d311adc394f3a309c3118"
+                      width={468}
+                      height={60}
+                    />
                   </div>
                 </div>
               </div>
