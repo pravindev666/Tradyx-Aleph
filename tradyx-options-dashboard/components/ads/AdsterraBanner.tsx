@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import InfinityLoader from './InfinityLoader';
+// InfinityLoader removed - no longer showing loader in ad placeholders
 
 interface AdsterraBannerProps {
   adKey: string;
@@ -88,19 +88,23 @@ export default function AdsterraBanner({
           const iframeHeight = iframe.offsetHeight || (iframe as any).clientHeight || 0;
           const iframeWidth = iframe.offsetWidth || (iframe as any).clientWidth || 0;
           
-          // STRICT CHECK: Only consider ad loaded if:
+          // More lenient check for ad detection:
           // 1. Iframe has a valid src (not blank, not about:blank)
-          // 2. Iframe has substantial dimensions (at least 50px height for real ads)
-          // 3. Iframe src contains ad network domain (adsterra, highperformanceformat, etc.)
+          // 2. Iframe has any dimensions (reduced from 50px to 30px for smaller banners)
+          // 3. Iframe src contains ad network domain OR starts with http
           const hasValidSrc = iframeSrc && 
                             iframeSrc !== 'about:blank' && 
                             !iframeSrc.includes('about:') &&
                             (iframeSrc.includes('adsterra') || 
                              iframeSrc.includes('highperformanceformat') ||
                              iframeSrc.includes('effectivegate') ||
+                             iframeSrc.includes('adsterra.net') ||
                              iframeSrc.startsWith('http'));
           
-          const hasSubstantialSize = iframeHeight >= 50 && iframeWidth >= 50;
+          // Reduced minimum size for smaller banners (468x60, 320x50)
+          // This helps detect ads that might be loading in smaller containers
+          const minSize = Math.min(height, width) < 100 ? 30 : 50;
+          const hasSubstantialSize = iframeHeight >= minSize && iframeWidth >= minSize;
           
           // Additional check: Make sure iframe is actually visible and has content
           // Some iframes might have dimensions but no actual content
@@ -109,28 +113,27 @@ export default function AdsterraBanner({
                            iframe.offsetHeight > 0 &&
                            iframe.offsetWidth > 0;
           
-          // Only mark as loaded if ALL conditions are met
-          if (hasValidSrc && hasSubstantialSize && isVisible) {
-            // Double check: Wait a bit and verify the iframe still has content
-            // This prevents false positives from temporary iframe creation
-            setTimeout(() => {
-              const verifyIframe = container.querySelector('iframe');
-              if (verifyIframe) {
-                const verifyHeight = verifyIframe.offsetHeight || 0;
-                const verifySrc = verifyIframe.src || '';
-                if (verifyHeight >= 50 && verifySrc && verifySrc !== 'about:blank') {
-                  if (!adLoadedRef.current) {
-                    adLoadedRef.current = true;
-                    setAdLoaded(true);
-                    setLoading(false);
-                    if (checkIntervalRef.current) {
-                      clearInterval(checkIntervalRef.current);
-                      checkIntervalRef.current = null;
-                    }
-                  }
-                }
+          // More lenient: Check if iframe exists and has any src (even if small)
+          // This helps catch ads that are loading but haven't reached full size yet
+          if ((hasValidSrc && hasSubstantialSize && isVisible) || 
+              (iframeSrc && iframeSrc !== 'about:blank' && iframeHeight > 20 && iframeWidth > 20)) {
+            // Mark as loaded immediately (more lenient for smaller banners)
+            if (!adLoadedRef.current) {
+              adLoadedRef.current = true;
+              setAdLoaded(true);
+              setLoading(false);
+              if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
               }
-            }, 500);
+              // Debug log (only in development)
+              if (process.env.NODE_ENV === 'development') {
+                console.log(`✅ Ad loaded: ${label} (${width}x${height})`, {
+                  src: iframeSrc,
+                  dimensions: `${iframeWidth}x${iframeHeight}`
+                });
+              }
+            }
             return;
           }
         }
@@ -300,10 +303,9 @@ export default function AdsterraBanner({
     }
   }, [isClient, adKey, width, height, label, loadDelay]);
 
-  // Show infinity loader continuously until ad loads
-  // Always show loader initially, hide only when ad is confirmed loaded
-  // Once ad is loaded, never show loader again
-  const showLoader = !adLoaded;
+  // Don't show loader - just show empty placeholder if ad doesn't load
+  // This prevents the infinity symbol from appearing when ads don't load
+  const showLoader = false; // Always hide loader - let ads show naturally
 
   // Always render the container - ensures space is reserved and loader is visible
   return (
@@ -323,55 +325,8 @@ export default function AdsterraBanner({
         data-ad-key={adKey}
         data-ad-label={label}
       >
-        {/* Show Infinity Loader continuously until ad loads */}
-        {/* Always render the container to avoid hydration mismatch */}
-        {showLoader && (
-          <div 
-            className="absolute inset-0 flex items-center justify-center pointer-events-none ad-loader-container"
-            style={{ 
-              backgroundColor: 'transparent',
-              borderRadius: '0.5rem',
-              minHeight: `${height}px`,
-              width: '100%',
-              zIndex: 10
-            }}
-            suppressHydrationWarning
-          >
-            {/* Use key to force re-render after mount, but render same structure initially */}
-            <div key={mounted ? 'infinity' : 'placeholder'} className="flex items-center justify-center">
-              {mounted ? (
-                <InfinityLoader 
-                  width={Math.min(width * 0.7, 180)} 
-                  height={Math.min(height * 0.7, 90)}
-                />
-              ) : (
-                <div className="flex flex-col items-center gap-3">
-                  <svg 
-                    aria-hidden="true" 
-                    role="status" 
-                    className="inline w-8 h-8 text-blue-400 animate-spin dark:text-blue-500" 
-                    viewBox="0 0 100 101" 
-                    fill="none" 
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path 
-                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" 
-                      fill="currentColor"
-                      opacity="0.3"
-                    />
-                    <path 
-                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" 
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <div className="animate-pulse text-blue-300 text-xs font-medium opacity-90">
-                    Loading ad...
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        {/* No loader - just show empty placeholder if ad doesn't load */}
+        {/* The transparent border will be visible when no ad is present */}
       </div>
     </div>
   );

@@ -488,11 +488,11 @@ const OptionsDashboard = () => {
           </div>
             </div>
 
-            {/* Ad Space - Below Range Forecast (Horizontal 728x90) */}
+            {/* Ad Space - Above Volatility Indicators (Horizontal 728x90) - Increased Size */}
             <SafeAdWrapper>
-              <div className="flex justify-center w-full">
-                <div className="w-full max-w-full sm:max-w-[728px]">
-                  <div className="ad-container-transparent p-2 sm:p-3 rounded-xl text-center">
+              <div className="flex justify-center w-full my-4">
+                <div className="w-full max-w-full sm:max-w-[800px]">
+                  <div className="ad-container-transparent p-3 sm:p-4 rounded-xl text-center" style={{ minHeight: '110px' }}>
                     <AdsterraBanner 
                       adKey={AD_KEYS.BANNER_728x90}
                       width={AD_SIZES.BANNER_728x90.width}
@@ -512,11 +512,11 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Advertisement before Prediction Models (Horizontal 2) - 468x60 */}
+            {/* Advertisement above Prediction Models (Horizontal 2) - 468x60 - Increased Size */}
             <SafeAdWrapper>
-              <div className="w-full flex justify-center">
-                <div className="w-full max-w-[468px]">
-                  <div className="ad-container-transparent p-2 sm:p-3 md:p-4 rounded-xl text-center">
+              <div className="w-full flex justify-center my-4">
+                <div className="w-full max-w-[550px]">
+                  <div className="ad-container-transparent p-3 sm:p-4 md:p-5 rounded-xl text-center" style={{ minHeight: '80px' }}>
                     <AdsterraBanner 
                       adKey={AD_KEYS.BANNER_468x60}
                       width={AD_SIZES.BANNER_468x60.width}
