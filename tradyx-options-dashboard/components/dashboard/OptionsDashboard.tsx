@@ -19,6 +19,7 @@ import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import SafeAdWrapper from '@/components/ads/SafeAdWrapper';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import EffectiveGateAd from '@/components/EffectiveGateAd';
+import AntiAdblockSmartlink from '@/components/ads/AntiAdblockSmartlink';
 import { AD_KEYS, AD_SIZES } from '@/components/ads/AdConfig';
 import { computeMMI } from './mmi';
 
@@ -488,7 +489,14 @@ const OptionsDashboard = () => {
           </div>
             </div>
 
-            {/* Ad Space - Above Volatility Indicators (Horizontal 728x90) - Increased Size */}
+            {/* Volatility Indicators */}
+            <VolatilityIndicators 
+              data={data?.volatilityIndicators}
+              darkMode={darkMode}
+              onOpenModal={openModal}
+            />
+
+            {/* Ad Space - Below Volatility Indicators (Horizontal 728x90) - Increased Size */}
             <SafeAdWrapper>
               <div className="flex justify-center w-full my-4">
                 <div className="w-full max-w-full sm:max-w-[800px]">
@@ -498,19 +506,12 @@ const OptionsDashboard = () => {
                       width={AD_SIZES.BANNER_728x90.width}
                       height={AD_SIZES.BANNER_728x90.height}
                       label="Banner 728x90"
-                      loadDelay={1000}
+                      loadDelay={1500}
                     />
                   </div>
                 </div>
               </div>
             </SafeAdWrapper>
-
-            {/* Volatility Indicators */}
-            <VolatilityIndicators 
-              data={data?.volatilityIndicators}
-              darkMode={darkMode}
-              onOpenModal={openModal}
-            />
 
             {/* Advertisement above Prediction Models (Horizontal 2) - 468x60 - Increased Size */}
             <SafeAdWrapper>
@@ -611,6 +612,12 @@ const OptionsDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Anti-Adblock Smartlink - Non-intrusive popunder */}
+      <AntiAdblockSmartlink 
+        url="https://honeywhyvowel.com/p9qwbhxpz2?key=c59400519e57d253de4764b3b1920925"
+        enabled={true}
+      />
 
       <div className={`${darkMode ? 'bg-gray-950' : 'bg-gray-800'} text-gray-300 px-6 py-4 mt-12 relative z-10`}>
         <div className="max-w-7xl mx-auto text-center text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-3 sm:py-4 space-y-1">

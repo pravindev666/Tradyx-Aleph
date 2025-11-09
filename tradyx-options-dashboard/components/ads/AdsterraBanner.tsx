@@ -82,59 +82,111 @@ export default function AdsterraBanner({
       }
       
       try {
+        // Check for iframe - ads are loaded in iframes
         const iframe = container.querySelector('iframe');
+        
+        // Also check for any script tags that might indicate ad loading
+        const scripts = container.querySelectorAll('script');
+        const hasAdScripts = scripts.length >= 2; // options script + invoke script
+        
         if (iframe) {
           const iframeSrc = iframe.src || (iframe as any).getAttribute('src') || '';
           const iframeHeight = iframe.offsetHeight || (iframe as any).clientHeight || 0;
           const iframeWidth = iframe.offsetWidth || (iframe as any).clientWidth || 0;
           
-          // More lenient check for ad detection:
-          // 1. Iframe has a valid src (not blank, not about:blank)
-          // 2. Iframe has any dimensions (reduced from 50px to 30px for smaller banners)
-          // 3. Iframe src contains ad network domain OR starts with http
-          const hasValidSrc = iframeSrc && 
-                            iframeSrc !== 'about:blank' && 
-                            !iframeSrc.includes('about:') &&
-                            (iframeSrc.includes('adsterra') || 
-                             iframeSrc.includes('highperformanceformat') ||
-                             iframeSrc.includes('effectivegate') ||
-                             iframeSrc.includes('adsterra.net') ||
-                             iframeSrc.startsWith('http'));
+          // Debug log for iframe detection
+          if (process.env.NODE_ENV === 'development' && !adLoadedRef.current) {
+            console.log(`🔍 Checking ad: ${label}`, {
+              iframeSrc: iframeSrc.substring(0, 100),
+              dimensions: `${iframeWidth}x${iframeHeight}`,
+              hasScripts: hasAdScripts
+            });
+          }
           
-          // Reduced minimum size for smaller banners (468x60, 320x50)
-          // This helps detect ads that might be loading in smaller containers
-          const minSize = Math.min(height, width) < 100 ? 30 : 50;
-          const hasSubstantialSize = iframeHeight >= minSize && iframeWidth >= minSize;
+          // VERY LENIENT check for ad detection:
+          // 1. Iframe exists with any src (even if blank initially)
+          // 2. Iframe has any dimensions (even very small)
+          // 3. OR iframe src contains ad network domain
+          const hasAnySrc = iframeSrc && iframeSrc !== '';
+          const hasAnySize = iframeHeight > 10 || iframeWidth > 10;
           
-          // Additional check: Make sure iframe is actually visible and has content
-          // Some iframes might have dimensions but no actual content
+          // Check if src contains ad network domains
+          const hasAdDomain = iframeSrc && (
+            iframeSrc.includes('adsterra') || 
+            iframeSrc.includes('highperformanceformat') ||
+            iframeSrc.includes('effectivegate') ||
+            iframeSrc.includes('adsterra.net') ||
+            iframeSrc.includes('adstera') ||
+            iframeSrc.startsWith('http') ||
+            iframeSrc.startsWith('https')
+          );
+          
+          // Check if iframe is visible (not hidden)
           const isVisible = iframe.style.display !== 'none' && 
-                           iframe.style.visibility !== 'hidden' &&
-                           iframe.offsetHeight > 0 &&
-                           iframe.offsetWidth > 0;
+                           iframe.style.visibility !== 'hidden';
           
-          // More lenient: Check if iframe exists and has any src (even if small)
-          // This helps catch ads that are loading but haven't reached full size yet
-          if ((hasValidSrc && hasSubstantialSize && isVisible) || 
-              (iframeSrc && iframeSrc !== 'about:blank' && iframeHeight > 20 && iframeWidth > 20)) {
-            // Mark as loaded immediately (more lenient for smaller banners)
-            if (!adLoadedRef.current) {
-              adLoadedRef.current = true;
-              setAdLoaded(true);
-              setLoading(false);
-              if (checkIntervalRef.current) {
-                clearInterval(checkIntervalRef.current);
-                checkIntervalRef.current = null;
-              }
-              // Debug log (only in development)
-              if (process.env.NODE_ENV === 'development') {
-                console.log(`✅ Ad loaded: ${label} (${width}x${height})`, {
-                  src: iframeSrc,
-                  dimensions: `${iframeWidth}x${iframeHeight}`
-                });
+          // VERY LENIENT: If iframe exists with any size and scripts are loaded, consider it loading
+          // For 728x90 banner, be even more lenient - if iframe exists, it's likely an ad
+          if (iframe && hasAdScripts) {
+            // For large banners (728x90), if iframe exists with any src, consider it loaded
+            if (width >= 700) {
+              if (hasAnySrc && (hasAnySize || hasAdDomain)) {
+                if (!adLoadedRef.current) {
+                  adLoadedRef.current = true;
+                  setAdLoaded(true);
+                  setLoading(false);
+                  if (checkIntervalRef.current) {
+                    clearInterval(checkIntervalRef.current);
+                    checkIntervalRef.current = null;
+                  }
+                  if (process.env.NODE_ENV === 'development') {
+                    console.log(`✅ Ad detected (728x90): ${label}`, {
+                      src: iframeSrc.substring(0, 100),
+                      dimensions: `${iframeWidth}x${iframeHeight}`
+                    });
+                  }
+                }
+                return;
               }
             }
-            return;
+            
+            // For other sizes, use more lenient checks
+            if (hasAdDomain || (hasAnySrc && hasAnySize && isVisible)) {
+              if (!adLoadedRef.current) {
+                adLoadedRef.current = true;
+                setAdLoaded(true);
+                setLoading(false);
+                if (checkIntervalRef.current) {
+                  clearInterval(checkIntervalRef.current);
+                  checkIntervalRef.current = null;
+                }
+                if (process.env.NODE_ENV === 'development') {
+                  console.log(`✅ Ad detected: ${label} (${width}x${height})`, {
+                    src: iframeSrc.substring(0, 100),
+                    dimensions: `${iframeWidth}x${iframeHeight}`
+                  });
+                }
+              }
+              return;
+            }
+          }
+          
+          // Additional check: If scripts are loaded but iframe is very small or blank,
+          // it might still be loading - wait a bit more
+          if (hasAdScripts && iframe && !adLoadedRef.current) {
+            // Check if iframe src is being set (even if blank initially)
+            // Some ads set src dynamically
+            const iframeSrcAttribute = (iframe as any).getAttribute('src');
+            if (iframeSrcAttribute !== null || iframeSrc) {
+              // Iframe exists and scripts are loaded - ad is likely loading
+              // Don't mark as loaded yet, but don't hide container either
+            }
+          }
+        } else if (hasAdScripts) {
+          // Scripts are loaded but no iframe yet - ad might be loading
+          // Keep checking but don't mark as loaded
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`⏳ Ad scripts loaded, waiting for iframe: ${label}`);
           }
         }
         
@@ -199,16 +251,24 @@ export default function AdsterraBanner({
           }
 
           // Create options script
+          // Use window.atOptions to ensure global scope
           const optionsScript = document.createElement('script');
           optionsScript.type = 'text/javascript';
           optionsScript.innerHTML = `
-            atOptions = {
-              'key': '${adKey}',
-              'format': 'iframe',
-              'height': ${height},
-              'width': ${width},
-              'params': {}
-            };
+            (function() {
+              if (typeof window !== 'undefined') {
+                window.atOptions = window.atOptions || {};
+                window.atOptions['${adKey}'] = {
+                  'key': '${adKey}',
+                  'format': 'iframe',
+                  'height': ${height},
+                  'width': ${width},
+                  'params': {}
+                };
+                // Also set global atOptions for backward compatibility
+                atOptions = window.atOptions['${adKey}'];
+              }
+            })();
           `;
           
           // Create invoke script
@@ -216,39 +276,52 @@ export default function AdsterraBanner({
           invokeScript.type = 'text/javascript';
           invokeScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
           invokeScript.async = true;
+          invokeScript.crossOrigin = 'anonymous';
+          
+          // Debug: Log script URL
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`📡 Loading ad script for ${label}:`, `https://www.highperformanceformat.com/${adKey}/invoke.js`);
+          }
 
           // Check for iframe after script loads
           invokeScript.onload = () => {
-            // Wait at least 2 seconds after script loads before checking
-            // Ads need time to render in iframes
+            // Debug log for script load
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`✅ Script loaded for ${label} (${adKey})`);
+            }
+            // Start checking immediately after script loads
+            // Then check every 500ms for faster detection
             setTimeout(() => {
               checkForAd();
               if (!checkIntervalRef.current) {
-                // Check every 1 second (slower than before to reduce false positives)
-                checkIntervalRef.current = setInterval(checkForAd, 1000);
+                checkIntervalRef.current = setInterval(checkForAd, 500);
               }
-            }, 2000);
+            }, 1000);
           };
 
           invokeScript.onerror = () => {
+            // Debug log for script error
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`⚠️ Script load error for ${label} (${adKey})`);
+            }
             // Don't set error state - keep checking for ads
             // Sometimes ads load even after script error
             setTimeout(() => {
               checkForAd();
               if (!checkIntervalRef.current) {
-                checkIntervalRef.current = setInterval(checkForAd, 1000);
+                checkIntervalRef.current = setInterval(checkForAd, 500);
               }
-            }, 2000);
+            }, 1000);
           };
           
-          // Start checking after a delay (ads need time to load)
-          // Don't check too early to avoid false positives
+          // Start checking after script injection
+          // Check more frequently for better ad detection
           setTimeout(() => {
             if (!adLoadedRef.current && !checkIntervalRef.current) {
               checkForAd();
-              checkIntervalRef.current = setInterval(checkForAd, 1000);
+              checkIntervalRef.current = setInterval(checkForAd, 500);
             }
-          }, 3000);
+          }, 2000);
 
           // Append scripts to container
           container.appendChild(optionsScript);
@@ -263,13 +336,12 @@ export default function AdsterraBanner({
           }
               // Don't set error to true - keep trying to load
               // Start checking anyway in case ad loads from elsewhere
-              // But wait longer to avoid false positives
               setTimeout(() => {
                 if (!checkIntervalRef.current && containerRef.current && !adLoadedRef.current) {
                   checkForAd();
-                  checkIntervalRef.current = setInterval(checkForAd, 1000);
+                  checkIntervalRef.current = setInterval(checkForAd, 500);
                 }
-              }, 3000);
+              }, 2000);
         }
       }, delay);
     };
@@ -307,7 +379,7 @@ export default function AdsterraBanner({
   // This prevents the infinity symbol from appearing when ads don't load
   const showLoader = false; // Always hide loader - let ads show naturally
 
-  // Always render the container - ensures space is reserved and loader is visible
+  // Always render the container - ensures space is reserved
   return (
     <div className="w-full" style={{ minHeight: `${height}px`, position: 'relative' }}>
       <div 
@@ -320,13 +392,19 @@ export default function AdsterraBanner({
           margin: '0 auto',
           position: 'relative',
           backgroundColor: 'transparent',
-          background: 'transparent'
+          background: 'transparent',
+          // Ensure container is visible and has proper dimensions
+          display: 'block',
+          visibility: 'visible'
         }}
         data-ad-key={adKey}
         data-ad-label={label}
+        data-ad-width={width}
+        data-ad-height={height}
       >
         {/* No loader - just show empty placeholder if ad doesn't load */}
         {/* The transparent border will be visible when no ad is present */}
+        {/* Ad scripts will be injected here and should create iframe */}
       </div>
     </div>
   );
