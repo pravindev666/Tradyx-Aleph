@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import InfinityLoader from './InfinityLoader';
 
 interface AdsterraBannerProps {
   adKey: string;
@@ -27,11 +28,18 @@ export default function AdsterraBanner({
   const loadAttemptedRef = useRef(false);
   const scriptLoadedRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const adLoadedRef = useRef(false);
 
   // Only render on client side after hydration
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Sync ref with state
+  useEffect(() => {
+    adLoadedRef.current = adLoaded;
+  }, [adLoaded]);
 
   useEffect(() => {
     // Only run on client side after hydration
@@ -45,6 +53,64 @@ export default function AdsterraBanner({
     if (loadAttemptedRef.current || scriptLoadedRef.current) {
       return;
     }
+
+    // Continuous check for ad loading - keep checking until ad loads
+    // Defined outside initAd so it can be referenced in catch block
+    const checkForAd = () => {
+      const container = containerRef.current;
+      if (!container || adLoadedRef.current) {
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
+        return;
+      }
+      
+      try {
+        const iframe = container.querySelector('iframe');
+        // Check if iframe exists and has a valid src (not blank)
+        if (iframe && iframe.src && iframe.src !== 'about:blank' && !iframe.src.includes('about:')) {
+          // Also check if iframe has content (height > 0 means ad loaded)
+          if (iframe.offsetHeight > 0) {
+            // Ad loaded! Hide loader and show ad
+            adLoadedRef.current = true;
+            setAdLoaded(true);
+            setLoading(false);
+            if (checkIntervalRef.current) {
+              clearInterval(checkIntervalRef.current);
+              checkIntervalRef.current = null;
+            }
+            return;
+          }
+        }
+        
+        // Also check for any content in the container (ads might render differently)
+        if (container.children.length > 2) {
+          // Options script + invoke script + ad content
+          const hasAdContent = Array.from(container.children).some((child) => {
+            if (child.tagName === 'IFRAME') {
+              const iframeChild = child as HTMLIFrameElement;
+              return iframeChild.offsetHeight > 0 && 
+                     iframeChild.src && 
+                     iframeChild.src !== 'about:blank';
+            }
+            return (child as HTMLElement).innerHTML.trim().length > 0;
+          });
+          if (hasAdContent) {
+            adLoadedRef.current = true;
+            setAdLoaded(true);
+            setLoading(false);
+            if (checkIntervalRef.current) {
+              clearInterval(checkIntervalRef.current);
+              checkIntervalRef.current = null;
+            }
+            return;
+          }
+        }
+      } catch (e) {
+        // Continue checking on error (cross-origin iframe access errors are normal)
+      }
+    };
 
     // Wait for DOM to be ready
     const initAd = () => {
@@ -106,27 +172,29 @@ export default function AdsterraBanner({
 
           // Check for iframe after script loads
           invokeScript.onload = () => {
-            // Wait a bit for iframe to be created
-            setTimeout(() => {
-              if (container) {
-                try {
-                  const iframe = container.querySelector('iframe');
-                  if (iframe && iframe.src && iframe.src !== 'about:blank' && !iframe.src.includes('about:')) {
-                    setAdLoaded(true);
-                  }
-                } catch (e) {
-                  // Ignore query errors
-                }
-                setLoading(false);
-              }
-            }, 2000);
+            // Start checking immediately, then every 500ms
+            setTimeout(checkForAd, 500);
+            if (!checkIntervalRef.current) {
+              checkIntervalRef.current = setInterval(checkForAd, 500);
+            }
           };
 
           invokeScript.onerror = () => {
-            setLoading(false);
-            setAdLoaded(false);
-            setError(true);
+            // Don't set error state - keep checking for ads
+            // Sometimes ads load even after script error
+            setTimeout(checkForAd, 500);
+            if (!checkIntervalRef.current) {
+              checkIntervalRef.current = setInterval(checkForAd, 500);
+            }
           };
+          
+          // Also start checking immediately (some ads load quickly)
+          setTimeout(() => {
+            checkForAd();
+            if (!checkIntervalRef.current) {
+              checkIntervalRef.current = setInterval(checkForAd, 500);
+            }
+          }, 1000);
 
           // Append scripts to container
           container.appendChild(optionsScript);
@@ -135,12 +203,17 @@ export default function AdsterraBanner({
 
         } catch (err) {
           // Silently fail - don't log in production
+          // Keep loading state true so loader continues showing
           if (process.env.NODE_ENV === 'development') {
             console.error(`Ad initialization error for ${label}:`, err);
           }
-          setLoading(false);
-          setAdLoaded(false);
-          setError(true);
+          // Don't set error to true - keep trying to load
+          // Start checking anyway in case ad loads from elsewhere
+          setTimeout(() => {
+            if (!checkIntervalRef.current && containerRef.current) {
+              checkIntervalRef.current = setInterval(checkForAd, 500);
+            }
+          }, 1000);
         }
       }, delay);
     };
@@ -153,6 +226,10 @@ export default function AdsterraBanner({
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
       };
     } else {
       // DOM already ready, initialize after a short delay
@@ -162,14 +239,22 @@ export default function AdsterraBanner({
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
       };
     }
   }, [isClient, adKey, width, height, label, loadDelay]);
 
-  // Don't render during SSR or if there's an error (silent fail)
-  if (!isClient || (error && !adLoaded)) {
+  // Don't render during SSR
+  if (!isClient) {
     return null;
   }
+
+  // Show infinity loader continuously until ad loads
+  // Keep showing even if there are errors - ads might load later
+  const showLoader = !adLoaded;
 
   return (
     <div className="w-full">
@@ -181,19 +266,26 @@ export default function AdsterraBanner({
           width: '100%',
           maxWidth: `${width}px`,
           margin: '0 auto',
-          position: 'relative'
+          position: 'relative',
+          backgroundColor: 'transparent'
         }}
         data-ad-key={adKey}
         data-ad-label={label}
       >
-        {loading && !adLoaded && !error && (
+        {/* Show Infinity Loader continuously until ad loads */}
+        {showLoader && (
           <div 
-            className="flex items-center justify-center h-full" 
-            style={{ minHeight: `${height}px` }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+            style={{ 
+              backgroundColor: 'rgba(15, 23, 42, 0.8)',
+              backdropFilter: 'blur(4px)',
+              borderRadius: '0.5rem'
+            }}
           >
-            <div className="text-center opacity-50">
-              <div className="animate-pulse text-gray-400 text-xs">{label}</div>
-            </div>
+            <InfinityLoader 
+              width={Math.min(width * 0.7, 180)} 
+              height={Math.min(height * 0.7, 90)}
+            />
           </div>
         )}
       </div>

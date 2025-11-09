@@ -50,6 +50,41 @@ html,body{
     0 0 45px rgba(59, 130, 246, 0.2);
 }
 
+/* Infinity Loader Animation - Production Compatible */
+@keyframes electricFlow {
+  0% {
+    stroke-dashoffset: 80;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
+}
+
+/* Apply animation to infinity loader paths */
+.infinity-path-left,
+.infinity-path-right,
+.infinity-glow-left,
+.infinity-glow-right {
+  animation: electricFlow 2s linear infinite;
+}
+
+.infinity-path-right {
+  animation-delay: 1s;
+}
+
+.infinity-glow-left {
+  animation-delay: 0.5s;
+}
+
+.infinity-glow-right {
+  animation-delay: 1.5s;
+}
+
 /* Transparent ad container styles */
 .ad-container-transparent {
   background: linear-gradient(135deg, 
