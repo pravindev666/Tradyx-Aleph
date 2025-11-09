@@ -24,6 +24,8 @@ function queueAd(adKey: string, width: number, height: number, containerId: stri
   }
   
   window.adsterraQueue.push({ adKey, width, height, containerId });
+  
+  // Process immediately for fastest loading
   processQueue();
 }
 
@@ -37,6 +39,7 @@ function processQueue() {
   
   if (!ad) {
     window.adsterraProcessing = false;
+    processQueue();
     return;
   }
   
@@ -50,8 +53,8 @@ function processQueue() {
   }
   
   try {
-    // CRITICAL: Set atOptions on window object FIRST (before any scripts run)
-    (window as any).atOptions = {
+    // Set atOptions for this ad
+    const adOptions = {
       'key': adKey,
       'format': 'iframe',
       'height': height,
@@ -59,43 +62,28 @@ function processQueue() {
       'params': {}
     };
     
-    // Create and execute config script using a method that guarantees execution
-    const configScript = document.createElement('script');
-    configScript.type = 'text/javascript';
-    configScript.textContent = `window.atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
+    (window as any).atOptions = adOptions;
     
-    // Append to document.head first to ensure it executes
-    document.head.appendChild(configScript);
+    // Create invoke script with immediate loading
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
+    script.async = true;
+    script.defer = false;
     
-    // Wait a moment for config to be set, then create invoke script
+    // Handle load errors gracefully
+    script.onerror = () => {
+      console.warn(`Ad ${adKey} failed to load`);
+    };
+    
+    // Append script immediately to container for fast loading
+    container.appendChild(script);
+    
+    // Process next ad with minimal delay (10ms for faster loading vs 700ms before)
     setTimeout(() => {
-      // Double-check atOptions is set
-      if (!(window as any).atOptions || (window as any).atOptions.key !== adKey) {
-        // Re-set if missing
-        (window as any).atOptions = {
-          'key': adKey,
-          'format': 'iframe',
-          'height': height,
-          'width': width,
-          'params': {}
-        };
-      }
-      
-      // Create invoke script
-      const invokeScript = document.createElement('script');
-      invokeScript.type = 'text/javascript';
-      invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
-      invokeScript.async = true;
-      
-      // Append to container (Adsterra needs it here to know where to render)
-      container.appendChild(invokeScript);
-      
-      // Process next ad after delay
-      setTimeout(() => {
-        window.adsterraProcessing = false;
-        processQueue();
-      }, 600);
-    }, 100);
+      window.adsterraProcessing = false;
+      processQueue();
+    }, 10);
     
   } catch (e) {
     console.error(`Error loading ad ${adKey}:`, e);
@@ -121,17 +109,17 @@ export default function HighPerformanceAd({
   useEffect(() => {
     if (!mounted || loadedRef.current || !containerRef.current) return;
     
-    const containerId = `hpf-ad-${adKey}`;
+    const containerId = `hpf-ad-${adKey}-${Math.random().toString(36).substr(2, 9)}`;
     containerRef.current.id = containerId;
     
-    // Check if already loaded
-    const existingScript = document.querySelector(`script[src*="${adKey}"]`);
+    // Check if already loaded in this container
+    const existingScript = containerRef.current.querySelector(`script[src*="${adKey}"]`);
     if (existingScript) {
       loadedRef.current = true;
       return;
     }
     
-    // Queue this ad
+    // Queue this ad immediately for faster loading
     queueAd(adKey, width, height, containerId);
     loadedRef.current = true;
     

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
 import Link from 'next/link';
 
 interface DisclaimerModalProps {
@@ -45,20 +44,8 @@ export default function DisclaimerModal({ darkMode, onClose }: DisclaimerModalPr
         }}
       >
         {/* Header */}
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-gray-50'} px-6 py-4 border-b ${borderColor} flex items-center justify-between`}>
+        <div className={`${darkMode ? 'bg-gray-800' : 'bg-gray-50'} px-6 py-4 border-b ${borderColor} flex items-center justify-center`}>
           <h2 className={`text-xl font-bold ${textPrimary}`}>Disclaimer</h2>
-          <button
-            onClick={onClose}
-            className={`
-              p-2 rounded-full 
-              ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'} 
-              transition-colors
-              ${textSecondary}
-            `}
-            aria-label="Close disclaimer"
-          >
-            <X size={20} />
-          </button>
         </div>
 
         {/* Content */}
@@ -129,7 +116,7 @@ export default function DisclaimerModal({ darkMode, onClose }: DisclaimerModalPr
               hover:scale-105
             `}
           >
-            I Understand and Accept
+            I Understand and Agree
           </button>
         </div>
       </div>

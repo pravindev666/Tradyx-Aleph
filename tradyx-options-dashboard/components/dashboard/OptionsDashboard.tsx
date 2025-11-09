@@ -31,21 +31,17 @@ const OptionsDashboard = () => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyx-theme') : null;
     if (saved) setDarkMode(saved === 'dark');
     
-    // Check if disclaimer has been accepted
-    if (typeof window !== 'undefined') {
-      const disclaimerAccepted = localStorage.getItem('tradyx-disclaimer-accepted');
-      if (!disclaimerAccepted) {
-        setShowDisclaimer(true);
-      }
-    }
+    // Always show disclaimer on page load
+    setShowDisclaimer(true);
   }, []);
   useEffect(() => {
     if (typeof window !== 'undefined') localStorage.setItem('tradyx-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   const handleDisclaimerClose = () => {
+    // Save acceptance timestamp for analytics, but always show on next visit
     if (typeof window !== 'undefined') {
-      localStorage.setItem('tradyx-disclaimer-accepted', 'true');
+      localStorage.setItem('tradyx-disclaimer-accepted', new Date().toISOString());
     }
     setShowDisclaimer(false);
   };
