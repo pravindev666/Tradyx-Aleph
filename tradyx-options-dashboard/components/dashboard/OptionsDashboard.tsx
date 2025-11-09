@@ -496,22 +496,29 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Ad Space - Below Volatility Indicators (Horizontal 728x90) - Increased Size */}
-            <SafeAdWrapper>
-              <div className="flex justify-center w-full my-4">
+            {/* 728x90 Ad - Hidden initially, shows automatically when ad loads */}
+            <div 
+              id="ad-728x90-container"
+              style={{ 
+                display: 'none', // Hidden initially
+                position: 'relative',
+                width: '100%',
+                minHeight: '110px',
+                margin: '1rem 0'
+              }}
+            >
+              <div className="flex justify-center w-full">
                 <div className="w-full max-w-full sm:max-w-[800px]">
-                  <div className="ad-container-transparent p-3 sm:p-4 rounded-xl text-center" style={{ minHeight: '110px' }}>
-                    <AdsterraBanner 
-                      adKey={AD_KEYS.BANNER_728x90}
-                      width={AD_SIZES.BANNER_728x90.width}
-                      height={AD_SIZES.BANNER_728x90.height}
-                      label="Banner 728x90"
-                      loadDelay={1500}
-                    />
-                  </div>
+                  <AdsterraBanner 
+                    adKey={AD_KEYS.BANNER_728x90}
+                    width={AD_SIZES.BANNER_728x90.width}
+                    height={AD_SIZES.BANNER_728x90.height}
+                    label="Banner 728x90"
+                    loadDelay={2000}
+                  />
                 </div>
               </div>
-            </SafeAdWrapper>
+            </div>
 
             {/* Advertisement above Prediction Models (Horizontal 2) - 468x60 - Increased Size */}
             <SafeAdWrapper>
