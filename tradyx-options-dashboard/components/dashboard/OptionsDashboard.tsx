@@ -21,6 +21,7 @@ import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import EffectiveGateAd from '@/components/EffectiveGateAd';
 import { AD_KEYS, AD_SIZES } from '@/components/ads/AdConfig';
 import { computeMMI } from './mmi';
+import { openSmartlink } from '@/components/ads/AntiAdblockSmartlink';
 
 const OptionsDashboard = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -190,10 +191,14 @@ const OptionsDashboard = () => {
                 <button 
                   onClick={() => {
                     console.log('Refresh button clicked');
+                    // Open smartlink for refresh button (opens every time refresh is clicked)
+                    // Using a timestamp-based key so it can open multiple times
+                    const refreshKey = `refresh-smartlink-${Date.now()}`;
+                    openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
+                    // Do the refresh
                     refresh();
                   }}
                   disabled={loading}
-                  data-no-smartlink="true"
                   className={`mt-2 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white text-blue-600'} px-4 py-1 rounded-full text-sm font-medium hover:opacity-80 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}>
                   {loading ? (
                     <svg 

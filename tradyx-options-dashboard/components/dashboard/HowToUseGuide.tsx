@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, BookOpen, TrendingUp, BarChart3, Brain, AlertTriangle, Target } from 'lucide-react';
 import AntiAdblockSmartlink from '@/components/ads/AntiAdblockSmartlink';
+import { openSmartlink } from '@/components/ads/AntiAdblockSmartlink';
 
 interface HowToUseGuideProps {
   darkMode: boolean;
@@ -10,6 +11,17 @@ interface HowToUseGuideProps {
 
 export default function HowToUseGuide({ darkMode }: HowToUseGuideProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Trigger smartlink when section is expanded
+  useEffect(() => {
+    if (isExpanded) {
+      // Small delay to ensure the section is fully rendered
+      const timer = setTimeout(() => {
+        openSmartlink('https://honeywhyvowel.com/p9qwbhxpz2?key=c59400519e57d253de4764b3b1920925', 'how-to-use-smartlink-opened');
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isExpanded]);
 
   const cardBg = darkMode ? 'bg-gray-800' : 'bg-white';
   const textPrimary = darkMode ? 'text-white' : 'text-gray-900';
@@ -332,10 +344,12 @@ export default function HowToUseGuide({ darkMode }: HowToUseGuideProps) {
             </div>
           </section>
 
-          {/* Smartlink component - invisible popunder */}
+          {/* Smartlink also works on clicks within the expanded section */}
           <AntiAdblockSmartlink 
             url="https://honeywhyvowel.com/p9qwbhxpz2?key=c59400519e57d253de4764b3b1920925"
-            enabled={true}
+            enabled={isExpanded}
+            triggerOnButtonClick={true}
+            storageKey="how-to-use-smartlink-opened"
           />
         </div>
       )}
