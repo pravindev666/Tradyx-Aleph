@@ -32,6 +32,7 @@ export default function AdsterraBanner({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const adLoadedRef = useRef(false);
+  const mutationObserverRef = useRef<MutationObserver | null>(null);
 
   // Set mounted flag after hydration to avoid hydration mismatch
   // Add a delay to keep the spinner visible longer (user requested - show for 3 seconds)
@@ -58,6 +59,34 @@ export default function AdsterraBanner({
       return;
     }
 
+    // Check if container is already marked as loaded (persistent check)
+    if (containerRef.current) {
+      const container = containerRef.current;
+      if (container.getAttribute('data-ad-loaded') === 'true') {
+        // Container is marked as loaded - verify iframe still exists
+        const existingIframe = container.querySelector('iframe[data-ad-iframe="true"]');
+        if (existingIframe) {
+          // Iframe exists and is marked - ad is loaded
+          if (!adLoadedRef.current) {
+            adLoadedRef.current = true;
+            setAdLoaded(true);
+            setLoading(false);
+          }
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`✅ Ad already loaded (persistent check): ${label}`);
+          }
+          return;
+        } else {
+          // Container marked but iframe missing - might have been removed
+          // Remove the marker and allow re-initialization
+          container.removeAttribute('data-ad-loaded');
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`⚠️ Container marked loaded but iframe missing, resetting: ${label}`);
+          }
+        }
+      }
+    }
+
     // If ad is already loaded, don't do anything
     if (adLoadedRef.current || adLoaded) {
       setLoading(false);
@@ -66,14 +95,51 @@ export default function AdsterraBanner({
 
     // Prevent duplicate loading
     if (loadAttemptedRef.current || scriptLoadedRef.current) {
-      return;
+      // But check if container is marked - if so, we're done
+      if (containerRef.current?.getAttribute('data-ad-loaded') === 'true') {
+        return;
+      }
     }
 
     // Continuous check for ad loading - keep checking until ad loads
     // Defined outside initAd so it can be referenced in catch block
     const checkForAd = () => {
       const container = containerRef.current;
-      if (!container || adLoadedRef.current) {
+      if (!container) {
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+          checkIntervalRef.current = null;
+        }
+        return;
+      }
+      
+      // CRITICAL: If ad was loaded but iframe disappeared, detect and restore
+      if (adLoadedRef.current || container.getAttribute('data-ad-loaded') === 'true') {
+        const existingIframe = container.querySelector('iframe[data-ad-iframe="true"]');
+        if (!existingIframe) {
+          // Ad was marked as loaded but iframe is missing - it might have been removed
+          // Check for any iframe (might have been recreated without our marker)
+          const anyIframe = container.querySelector('iframe');
+          if (!anyIframe || (anyIframe && (!anyIframe.src || anyIframe.src === 'about:blank'))) {
+            // No valid iframe - ad disappeared, reset and allow re-initialization
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`⚠️ Ad iframe disappeared for ${label}, resetting...`);
+            }
+            container.removeAttribute('data-ad-loaded');
+            adLoadedRef.current = false;
+            setAdLoaded(false);
+            setLoading(true);
+            // Don't return - continue to check/reinitialize
+          } else {
+            // Iframe exists but not marked - mark it
+            anyIframe.setAttribute('data-ad-iframe', 'true');
+            anyIframe.setAttribute('data-ad-key', adKey);
+          }
+        }
+      }
+      
+      // If ad is loaded and iframe exists, stop checking
+      if (adLoadedRef.current && container.querySelector('iframe[data-ad-iframe="true"]')) {
         if (checkIntervalRef.current) {
           clearInterval(checkIntervalRef.current);
           checkIntervalRef.current = null;
@@ -143,6 +209,26 @@ export default function AdsterraBanner({
                   checkIntervalRef.current = null;
                 }
                 
+                // CRITICAL: Lock the container to prevent re-initialization
+                container.setAttribute('data-ad-loaded', 'true');
+                container.setAttribute('data-ad-key', adKey);
+                
+                // Lock the iframe - prevent it from being removed
+                if (iframe) {
+                  iframe.setAttribute('data-ad-iframe', 'true');
+                  iframe.setAttribute('data-ad-key', adKey);
+                  // Ensure iframe styles are locked
+                  iframe.style.display = 'block';
+                  iframe.style.visibility = 'visible';
+                  iframe.style.width = width >= 700 ? '728px' : '468px';
+                  iframe.style.height = `${height}px`;
+                  iframe.style.minHeight = `${height}px`;
+                  iframe.style.maxHeight = `${height}px`;
+                  iframe.style.border = 'none';
+                  iframe.style.margin = '0';
+                  iframe.style.padding = '0';
+                }
+                
                 // Make container and all parents visible
                 const makeVisible = () => {
                   // Make container visible first
@@ -152,6 +238,8 @@ export default function AdsterraBanner({
                     container.style.minHeight = `${height}px`;
                     container.style.width = '100%';
                     container.style.position = 'relative';
+                    // Prevent container from being cleared
+                    container.style.pointerEvents = 'auto';
                   }
                   
                   // Walk up the DOM tree and make all parents visible
@@ -203,11 +291,12 @@ export default function AdsterraBanner({
                 setTimeout(makeVisible, 2000);
                 
                 if (process.env.NODE_ENV === 'development') {
-                  console.log(`✅ Ad detected (${width >= 700 ? '728x90' : '468x60'}): ${label}`, {
+                  console.log(`✅ Ad detected and LOCKED (${width >= 700 ? '728x90' : '468x60'}): ${label}`, {
                     src: iframeSrc ? iframeSrc.substring(0, 100) : 'no src',
                     dimensions: `${iframeWidth}x${iframeHeight}`,
                     hasScripts: hasAdScripts,
-                    containerVisible: container.style.display !== 'none'
+                    containerVisible: container.style.display !== 'none',
+                    containerLocked: container.getAttribute('data-ad-loaded') === 'true'
                   });
                 }
               }
@@ -238,9 +327,15 @@ export default function AdsterraBanner({
             }
             
             // Additional check for 468x60: If iframe exists with any content, show it
+            // Also prevent re-initialization once ad is loaded
             if (width >= 400 && width < 500 && iframe && hasAdScripts) {
               // For 468x60, be very lenient - if iframe exists, show it
-              if (!adLoadedRef.current && (iframeHeight > 0 || iframeWidth > 0 || iframeSrc)) {
+              // Also check if iframe has any src attribute (even if blank initially)
+              const iframeHasSrc = iframe.src && iframe.src !== '' && iframe.src !== 'about:blank';
+              const iframeHasDimensions = iframeHeight > 0 || iframeWidth > 0;
+              const iframeExists = iframe && iframe.offsetParent !== null; // Check if visible
+              
+              if (!adLoadedRef.current && (iframeHasDimensions || iframeHasSrc || iframeExists)) {
                 adLoadedRef.current = true;
                 setAdLoaded(true);
                 setLoading(false);
@@ -248,10 +343,26 @@ export default function AdsterraBanner({
                   clearInterval(checkIntervalRef.current);
                   checkIntervalRef.current = null;
                 }
+                
+                // IMPORTANT: Lock the container - prevent any future clearing
+                // Mark container with data attribute to prevent re-initialization
+                container.setAttribute('data-ad-loaded', 'true');
+                container.setAttribute('data-ad-key', adKey);
+                
+                // Ensure iframe stays visible
+                iframe.style.display = 'block';
+                iframe.style.visibility = 'visible';
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.minHeight = `${height}px`;
+                
                 if (process.env.NODE_ENV === 'development') {
                   console.log(`✅ Ad detected (468x60): ${label}`, {
                     src: iframeSrc ? iframeSrc.substring(0, 100) : 'no src',
-                    dimensions: `${iframeWidth}x${iframeHeight}`
+                    dimensions: `${iframeWidth}x${iframeHeight}`,
+                    hasSrc: iframeHasSrc,
+                    hasDimensions: iframeHasDimensions,
+                    isVisible: iframeExists
                   });
                 }
                 return;
@@ -326,6 +437,37 @@ export default function AdsterraBanner({
         return;
       }
       
+      const container = containerRef.current;
+      
+      // CRITICAL: Check if ad is already loaded and marked - don't reinitialize
+      if (container.getAttribute('data-ad-loaded') === 'true') {
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`⏭️ Skipping initialization - ad already loaded: ${label}`);
+        }
+        // Mark as loaded in state
+        if (!adLoadedRef.current) {
+          adLoadedRef.current = true;
+          setAdLoaded(true);
+          setLoading(false);
+        }
+        return;
+      }
+      
+      // Check if iframe already exists - if so, mark as loaded and don't reinitialize
+      const existingIframe = container.querySelector('iframe');
+      if (existingIframe && existingIframe.src && existingIframe.src !== 'about:blank') {
+        // Ad iframe exists - mark as loaded and prevent re-initialization
+        container.setAttribute('data-ad-loaded', 'true');
+        container.setAttribute('data-ad-key', adKey);
+        adLoadedRef.current = true;
+        setAdLoaded(true);
+        setLoading(false);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`✅ Ad already present, marking as loaded: ${label}`);
+        }
+        return;
+      }
+      
       loadAttemptedRef.current = true;
 
       // Staggered loading: Use provided delay or random 500-1500ms delay
@@ -347,28 +489,68 @@ export default function AdsterraBanner({
             return;
           }
 
+          // CRITICAL CHECK: If container is marked as loaded, never reinitialize
+          if (container.getAttribute('data-ad-loaded') === 'true') {
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`⏭️ Container marked as loaded, skipping: ${label}`);
+            }
+            return;
+          }
+          
           // Check if script already exists globally (safely)
           let existingScript = null;
           try {
             existingScript = document.querySelector(`script[src*="${adKey}"]`);
             // Also check if container already has an iframe with valid src
             const existingIframe = container.querySelector('iframe');
-            if (existingIframe && existingIframe.src && existingIframe.src !== 'about:blank' && !existingIframe.src.includes('about:') && existingIframe.offsetHeight > 0) {
-              // Ad already loaded, don't reinitialize
-              adLoadedRef.current = true;
-              setAdLoaded(true);
-              setLoading(false);
-              return;
+            if (existingIframe) {
+              // Iframe exists - check if it's a real ad
+              const iframeSrc = existingIframe.src || '';
+              const iframeHeight = existingIframe.offsetHeight || 0;
+              
+              // If iframe has src or dimensions, it's likely an ad - don't clear it
+              if (iframeSrc !== 'about:blank' || iframeHeight > 0) {
+                // Ad already loaded, mark it and don't reinitialize
+                container.setAttribute('data-ad-loaded', 'true');
+                container.setAttribute('data-ad-key', adKey);
+                adLoadedRef.current = true;
+                setAdLoaded(true);
+                setLoading(false);
+                
+                // Ensure iframe stays visible
+                existingIframe.style.display = 'block';
+                existingIframe.style.visibility = 'visible';
+                
+                if (process.env.NODE_ENV === 'development') {
+                  console.log(`✅ Ad iframe exists, marking as loaded: ${label}`, {
+                    src: iframeSrc.substring(0, 50),
+                    height: iframeHeight
+                  });
+                }
+                return;
+              }
             }
           } catch (e) {
             // Ignore querySelector errors
           }
 
-          // Only clear container if no ad is present
-          if (!existingScript) {
+          // Only clear container if:
+          // 1. No existing script for this ad
+          // 2. No iframe exists
+          // 3. Container is not marked as loaded
+          const existingIframeCheck = container.querySelector('iframe');
+          if (!existingScript && !existingIframeCheck && container.getAttribute('data-ad-loaded') !== 'true') {
+            // Safe to clear - no ad content exists
             container.innerHTML = '';
           } else {
-            // Script exists but ad might not be loaded yet, don't clear
+            // Something exists - don't clear, don't reinitialize
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`⏭️ Skipping clear - ad content exists: ${label}`, {
+                hasScript: !!existingScript,
+                hasIframe: !!existingIframeCheck,
+                isMarkedLoaded: container.getAttribute('data-ad-loaded') === 'true'
+              });
+            }
             return;
           }
 
@@ -504,11 +686,80 @@ export default function AdsterraBanner({
             }
           }, initialDelay);
 
-          // Append scripts to container (only if not already appended for 728x90)
+          // Append scripts to container (only if not already appended)
           if (!scriptLoadedRef.current) {
             container.appendChild(optionsScript);
             container.appendChild(invokeScript);
             scriptLoadedRef.current = true;
+            
+            // Set up MutationObserver to watch for iframe creation/removal
+            // This helps detect when Adsterra creates or removes the iframe
+            if (!mutationObserverRef.current && typeof MutationObserver !== 'undefined') {
+              mutationObserverRef.current = new MutationObserver((mutations) => {
+                const container = containerRef.current;
+                if (!container) return;
+                
+                // Check if iframe was added or removed
+                mutations.forEach((mutation) => {
+                  mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && (node as HTMLElement).tagName === 'IFRAME') {
+                      const iframe = node as HTMLIFrameElement;
+                      // Iframe was added - mark it immediately
+                      iframe.setAttribute('data-ad-iframe', 'true');
+                      iframe.setAttribute('data-ad-key', adKey);
+                      container.setAttribute('data-ad-loaded', 'true');
+                      
+                      // Lock iframe styles
+                      iframe.style.display = 'block';
+                      iframe.style.visibility = 'visible';
+                      iframe.style.width = width >= 700 ? '728px' : (width >= 400 ? '468px' : '100%');
+                      iframe.style.height = `${height}px`;
+                      iframe.style.minHeight = `${height}px`;
+                      
+                      // Mark as loaded
+                      if (!adLoadedRef.current) {
+                        adLoadedRef.current = true;
+                        setAdLoaded(true);
+                        setLoading(false);
+                      }
+                      
+                      if (process.env.NODE_ENV === 'development') {
+                        console.log(`✅ Iframe detected by MutationObserver for ${label}`);
+                      }
+                    }
+                  });
+                  
+                  mutation.removedNodes.forEach((node) => {
+                    if (node.nodeType === 1 && (node as HTMLElement).tagName === 'IFRAME') {
+                      const iframe = node as HTMLIFrameElement;
+                      if (iframe.getAttribute('data-ad-key') === adKey) {
+                        // Our iframe was removed - reset
+                        if (process.env.NODE_ENV === 'development') {
+                          console.warn(`⚠️ Iframe removed for ${label}, will re-detect`);
+                        }
+                        container.removeAttribute('data-ad-loaded');
+                        adLoadedRef.current = false;
+                        setAdLoaded(false);
+                        setLoading(true);
+                        // Restart checking
+                        setTimeout(() => {
+                          checkForAd();
+                          if (!checkIntervalRef.current) {
+                            checkIntervalRef.current = setInterval(checkForAd, width >= 700 || (width >= 400 && width < 500) ? 400 : 500);
+                          }
+                        }, 1000);
+                      }
+                    }
+                  });
+                });
+              });
+              
+              // Start observing
+              mutationObserverRef.current.observe(container, {
+                childList: true,
+                subtree: true
+              });
+            }
           }
 
         } catch (err) {
@@ -541,6 +792,10 @@ export default function AdsterraBanner({
           clearInterval(checkIntervalRef.current);
           checkIntervalRef.current = null;
         }
+        if (mutationObserverRef.current) {
+          mutationObserverRef.current.disconnect();
+          mutationObserverRef.current = null;
+        }
       };
     } else {
       // DOM already ready, initialize after a short delay
@@ -553,6 +808,10 @@ export default function AdsterraBanner({
         if (checkIntervalRef.current) {
           clearInterval(checkIntervalRef.current);
           checkIntervalRef.current = null;
+        }
+        if (mutationObserverRef.current) {
+          mutationObserverRef.current.disconnect();
+          mutationObserverRef.current = null;
         }
       };
     }
