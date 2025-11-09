@@ -193,6 +193,7 @@ const OptionsDashboard = () => {
                     refresh();
                   }}
                   disabled={loading}
+                  data-no-smartlink="true"
                   className={`mt-2 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white text-blue-600'} px-4 py-1 rounded-full text-sm font-medium hover:opacity-80 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}>
                   {loading ? (
                     <svg 

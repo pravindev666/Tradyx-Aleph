@@ -35,17 +35,39 @@ export default function AntiAdblockSmartlink({
     const openPopunder = (e: MouseEvent) => {
       // Skip if user clicked on interactive elements
       const target = e.target as HTMLElement;
-      if (
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.closest('[role="button"]') ||
-        target.closest('input') ||
-        target.closest('select') ||
-        target.closest('textarea')
-      ) {
-        return;
+      if (!target) return;
+      
+      // Check if clicked element or any parent is a button, link, or interactive element
+      let element: HTMLElement | null = target;
+      while (element && element !== document.body) {
+        // Check tag name
+        const tagName = element.tagName?.toUpperCase();
+        if (tagName === 'BUTTON' || tagName === 'A' || tagName === 'INPUT' || 
+            tagName === 'SELECT' || tagName === 'TEXTAREA') {
+          return; // Don't trigger on interactive elements
+        }
+        
+        // Check for data attribute that excludes smartlink
+        if (element.hasAttribute('data-no-smartlink') || 
+            element.hasAttribute('data-exclude-smartlink')) {
+          return;
+        }
+        
+        // Check for role="button"
+        if (element.getAttribute('role') === 'button') {
+          return;
+        }
+        
+        // Check if element has onclick handler (indicates it's clickable)
+        if (element.onclick || element.getAttribute('onclick')) {
+          // But allow tiles that open modals - we want those to work
+          const hasModalHandler = element.closest('[class*="tile-hover-gold"]');
+          if (!hasModalHandler) {
+            return;
+          }
+        }
+        
+        element = element.parentElement;
       }
 
       // Only open once per session to avoid being intrusive
@@ -68,7 +90,7 @@ export default function AntiAdblockSmartlink({
           
           // Remove click handler after first successful open
           if (clickHandlerRef.current) {
-            document.removeEventListener('click', clickHandlerRef.current, true);
+            document.removeEventListener('click', clickHandlerRef.current, false);
             clickHandlerRef.current = null;
           }
           
@@ -90,8 +112,9 @@ export default function AntiAdblockSmartlink({
       // Only add listener if not already opened in this session
       if (!sessionStorage.getItem('popunder-opened')) {
         clickHandlerRef.current = openPopunder;
-        // Use capture phase (true) to catch clicks early, before other handlers
-        document.addEventListener('click', openPopunder, true);
+        // Use bubble phase (false) so button handlers run first, then we check if it was a button
+        // This ensures buttons work correctly and don't trigger popunder
+        document.addEventListener('click', openPopunder, false);
         loadedRef.current = true;
         
         if (process.env.NODE_ENV === 'development') {
@@ -104,7 +127,7 @@ export default function AntiAdblockSmartlink({
     return () => {
       clearTimeout(timeoutId);
       if (clickHandlerRef.current) {
-        document.removeEventListener('click', clickHandlerRef.current, true);
+        document.removeEventListener('click', clickHandlerRef.current, false);
         clickHandlerRef.current = null;
       }
     };
