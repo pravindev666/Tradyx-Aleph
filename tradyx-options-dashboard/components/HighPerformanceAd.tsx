@@ -53,37 +53,34 @@ function processQueue() {
   }
   
   try {
-    // Set atOptions for this ad
-    const adOptions = {
-      'key': adKey,
-      'format': 'iframe',
-      'height': height,
-      'width': width,
-      'params': {}
-    };
+    // Create config script first (matches Adsterra test HTML format exactly)
+    const configScript = document.createElement('script');
+    configScript.type = 'text/javascript';
+    configScript.textContent = `atOptions = { 'key' : '${adKey}', 'format' : 'iframe', 'height' : ${height}, 'width' : ${width}, 'params' : {} };`;
     
-    (window as any).atOptions = adOptions;
+    // Create invoke script with https protocol
+    const invokeScript = document.createElement('script');
+    invokeScript.type = 'text/javascript';
+    invokeScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
+    invokeScript.async = true;
     
-    // Create invoke script with immediate loading
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
-    script.async = true;
-    script.defer = false;
-    
-    // Handle load errors gracefully
-    script.onerror = () => {
+    // Handle load errors
+    invokeScript.onerror = () => {
       console.warn(`Ad ${adKey} failed to load`);
+      window.adsterraProcessing = false;
+      processQueue();
     };
     
-    // Append script immediately to container for fast loading
-    container.appendChild(script);
+    // Append scripts in order (config first, then invoke)
+    // Scripts execute sequentially when appended to DOM
+    container.appendChild(configScript);
+    container.appendChild(invokeScript);
     
-    // Process next ad with minimal delay (10ms for faster loading vs 700ms before)
+    // Process next ad after minimal delay
     setTimeout(() => {
       window.adsterraProcessing = false;
       processQueue();
-    }, 10);
+    }, 50);
     
   } catch (e) {
     console.error(`Error loading ad ${adKey}:`, e);
@@ -119,9 +116,14 @@ export default function HighPerformanceAd({
       return;
     }
     
-    // Queue this ad immediately for faster loading
-    queueAd(adKey, width, height, containerId);
-    loadedRef.current = true;
+    // Wait for next tick to ensure container is fully in DOM
+    requestAnimationFrame(() => {
+      if (containerRef.current && document.getElementById(containerId)) {
+        // Queue this ad immediately for faster loading
+        queueAd(adKey, width, height, containerId);
+        loadedRef.current = true;
+      }
+    });
     
   }, [mounted, adKey, width, height]);
 

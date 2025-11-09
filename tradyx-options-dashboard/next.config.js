@@ -27,11 +27,11 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self' https: data: blob:;",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:;",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: https://www.highperformanceformat.com;",
               "connect-src 'self' https:;",
               "img-src 'self' https: data: blob:;",
               "style-src 'self' 'unsafe-inline' https:;",
-              "frame-src https: data:;",
+              "frame-src https: data: https://www.highperformanceformat.com;",
               "font-src 'self' data: https:"
             ].join(' ')
           },
