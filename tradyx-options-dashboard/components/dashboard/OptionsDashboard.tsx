@@ -17,6 +17,7 @@ import ConsentBanner from '@/components/ConsentBanner';
 import AdSlot from '@/components/AdSlot';
 import HighPerformanceAd from '@/components/HighPerformanceAd';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
+import EffectiveGateAd from '@/components/EffectiveGateAd';
 import { computeMMI } from './mmi';
 
 const OptionsDashboard = () => {
@@ -560,6 +561,15 @@ const OptionsDashboard = () => {
               darkMode={darkMode}
               onOpenModal={openModal}
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Additional Ad Space - Footer Area (Non-Intrusive) */}
+      <div className="w-full flex justify-center py-4 mt-8">
+        <div className="w-full max-w-4xl px-4">
+          <div className="text-center">
+            <EffectiveGateAd className="w-full" />
           </div>
         </div>
       </div>
