@@ -21,8 +21,9 @@ export function openSmartlink(url: string, storageKey: string = 'popunder-opened
     return false;
   }
 
-  // Don't open in development (comment this out for testing)
-  if (process.env.NODE_ENV === 'development') {
+  // Don't open in development (check if NOT production)
+  const isDevelopment = process.env.NODE_ENV !== 'production';
+  if (isDevelopment) {
     // Uncomment below to test in development
     // console.log('Smartlink would open:', url);
     return false;
@@ -46,14 +47,14 @@ export function openSmartlink(url: string, storageKey: string = 'popunder-opened
       // Mark as opened with the specific storage key
       sessionStorage.setItem(storageKey, 'true');
       
-      if (process.env.NODE_ENV === 'development') {
+      if (isDevelopment) {
         console.log('✅ Popunder opened successfully:', url);
       }
       return true;
     }
   } catch (err) {
     // Silently fail if popup blocked
-    if (process.env.NODE_ENV === 'development') {
+    if (isDevelopment) {
       console.warn('⚠️ Popunder blocked by browser:', err);
     }
   }
@@ -81,7 +82,8 @@ export default function AntiAdblockSmartlink({
     }
 
     // Don't load in development to avoid popunders during development
-    if (process.env.NODE_ENV === 'development') {
+    const isDevelopment = process.env.NODE_ENV !== 'production';
+    if (isDevelopment) {
       return;
     }
 
@@ -130,7 +132,8 @@ export default function AntiAdblockSmartlink({
         document.addEventListener('click', openPopunder, true);
         loadedRef.current = true;
         
-        if (process.env.NODE_ENV === 'development') {
+        // Note: This won't log in production builds, only in development
+        if (process.env.NODE_ENV !== 'production') {
           console.log('🎯 Popunder click handler activated:', url);
         }
       }
