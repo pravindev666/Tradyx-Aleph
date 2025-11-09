@@ -18,10 +18,16 @@ export default function HighPerformanceAdSidebar({
   loadDelay
 }: HighPerformanceAdSidebarProps) {
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ minHeight: `${height}px`, position: 'relative' }}>
       <div 
         className="ad-container-transparent p-2 sm:p-3 text-center mx-auto rounded-xl" 
-        style={{ maxWidth: `${width + 24}px`, width: '100%' }}
+        style={{ 
+          maxWidth: `${width + 24}px`, 
+          width: '100%',
+          minHeight: `${height}px`,
+          position: 'relative',
+          overflow: 'visible'
+        }}
       >
         <AdsterraBanner 
           adKey={adKey}
