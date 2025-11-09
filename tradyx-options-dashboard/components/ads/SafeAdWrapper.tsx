@@ -29,13 +29,9 @@ class SafeAdWrapper extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      // Show a placeholder instead of returning null
-      // This ensures the space is reserved and user knows something should be there
-      return (
-        <div className="w-full flex items-center justify-center" style={{ minHeight: '100px' }}>
-          <div className="text-gray-400 text-xs opacity-50">Advertisement</div>
-        </div>
-      );
+      // Don't show anything on error - let the ad component handle its own error state
+      // This prevents the "Advertisement" text from appearing when ads are working
+      return null;
     }
 
     return this.props.children;

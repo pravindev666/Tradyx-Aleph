@@ -488,8 +488,7 @@ const OptionsDashboard = () => {
           </div>
             </div>
 
-
-            {/* Ad Space - Below Expiry Countdown (Horizontal 1) */}
+            {/* Ad Space - Below Range Forecast (Horizontal 728x90) */}
             <SafeAdWrapper>
               <div className="flex justify-center w-full">
                 <div className="w-full max-w-full sm:max-w-[728px]">
@@ -499,7 +498,7 @@ const OptionsDashboard = () => {
                       width={AD_SIZES.BANNER_728x90.width}
                       height={AD_SIZES.BANNER_728x90.height}
                       label="Banner 728x90"
-                      loadDelay={0}
+                      loadDelay={1000}
                     />
                   </div>
                 </div>

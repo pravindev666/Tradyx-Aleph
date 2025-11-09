@@ -58,6 +58,12 @@ export default function AdsterraBanner({
       return;
     }
 
+    // If ad is already loaded, don't do anything
+    if (adLoadedRef.current || adLoaded) {
+      setLoading(false);
+      return;
+    }
+
     // Prevent duplicate loading
     if (loadAttemptedRef.current || scriptLoadedRef.current) {
       return;
@@ -78,34 +84,50 @@ export default function AdsterraBanner({
       try {
         const iframe = container.querySelector('iframe');
         // Check if iframe exists and has a valid src (not blank)
-        if (iframe && iframe.src && iframe.src !== 'about:blank' && !iframe.src.includes('about:')) {
-          // Also check if iframe has content (height > 0 means ad loaded)
-          if (iframe.offsetHeight > 0) {
-            // Ad loaded! Hide loader and show ad
-            adLoadedRef.current = true;
-            setAdLoaded(true);
-            setLoading(false);
-            if (checkIntervalRef.current) {
-              clearInterval(checkIntervalRef.current);
-              checkIntervalRef.current = null;
+        if (iframe) {
+          // More lenient check - if iframe exists and has any src, consider it loaded
+          // Some ads might have dynamic src changes
+          const iframeSrc = iframe.src || (iframe as any).getAttribute('src') || '';
+          const iframeHeight = iframe.offsetHeight || (iframe as any).clientHeight || 0;
+          
+          // If iframe exists and has height > 0, ad is loaded
+          // Don't check src too strictly as some ads use data URLs or blank initially
+          if (iframeHeight > 10 || (iframeSrc && iframeSrc !== 'about:blank' && !iframeSrc.includes('about:'))) {
+            // Ad loaded! Hide loader and show ad - but only set once
+            if (!adLoadedRef.current) {
+              adLoadedRef.current = true;
+              setAdLoaded(true);
+              setLoading(false);
+              if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
+              }
             }
             return;
           }
         }
         
         // Also check for any content in the container (ads might render differently)
-        if (container.children.length > 2) {
-          // Options script + invoke script + ad content
-          const hasAdContent = Array.from(container.children).some((child) => {
-            if (child.tagName === 'IFRAME') {
-              const iframeChild = child as HTMLIFrameElement;
-              return iframeChild.offsetHeight > 0 && 
-                     iframeChild.src && 
-                     iframeChild.src !== 'about:blank';
+        // Check if container has meaningful content (more than just scripts)
+        const children = Array.from(container.children);
+        const nonScriptChildren = children.filter(child => 
+          child.tagName !== 'SCRIPT' && 
+          child.tagName !== 'NOSCRIPT' &&
+          (child as HTMLElement).innerHTML.trim().length > 0
+        );
+        
+        if (nonScriptChildren.length > 0) {
+          // Check if any non-script child has visible content
+          const hasVisibleContent = nonScriptChildren.some((child) => {
+            const el = child as HTMLElement;
+            if (el.tagName === 'IFRAME') {
+              const iframeEl = el as HTMLIFrameElement;
+              return (iframeEl.offsetHeight > 10 || iframeEl.clientHeight > 10);
             }
-            return (child as HTMLElement).innerHTML.trim().length > 0;
+            return el.offsetHeight > 10 || el.clientHeight > 10;
           });
-          if (hasAdContent) {
+          
+          if (hasVisibleContent && !adLoadedRef.current) {
             adLoadedRef.current = true;
             setAdLoaded(true);
             setLoading(false);
@@ -118,6 +140,7 @@ export default function AdsterraBanner({
         }
       } catch (e) {
         // Continue checking on error (cross-origin iframe access errors are normal)
+        // Don't log errors as they're expected with cross-origin iframes
       }
     };
 
@@ -143,20 +166,33 @@ export default function AdsterraBanner({
         }
 
         try {
-          // Clear any existing content
-          container.innerHTML = '';
+          // Check if ad is already loaded - if so, don't reinitialize
+          if (adLoadedRef.current) {
+            return;
+          }
 
           // Check if script already exists globally (safely)
           let existingScript = null;
           try {
             existingScript = document.querySelector(`script[src*="${adKey}"]`);
+            // Also check if container already has an iframe with valid src
+            const existingIframe = container.querySelector('iframe');
+            if (existingIframe && existingIframe.src && existingIframe.src !== 'about:blank' && !existingIframe.src.includes('about:') && existingIframe.offsetHeight > 0) {
+              // Ad already loaded, don't reinitialize
+              adLoadedRef.current = true;
+              setAdLoaded(true);
+              setLoading(false);
+              return;
+            }
           } catch (e) {
             // Ignore querySelector errors
           }
 
-          if (existingScript) {
-            setLoading(false);
-            setAdLoaded(true);
+          // Only clear container if no ad is present
+          if (!existingScript) {
+            container.innerHTML = '';
+          } else {
+            // Script exists but ad might not be loaded yet, don't clear
             return;
           }
 
@@ -258,7 +294,8 @@ export default function AdsterraBanner({
 
   // Show infinity loader continuously until ad loads
   // Always show loader initially, hide only when ad is confirmed loaded
-  const showLoader = !adLoaded || loading;
+  // Once ad is loaded, never show loader again
+  const showLoader = !adLoaded;
 
   // Always render the container - ensures space is reserved and loader is visible
   return (
