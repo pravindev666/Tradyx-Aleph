@@ -160,8 +160,14 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
                 {predictions.nextDayBiasDirection || 'Neutral'}
               </div>
             </div>
-            <div className="text-2xl">
-              {predictions.nextDayBias && predictions.nextDayBias > 0 ? '📈' : predictions.nextDayBias && predictions.nextDayBias < 0 ? '📉' : '➡️'}
+            <div className={`text-2xl font-bold ${
+              predictions.nextDayBias && predictions.nextDayBias > 0 ? 'text-green-500' : 
+              predictions.nextDayBias && predictions.nextDayBias < 0 ? 'text-red-500' : 
+              'text-gray-400'
+            }`}>
+              {predictions.nextDayBias && predictions.nextDayBias > 0 ? '↑' : 
+               predictions.nextDayBias && predictions.nextDayBias < 0 ? '↓' : 
+               '→'}
             </div>
           </div>
         </div>

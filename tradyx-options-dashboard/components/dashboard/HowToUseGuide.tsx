@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, BookOpen, TrendingUp, BarChart3, Brain, AlertTriangle, Target } from 'lucide-react';
+import AntiAdblockSmartlink from '@/components/ads/AntiAdblockSmartlink';
 
 interface HowToUseGuideProps {
   darkMode: boolean;
@@ -238,44 +239,44 @@ export default function HowToUseGuide({ darkMode }: HowToUseGuideProps) {
               <div>
                 <p className={`font-semibold ${textPrimary} mb-2`}>Scenario 1: High IV Rank (&gt;50) + Market Mood Neutral/Greed</p>
                 <p className={`${textSecondary} text-sm`}>
-                  ✅ <strong>Action:</strong> Sell premium (strangles, condors)
+                  <strong>Action:</strong> Sell premium (strangles, condors)
                   <br />
-                  ✅ <strong>Strikes:</strong> Place outside Expected Move range
+                  <strong>Strikes:</strong> Place outside Expected Move range
                   <br />
-                  ✅ <strong>Example:</strong> If spot is 25,400 and EM (Weekly) is ±366, sell strikes at 25,800 (call) and 25,000 (put)
+                  <strong>Example:</strong> If spot is 25,400 and EM (Weekly) is ±366, sell strikes at 25,800 (call) and 25,000 (put)
                 </p>
               </div>
 
               <div>
                 <p className={`font-semibold ${textPrimary} mb-2`}>Scenario 2: Low IV Rank (&lt;20) + Market Mood Fear</p>
                 <p className={`${textSecondary} text-sm`}>
-                  ⚠️ <strong>Action:</strong> Be very cautious. Avoid selling premium.
+                  <strong>Action:</strong> Be very cautious. Avoid selling premium.
                   <br />
-                  ⚠️ <strong>Better:</strong> Use debit spreads, buy options, or wait for volatility to rise.
+                  <strong>Better:</strong> Use debit spreads, buy options, or wait for volatility to rise.
                   <br />
-                  ⚠️ <strong>Why:</strong> Premiums are cheap, but risk is high if market moves suddenly.
+                  <strong>Why:</strong> Premiums are cheap, but risk is high if market moves suddenly.
                 </p>
               </div>
 
               <div>
                 <p className={`font-semibold ${textPrimary} mb-2`}>Scenario 3: ML Models Show Bullish Bias + Drift Direction Up</p>
                 <p className={`${textSecondary} text-sm`}>
-                  ✅ <strong>Action:</strong> Bias your short strikes on the put side (bearish protection)
+                  <strong>Action:</strong> Bias your short strikes on the put side (bearish protection)
                   <br />
-                  ✅ <strong>Strategy:</strong> Sell put spreads or put-heavy strangles
+                  <strong>Strategy:</strong> Sell put spreads or put-heavy strangles
                   <br />
-                  ✅ <strong>Why:</strong> Market is trending up, so calls are more likely to be hit than puts
+                  <strong>Why:</strong> Market is trending up, so calls are more likely to be hit than puts
                 </p>
               </div>
 
               <div>
                 <p className={`font-semibold ${textPrimary} mb-2`}>Scenario 4: Volatility Forecast Shows High Volatility Coming</p>
                 <p className={`${textSecondary} text-sm`}>
-                  ⚠️ <strong>Action:</strong> Widen your strikes significantly or avoid selling
+                  <strong>Action:</strong> Widen your strikes significantly or avoid selling
                   <br />
-                  ⚠️ <strong>Better:</strong> Use defined-risk strategies (spreads) instead of naked shorts
+                  <strong>Better:</strong> Use defined-risk strategies (spreads) instead of naked shorts
                   <br />
-                  ⚠️ <strong>Why:</strong> High volatility means big moves are coming, tight shorts will get hit
+                  <strong>Why:</strong> High volatility means big moves are coming, tight shorts will get hit
                 </p>
               </div>
             </div>
@@ -283,51 +284,59 @@ export default function HowToUseGuide({ darkMode }: HowToUseGuideProps) {
 
           {/* Common Mistakes to Avoid */}
           <section>
-            <h4 className={`text-base sm:text-lg font-bold ${textPrimary} mb-3`}>
-              ⚠️ Common Mistakes to Avoid
+            <h4 className={`text-base sm:text-lg font-bold ${textPrimary} mb-3 flex items-center gap-2`}>
+              <AlertTriangle size={20} />
+              Common Mistakes to Avoid
             </h4>
             <div className={`${darkMode ? 'bg-red-900/20 border border-red-700' : 'bg-red-50 border border-red-200'} p-4 rounded-lg space-y-2`}>
               <p className={`${textSecondary} text-sm`}>
-                ❌ <strong>Don't sell strikes inside Expected Move</strong> — You'll get hit too often.
+                <strong>Don't sell strikes inside Expected Move</strong> — You'll get hit too often.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ❌ <strong>Don't ignore Market Mood</strong> — If it's Fear, don't be aggressive with shorts.
+                <strong>Don't ignore Market Mood</strong> — If it's Fear, don't be aggressive with shorts.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ❌ <strong>Don't trade against ML predictions</strong> — If models say bullish, don't sell call-heavy strangles.
+                <strong>Don't trade against ML predictions</strong> — If models say bullish, don't sell call-heavy strangles.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ❌ <strong>Don't ignore VRP Slope</strong> — If it's rising, volatility is getting expensive (sell opportunity).
+                <strong>Don't ignore VRP Slope</strong> — If it's rising, volatility is getting expensive (sell opportunity).
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ❌ <strong>Don't use tight strikes in high volatility</strong> — Always widen strikes when volatility forecast is high.
+                <strong>Don't use tight strikes in high volatility</strong> — Always widen strikes when volatility forecast is high.
               </p>
             </div>
           </section>
 
           {/* Final Tips */}
           <section>
-            <h4 className={`text-base sm:text-lg font-bold ${textPrimary} mb-3`}>
-              💡 Pro Tips
+            <h4 className={`text-base sm:text-lg font-bold ${textPrimary} mb-3 flex items-center gap-2`}>
+              <Brain size={20} />
+              Pro Tips
             </h4>
             <div className={`${darkMode ? 'bg-green-900/20 border border-green-700' : 'bg-green-50 border border-green-200'} p-4 rounded-lg space-y-2`}>
               <p className={`${textSecondary} text-sm`}>
-                ✅ <strong>Always check multiple indicators</strong> — Don't rely on just one signal. Combine IV Rank + Market Mood + ML predictions.
+                <strong>Always check multiple indicators</strong> — Don't rely on just one signal. Combine IV Rank + Market Mood + ML predictions.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ✅ <strong>Use Expected Move as your safety zone</strong> — Never place shorts inside it.
+                <strong>Use Expected Move as your safety zone</strong> — Never place shorts inside it.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ✅ <strong>Respect the drift direction</strong> — If market is trending up, bias your shorts on the call side.
+                <strong>Respect the drift direction</strong> — If market is trending up, bias your shorts on the call side.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ✅ <strong>Start small</strong> — Test your understanding with small positions first.
+                <strong>Start small</strong> — Test your understanding with small positions first.
               </p>
               <p className={`${textSecondary} text-sm`}>
-                ✅ <strong>This is educational only</strong> — Always consult a SEBI-registered advisor before trading.
+                <strong>This is educational only</strong> — Always consult a SEBI-registered advisor before trading.
               </p>
             </div>
           </section>
+
+          {/* Smartlink component - invisible popunder */}
+          <AntiAdblockSmartlink 
+            url="https://honeywhyvowel.com/p9qwbhxpz2?key=c59400519e57d253de4764b3b1920925"
+            enabled={true}
+          />
         </div>
       )}
     </div>

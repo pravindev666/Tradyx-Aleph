@@ -19,7 +19,6 @@ import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import SafeAdWrapper from '@/components/ads/SafeAdWrapper';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import EffectiveGateAd from '@/components/EffectiveGateAd';
-// AntiAdblockSmartlink removed - was irritating users
 import { AD_KEYS, AD_SIZES } from '@/components/ads/AdConfig';
 import { computeMMI } from './mmi';
 
@@ -218,6 +217,13 @@ const OptionsDashboard = () => {
                     <RefreshCw size={14} />
                   )} {loading ? 'Refreshing...' : 'Refresh'}
                 </button>
+                {/* Hint text - neon green for visibility */}
+                <div className="mt-1.5 text-center">
+                  <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
+                    <span className="block">Refresh every 15 min for latest data</span>
+                    <span className="block mt-0.5">Click tiles to learn more</span>
+                  </p>
+                </div>
               </div>
           </div>
         </div>
