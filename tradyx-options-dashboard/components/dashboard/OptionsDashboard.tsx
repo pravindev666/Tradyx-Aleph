@@ -15,9 +15,10 @@ import MomentumStrengthMeter from './MomentumStrengthMeter';
 import HowToUseGuide from './HowToUseGuide';
 import ConsentBanner from '@/components/ConsentBanner';
 import AdSlot from '@/components/AdSlot';
-import HighPerformanceAd from '@/components/HighPerformanceAd';
+import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import EffectiveGateAd from '@/components/EffectiveGateAd';
+import { AD_KEYS, AD_SIZES } from '@/components/ads/AdConfig';
 import { computeMMI } from './mmi';
 
 const OptionsDashboard = () => {
@@ -470,10 +471,12 @@ const OptionsDashboard = () => {
             <div className="flex justify-center w-full">
               <div className="w-full max-w-full sm:max-w-[728px]">
                 <div className="ad-container-transparent p-2 sm:p-3 rounded-xl text-center">
-                  <HighPerformanceAd 
-                    adKey="b4903cf5635d652e019f9cf30ea1cd88"
-                    width={728}
-                    height={90}
+                  <AdsterraBanner 
+                    adKey={AD_KEYS.BANNER_728x90}
+                    width={AD_SIZES.BANNER_728x90.width}
+                    height={AD_SIZES.BANNER_728x90.height}
+                    label="Banner 728x90"
+                    loadDelay={0}
                   />
                 </div>
               </div>
@@ -490,10 +493,12 @@ const OptionsDashboard = () => {
             <div className="w-full flex justify-center">
               <div className="w-full max-w-[468px]">
                 <div className="ad-container-transparent p-2 sm:p-3 md:p-4 rounded-xl text-center">
-                  <HighPerformanceAd 
-                    adKey="d8c93074244d311adc394f3a309c3118"
-                    width={468}
-                    height={60}
+                  <AdsterraBanner 
+                    adKey={AD_KEYS.BANNER_468x60}
+                    width={AD_SIZES.BANNER_468x60.width}
+                    height={AD_SIZES.BANNER_468x60.height}
+                    label="Banner 468x60"
+                    loadDelay={500}
                   />
                 </div>
               </div>
@@ -536,9 +541,11 @@ const OptionsDashboard = () => {
 
             {/* Ad Space 2 - Sidebar (300x250) */}
             <HighPerformanceAdSidebar 
-              adKey="2f370fd28cbdeb2108926fba77c70947"
-              width={300}
-              height={250}
+              adKey={AD_KEYS.RECTANGLE_300x250}
+              width={AD_SIZES.RECTANGLE_300x250.width}
+              height={AD_SIZES.RECTANGLE_300x250.height}
+              label="Rectangle 300x250"
+              loadDelay={1000}
             />
 
             {/* Drift Direction Indicator */}
@@ -550,9 +557,11 @@ const OptionsDashboard = () => {
 
             {/* Ad Space 3 - Sidebar (320x50) */}
             <HighPerformanceAdSidebar 
-              adKey="35bb5972176687c2571d4f6e436e1f71"
-              width={320}
-              height={50}
+              adKey={AD_KEYS.MOBILE_320x50}
+              width={AD_SIZES.MOBILE_320x50.width}
+              height={AD_SIZES.MOBILE_320x50.height}
+              label="Mobile Banner 320x50"
+              loadDelay={1500}
             />
 
             {/* Momentum Strength Meter */}
