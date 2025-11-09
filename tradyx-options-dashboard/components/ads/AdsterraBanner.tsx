@@ -128,10 +128,10 @@ export default function AdsterraBanner({
           // ULTRA LENIENT: For 728x90 banner, if scripts are loaded and iframe exists, consider it loaded
           // Even if iframe is small or src is blank initially, it might be loading
           if (iframe && hasAdScripts) {
-            // For large banners (728x90), be EXTREMELY lenient
+            // For large banners (728x90, 468x60), be EXTREMELY lenient
             // If scripts are loaded and iframe exists, show it immediately (even if blank)
-            if (width >= 700) {
-              // For 728x90: If iframe exists with scripts loaded, show it
+            if (width >= 700 || (width >= 400 && width < 500)) {
+              // For 728x90 and 468x60: If iframe exists with scripts loaded, show it
               // Don't wait for content - iframe existence means ad is loading
               if (!adLoadedRef.current) {
                 // Mark as loaded immediately - iframe existence is enough
@@ -203,7 +203,7 @@ export default function AdsterraBanner({
                 setTimeout(makeVisible, 2000);
                 
                 if (process.env.NODE_ENV === 'development') {
-                  console.log(`✅ Ad detected (728x90): ${label}`, {
+                  console.log(`✅ Ad detected (${width >= 700 ? '728x90' : '468x60'}): ${label}`, {
                     src: iframeSrc ? iframeSrc.substring(0, 100) : 'no src',
                     dimensions: `${iframeWidth}x${iframeHeight}`,
                     hasScripts: hasAdScripts,
@@ -214,7 +214,8 @@ export default function AdsterraBanner({
               return;
             }
             
-            // For other sizes, use lenient checks
+            // For other sizes (300x250, 320x50), use lenient checks
+            // Also apply same logic to 468x60 if not caught above
             if (hasAdDomain || (hasAnySrc && hasAnySize && isVisible) || (iframe && hasAdScripts && iframeHeight > 5)) {
               if (!adLoadedRef.current) {
                 adLoadedRef.current = true;
@@ -226,25 +227,48 @@ export default function AdsterraBanner({
                 }
                 if (process.env.NODE_ENV === 'development') {
                   console.log(`✅ Ad detected: ${label} (${width}x${height})`, {
-                    src: iframeSrc.substring(0, 100),
-                    dimensions: `${iframeWidth}x${iframeHeight}`
+                    src: iframeSrc ? iframeSrc.substring(0, 100) : 'no src',
+                    dimensions: `${iframeWidth}x${iframeHeight}`,
+                    hasAdDomain: hasAdDomain,
+                    hasAnySize: hasAnySize
                   });
                 }
               }
               return;
             }
+            
+            // Additional check for 468x60: If iframe exists with any content, show it
+            if (width >= 400 && width < 500 && iframe && hasAdScripts) {
+              // For 468x60, be very lenient - if iframe exists, show it
+              if (!adLoadedRef.current && (iframeHeight > 0 || iframeWidth > 0 || iframeSrc)) {
+                adLoadedRef.current = true;
+                setAdLoaded(true);
+                setLoading(false);
+                if (checkIntervalRef.current) {
+                  clearInterval(checkIntervalRef.current);
+                  checkIntervalRef.current = null;
+                }
+                if (process.env.NODE_ENV === 'development') {
+                  console.log(`✅ Ad detected (468x60): ${label}`, {
+                    src: iframeSrc ? iframeSrc.substring(0, 100) : 'no src',
+                    dimensions: `${iframeWidth}x${iframeHeight}`
+                  });
+                }
+                return;
+              }
+            }
           }
           
           // If scripts are loaded, keep checking - ad might be loading slowly
           if (hasAdScripts && !adLoadedRef.current) {
-            // For 728x90, if scripts are loaded, wait a bit and check again
+            // For 728x90 and 468x60, if scripts are loaded, wait a bit and check again
             // Sometimes iframe is created but not immediately accessible
-            if (width >= 700) {
+            if (width >= 700 || (width >= 400 && width < 500)) {
               // Wait and check again - iframe might be created soon
               setTimeout(() => {
                 const retryIframe = container.querySelector('iframe');
                 if (retryIframe && !adLoadedRef.current) {
-                  // Iframe found on retry - show it
+                  // Iframe found on retry - show it immediately
                   adLoadedRef.current = true;
                   setAdLoaded(true);
                   setLoading(false);
@@ -253,7 +277,7 @@ export default function AdsterraBanner({
                     checkIntervalRef.current = null;
                   }
                   
-                  // Make visible
+                  // Make visible (for 728x90)
                   const adContainer = document.getElementById('ad-728x90-container');
                   if (adContainer) {
                     adContainer.style.display = 'block';
@@ -268,17 +292,18 @@ export default function AdsterraBanner({
               console.log(`⏳ Ad scripts loaded, checking for iframe: ${label}`, {
                 hasIframe: !!iframe,
                 iframeSrc: iframe ? (iframe.src || '').substring(0, 50) : 'none',
-                width: width
+                width: width,
+                height: height
               });
             }
           }
         } else if (hasAdScripts) {
           // Scripts are loaded but no iframe yet - ad might be loading
-          // For 728x90, wait longer as ads might load slowly
-          if (width >= 700) {
-            // Keep checking for longer - 728x90 ads might take time
+          // For 728x90 and 468x60, wait longer as ads might load slowly
+          if (width >= 700 || (width >= 400 && width < 500)) {
+            // Keep checking for longer - these banner ads might take time
             if (process.env.NODE_ENV === 'development') {
-              console.log(`⏳ Ad scripts loaded, waiting for iframe (728x90): ${label}`);
+              console.log(`⏳ Ad scripts loaded, waiting for iframe (${width >= 700 ? '728x90' : '468x60'}): ${label}`);
             }
           } else {
             if (process.env.NODE_ENV === 'development') {
@@ -374,25 +399,24 @@ export default function AdsterraBanner({
             console.log(`📡 Loading ad script for ${label}:`, `https://www.highperformanceformat.com/${adKey}/invoke.js`);
           }
           
-          // For 728x90, load immediately but still respect the delay
-          // This ensures ads load even when container is hidden
-          if (width >= 700) {
-            // Make sure container is accessible even if parent is hidden
-            // Ads can load in hidden containers, they'll show when detected
+          // For 728x90 and 468x60, load immediately - these banners need faster loading
+          // This ensures ads load quickly and are detected properly
+          if (width >= 700 || (width >= 400 && width < 500)) {
+            // Make sure container is accessible
             container.style.position = 'relative';
             container.style.minHeight = `${height}px`;
             
-            // Append scripts immediately for 728x90 (no delay)
+            // Append scripts immediately (no delay for these sizes)
             container.appendChild(optionsScript);
             container.appendChild(invokeScript);
             scriptLoadedRef.current = true;
             
             // Start checking immediately and frequently
+            const checkInterval = width >= 700 ? 300 : 400; // 300ms for 728x90, 400ms for 468x60
             setTimeout(() => {
               checkForAd();
               if (!checkIntervalRef.current) {
-                // Check every 300ms for 728x90 (very frequent)
-                checkIntervalRef.current = setInterval(checkForAd, 300);
+                checkIntervalRef.current = setInterval(checkForAd, checkInterval);
               }
             }, 300); // Start checking very soon
             
@@ -405,7 +429,7 @@ export default function AdsterraBanner({
               setTimeout(() => {
                 checkForAd();
                 if (!checkIntervalRef.current) {
-                  checkIntervalRef.current = setInterval(checkForAd, 300);
+                  checkIntervalRef.current = setInterval(checkForAd, checkInterval);
                 }
               }, 200);
             };
@@ -415,12 +439,12 @@ export default function AdsterraBanner({
               setTimeout(() => {
                 checkForAd();
                 if (!checkIntervalRef.current) {
-                  checkIntervalRef.current = setInterval(checkForAd, 300);
+                  checkIntervalRef.current = setInterval(checkForAd, checkInterval);
                 }
               }, 500);
             };
             
-            return; // Skip the regular delay for 728x90
+            return; // Skip the regular delay for these banner sizes
           }
 
           // Check for iframe after script loads
@@ -457,16 +481,17 @@ export default function AdsterraBanner({
           };
           
           // Start checking after script injection
-          // For 728x90, check more frequently and for longer
-          const initialDelay = width >= 700 ? 1000 : 2000;
-          const checkInterval = width >= 700 ? 300 : 500;
+          // For 728x90 and 468x60, check more frequently and for longer
+          const isLargeBanner = width >= 700 || (width >= 400 && width < 500);
+          const initialDelay = isLargeBanner ? 1000 : 2000;
+          const checkInterval = isLargeBanner ? (width >= 700 ? 300 : 400) : 500;
           setTimeout(() => {
             if (!adLoadedRef.current && !checkIntervalRef.current) {
               checkForAd();
               checkIntervalRef.current = setInterval(checkForAd, checkInterval);
               
-              // For 728x90, check for up to 30 seconds (ads might load slowly)
-              if (width >= 700) {
+              // For 728x90 and 468x60, check for up to 30 seconds (ads might load slowly)
+              if (isLargeBanner) {
                 setTimeout(() => {
                   if (checkIntervalRef.current && !adLoadedRef.current) {
                     clearInterval(checkIntervalRef.current);

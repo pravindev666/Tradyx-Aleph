@@ -19,7 +19,7 @@ import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import SafeAdWrapper from '@/components/ads/SafeAdWrapper';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import EffectiveGateAd from '@/components/EffectiveGateAd';
-import AntiAdblockSmartlink from '@/components/ads/AntiAdblockSmartlink';
+// AntiAdblockSmartlink removed - was irritating users
 import { AD_KEYS, AD_SIZES } from '@/components/ads/AdConfig';
 import { computeMMI } from './mmi';
 
@@ -530,7 +530,7 @@ const OptionsDashboard = () => {
                       width={AD_SIZES.BANNER_468x60.width}
                       height={AD_SIZES.BANNER_468x60.height}
                       label="Banner 468x60"
-                      loadDelay={500}
+                      loadDelay={0}
                     />
                   </div>
                 </div>
@@ -619,12 +619,6 @@ const OptionsDashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* Anti-Adblock Smartlink - Non-intrusive popunder */}
-      <AntiAdblockSmartlink 
-        url="https://honeywhyvowel.com/p9qwbhxpz2?key=c59400519e57d253de4764b3b1920925"
-        enabled={true}
-      />
 
       <div className={`${darkMode ? 'bg-gray-950' : 'bg-gray-800'} text-gray-300 px-6 py-4 mt-12 relative z-10`}>
         <div className="max-w-7xl mx-auto text-center text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-3 sm:py-4 space-y-1">

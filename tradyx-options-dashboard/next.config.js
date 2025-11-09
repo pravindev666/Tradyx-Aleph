@@ -28,11 +28,11 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self' https: data: blob:;",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: https://www.highperformanceformat.com https://*.adsterra.com https://pl28016046.effectivegatecpm.com https://honeywhyvowel.com;",
-              "connect-src 'self' https: https://honeywhyvowel.com;",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: https://www.highperformanceformat.com https://*.adsterra.com https://pl28016046.effectivegatecpm.com;",
+              "connect-src 'self' https:;",
               "img-src 'self' https: data: blob:;",
               "style-src 'self' 'unsafe-inline' https:;",
-              "frame-src https: data: https://www.highperformanceformat.com https://*.adsterra.com https://pl28016046.effectivegatecpm.com https://honeywhyvowel.com blob:;",
+              "frame-src https: data: https://www.highperformanceformat.com https://*.adsterra.com https://pl28016046.effectivegatecpm.com blob:;",
               "font-src 'self' data: https:"
             ].join(' ')
           },
