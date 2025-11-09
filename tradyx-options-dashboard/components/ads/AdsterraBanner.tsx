@@ -83,61 +83,60 @@ export default function AdsterraBanner({
       
       try {
         const iframe = container.querySelector('iframe');
-        // Check if iframe exists and has a valid src (not blank)
         if (iframe) {
-          // More lenient check - if iframe exists and has any src, consider it loaded
-          // Some ads might have dynamic src changes
           const iframeSrc = iframe.src || (iframe as any).getAttribute('src') || '';
           const iframeHeight = iframe.offsetHeight || (iframe as any).clientHeight || 0;
+          const iframeWidth = iframe.offsetWidth || (iframe as any).clientWidth || 0;
           
-          // If iframe exists and has height > 0, ad is loaded
-          // Don't check src too strictly as some ads use data URLs or blank initially
-          if (iframeHeight > 10 || (iframeSrc && iframeSrc !== 'about:blank' && !iframeSrc.includes('about:'))) {
-            // Ad loaded! Hide loader and show ad - but only set once
-            if (!adLoadedRef.current) {
-              adLoadedRef.current = true;
-              setAdLoaded(true);
-              setLoading(false);
-              if (checkIntervalRef.current) {
-                clearInterval(checkIntervalRef.current);
-                checkIntervalRef.current = null;
+          // STRICT CHECK: Only consider ad loaded if:
+          // 1. Iframe has a valid src (not blank, not about:blank)
+          // 2. Iframe has substantial dimensions (at least 50px height for real ads)
+          // 3. Iframe src contains ad network domain (adsterra, highperformanceformat, etc.)
+          const hasValidSrc = iframeSrc && 
+                            iframeSrc !== 'about:blank' && 
+                            !iframeSrc.includes('about:') &&
+                            (iframeSrc.includes('adsterra') || 
+                             iframeSrc.includes('highperformanceformat') ||
+                             iframeSrc.includes('effectivegate') ||
+                             iframeSrc.startsWith('http'));
+          
+          const hasSubstantialSize = iframeHeight >= 50 && iframeWidth >= 50;
+          
+          // Additional check: Make sure iframe is actually visible and has content
+          // Some iframes might have dimensions but no actual content
+          const isVisible = iframe.style.display !== 'none' && 
+                           iframe.style.visibility !== 'hidden' &&
+                           iframe.offsetHeight > 0 &&
+                           iframe.offsetWidth > 0;
+          
+          // Only mark as loaded if ALL conditions are met
+          if (hasValidSrc && hasSubstantialSize && isVisible) {
+            // Double check: Wait a bit and verify the iframe still has content
+            // This prevents false positives from temporary iframe creation
+            setTimeout(() => {
+              const verifyIframe = container.querySelector('iframe');
+              if (verifyIframe) {
+                const verifyHeight = verifyIframe.offsetHeight || 0;
+                const verifySrc = verifyIframe.src || '';
+                if (verifyHeight >= 50 && verifySrc && verifySrc !== 'about:blank') {
+                  if (!adLoadedRef.current) {
+                    adLoadedRef.current = true;
+                    setAdLoaded(true);
+                    setLoading(false);
+                    if (checkIntervalRef.current) {
+                      clearInterval(checkIntervalRef.current);
+                      checkIntervalRef.current = null;
+                    }
+                  }
+                }
               }
-            }
+            }, 500);
             return;
           }
         }
         
-        // Also check for any content in the container (ads might render differently)
-        // Check if container has meaningful content (more than just scripts)
-        const children = Array.from(container.children);
-        const nonScriptChildren = children.filter(child => 
-          child.tagName !== 'SCRIPT' && 
-          child.tagName !== 'NOSCRIPT' &&
-          (child as HTMLElement).innerHTML.trim().length > 0
-        );
-        
-        if (nonScriptChildren.length > 0) {
-          // Check if any non-script child has visible content
-          const hasVisibleContent = nonScriptChildren.some((child) => {
-            const el = child as HTMLElement;
-            if (el.tagName === 'IFRAME') {
-              const iframeEl = el as HTMLIFrameElement;
-              return (iframeEl.offsetHeight > 10 || iframeEl.clientHeight > 10);
-            }
-            return el.offsetHeight > 10 || el.clientHeight > 10;
-          });
-          
-          if (hasVisibleContent && !adLoadedRef.current) {
-            adLoadedRef.current = true;
-            setAdLoaded(true);
-            setLoading(false);
-            if (checkIntervalRef.current) {
-              clearInterval(checkIntervalRef.current);
-              checkIntervalRef.current = null;
-            }
-            return;
-          }
-        }
+        // Don't check for non-script children - ads should be in iframes
+        // This prevents false positives from scripts or other elements
       } catch (e) {
         // Continue checking on error (cross-origin iframe access errors are normal)
         // Don't log errors as they're expected with cross-origin iframes
@@ -217,29 +216,36 @@ export default function AdsterraBanner({
 
           // Check for iframe after script loads
           invokeScript.onload = () => {
-            // Start checking immediately, then every 500ms
-            setTimeout(checkForAd, 500);
-            if (!checkIntervalRef.current) {
-              checkIntervalRef.current = setInterval(checkForAd, 500);
-            }
+            // Wait at least 2 seconds after script loads before checking
+            // Ads need time to render in iframes
+            setTimeout(() => {
+              checkForAd();
+              if (!checkIntervalRef.current) {
+                // Check every 1 second (slower than before to reduce false positives)
+                checkIntervalRef.current = setInterval(checkForAd, 1000);
+              }
+            }, 2000);
           };
 
           invokeScript.onerror = () => {
             // Don't set error state - keep checking for ads
             // Sometimes ads load even after script error
-            setTimeout(checkForAd, 500);
-            if (!checkIntervalRef.current) {
-              checkIntervalRef.current = setInterval(checkForAd, 500);
-            }
+            setTimeout(() => {
+              checkForAd();
+              if (!checkIntervalRef.current) {
+                checkIntervalRef.current = setInterval(checkForAd, 1000);
+              }
+            }, 2000);
           };
           
-          // Also start checking immediately (some ads load quickly)
+          // Start checking after a delay (ads need time to load)
+          // Don't check too early to avoid false positives
           setTimeout(() => {
-            checkForAd();
-            if (!checkIntervalRef.current) {
-              checkIntervalRef.current = setInterval(checkForAd, 500);
+            if (!adLoadedRef.current && !checkIntervalRef.current) {
+              checkForAd();
+              checkIntervalRef.current = setInterval(checkForAd, 1000);
             }
-          }, 1000);
+          }, 3000);
 
           // Append scripts to container
           container.appendChild(optionsScript);
@@ -252,13 +258,15 @@ export default function AdsterraBanner({
           if (process.env.NODE_ENV === 'development') {
             console.error(`Ad initialization error for ${label}:`, err);
           }
-          // Don't set error to true - keep trying to load
-          // Start checking anyway in case ad loads from elsewhere
-          setTimeout(() => {
-            if (!checkIntervalRef.current && containerRef.current) {
-              checkIntervalRef.current = setInterval(checkForAd, 500);
-            }
-          }, 1000);
+              // Don't set error to true - keep trying to load
+              // Start checking anyway in case ad loads from elsewhere
+              // But wait longer to avoid false positives
+              setTimeout(() => {
+                if (!checkIntervalRef.current && containerRef.current && !adLoadedRef.current) {
+                  checkForAd();
+                  checkIntervalRef.current = setInterval(checkForAd, 1000);
+                }
+              }, 3000);
         }
       }, delay);
     };
