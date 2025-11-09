@@ -16,6 +16,7 @@ import HowToUseGuide from './HowToUseGuide';
 import ConsentBanner from '@/components/ConsentBanner';
 import AdSlot from '@/components/AdSlot';
 import AdsterraBanner from '@/components/ads/AdsterraBanner';
+import SafeAdWrapper from '@/components/ads/SafeAdWrapper';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
 import EffectiveGateAd from '@/components/EffectiveGateAd';
 import { AD_KEYS, AD_SIZES } from '@/components/ads/AdConfig';
@@ -468,19 +469,21 @@ const OptionsDashboard = () => {
 
 
             {/* Ad Space - Below Expiry Countdown (Horizontal 1) */}
-            <div className="flex justify-center w-full">
-              <div className="w-full max-w-full sm:max-w-[728px]">
-                <div className="ad-container-transparent p-2 sm:p-3 rounded-xl text-center">
-                  <AdsterraBanner 
-                    adKey={AD_KEYS.BANNER_728x90}
-                    width={AD_SIZES.BANNER_728x90.width}
-                    height={AD_SIZES.BANNER_728x90.height}
-                    label="Banner 728x90"
-                    loadDelay={0}
-                  />
+            <SafeAdWrapper>
+              <div className="flex justify-center w-full">
+                <div className="w-full max-w-full sm:max-w-[728px]">
+                  <div className="ad-container-transparent p-2 sm:p-3 rounded-xl text-center">
+                    <AdsterraBanner 
+                      adKey={AD_KEYS.BANNER_728x90}
+                      width={AD_SIZES.BANNER_728x90.width}
+                      height={AD_SIZES.BANNER_728x90.height}
+                      label="Banner 728x90"
+                      loadDelay={0}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </SafeAdWrapper>
 
             {/* Volatility Indicators */}
             <VolatilityIndicators 
@@ -490,19 +493,21 @@ const OptionsDashboard = () => {
             />
 
             {/* Advertisement before Prediction Models (Horizontal 2) - 468x60 */}
-            <div className="w-full flex justify-center">
-              <div className="w-full max-w-[468px]">
-                <div className="ad-container-transparent p-2 sm:p-3 md:p-4 rounded-xl text-center">
-                  <AdsterraBanner 
-                    adKey={AD_KEYS.BANNER_468x60}
-                    width={AD_SIZES.BANNER_468x60.width}
-                    height={AD_SIZES.BANNER_468x60.height}
-                    label="Banner 468x60"
-                    loadDelay={500}
-                  />
+            <SafeAdWrapper>
+              <div className="w-full flex justify-center">
+                <div className="w-full max-w-[468px]">
+                  <div className="ad-container-transparent p-2 sm:p-3 md:p-4 rounded-xl text-center">
+                    <AdsterraBanner 
+                      adKey={AD_KEYS.BANNER_468x60}
+                      width={AD_SIZES.BANNER_468x60.width}
+                      height={AD_SIZES.BANNER_468x60.height}
+                      label="Banner 468x60"
+                      loadDelay={500}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </SafeAdWrapper>
 
             {/* Prediction Models */}
             <PredictionModels 
@@ -540,13 +545,15 @@ const OptionsDashboard = () => {
             />
 
             {/* Ad Space 2 - Sidebar (300x250) */}
-            <HighPerformanceAdSidebar 
-              adKey={AD_KEYS.RECTANGLE_300x250}
-              width={AD_SIZES.RECTANGLE_300x250.width}
-              height={AD_SIZES.RECTANGLE_300x250.height}
-              label="Rectangle 300x250"
-              loadDelay={1000}
-            />
+            <SafeAdWrapper>
+              <HighPerformanceAdSidebar 
+                adKey={AD_KEYS.RECTANGLE_300x250}
+                width={AD_SIZES.RECTANGLE_300x250.width}
+                height={AD_SIZES.RECTANGLE_300x250.height}
+                label="Rectangle 300x250"
+                loadDelay={1000}
+              />
+            </SafeAdWrapper>
 
             {/* Drift Direction Indicator */}
             <DriftDirectionIndicator 
@@ -556,13 +563,15 @@ const OptionsDashboard = () => {
             />
 
             {/* Ad Space 3 - Sidebar (320x50) */}
-            <HighPerformanceAdSidebar 
-              adKey={AD_KEYS.MOBILE_320x50}
-              width={AD_SIZES.MOBILE_320x50.width}
-              height={AD_SIZES.MOBILE_320x50.height}
-              label="Mobile Banner 320x50"
-              loadDelay={1500}
-            />
+            <SafeAdWrapper>
+              <HighPerformanceAdSidebar 
+                adKey={AD_KEYS.MOBILE_320x50}
+                width={AD_SIZES.MOBILE_320x50.width}
+                height={AD_SIZES.MOBILE_320x50.height}
+                label="Mobile Banner 320x50"
+                loadDelay={1500}
+              />
+            </SafeAdWrapper>
 
             {/* Momentum Strength Meter */}
             <MomentumStrengthMeter 
