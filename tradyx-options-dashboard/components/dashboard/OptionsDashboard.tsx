@@ -241,8 +241,19 @@ const OptionsDashboard = () => {
                 onClick={async () => {
                   console.log('🔄 Refresh button clicked...');
                   
-                  // Show refresh message
+                  // Show refresh message in bottom text
                   setRefreshMessage('Refreshed and Data Analyzed');
+                  
+                  // Show toast notification at top
+                  const toast = document.createElement('div');
+                  toast.textContent = 'Refreshed and ML Model Data Computed';
+                  toast.className = `fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg ${
+                    darkMode 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-green-500 text-white'
+                  } font-medium text-sm`;
+                  toast.style.animation = 'fadeIn 0.3s ease-in';
+                  document.body.appendChild(toast);
                   
                   // Clear cache without reloading
                   if ('caches' in window) {
@@ -255,7 +266,17 @@ const OptionsDashboard = () => {
                   const refreshKey = `refresh-smartlink-${Date.now()}`;
                   openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
                   
-                  // Clear message after 3 seconds
+                  // Remove toast after 5 seconds
+                  setTimeout(() => {
+                    toast.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                      if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                      }
+                    }, 300);
+                  }, 5000);
+                  
+                  // Clear bottom message after 3 seconds
                   setTimeout(() => {
                     setRefreshMessage(null);
                   }, 3000);
