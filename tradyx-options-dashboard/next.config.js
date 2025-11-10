@@ -63,6 +63,14 @@ const nextConfig = {
     } : false,
   },
   
+  // Disable Turbopack for Cloudflare Pages compatibility
+  // Turbopack can cause "WorkerError: Call retries were exceeded" in CI environments
+  // Production builds use webpack by default, but we explicitly disable Turbopack
+  experimental: {
+    // Don't use Turbopack - use webpack instead (more stable in CI)
+    turbo: false,
+  },
+  
   // Webpack optimizations for faster builds
   webpack: (config, { isServer }) => {
     if (!isServer) {
