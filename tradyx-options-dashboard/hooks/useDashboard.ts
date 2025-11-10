@@ -158,24 +158,29 @@ export function useDashboard() {
   const fetchData = useCallback(async (forceRefresh = false) => {
     setLoading(true);
     try {
-      // Add timestamp to bust cache on refresh - use random to force reload
-      // For force refresh, use a unique timestamp to ensure fresh fetch
-      const timestamp = forceRefresh ? Date.now() : Date.now();
-      const random = Math.random();
-      const url = `${FEED_URL}?t=${timestamp}&_=${random}&refresh=${forceRefresh ? 'true' : 'false'}`;
+      // Add timestamp to bust cache - always use current time to prevent caching
+      // Use unique timestamp + random to ensure fresh fetch every time
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).substring(7);
+      const url = `${FEED_URL}?t=${timestamp}&_=${random}&v=${Date.now()}&refresh=${forceRefresh ? 'true' : 'false'}`;
       
       // Force reload by adding no-cache headers and using reload mode
+      // Always use 'reload' to bypass cache completely
       const r = await fetch(url, { 
-        cache: forceRefresh ? 'reload' : 'no-store',
+        cache: 'no-store', // Always no-store to prevent any caching
         method: 'GET',
         headers: { 
-          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0, private',
           'Pragma': 'no-cache',
           'Expires': '0',
-          'If-Modified-Since': '0'
+          'If-Modified-Since': '0',
+          'If-None-Match': '*', // Prevent 304 responses
+          'X-Requested-With': 'XMLHttpRequest' // Some CDNs respect this
         },
-        // Force bypass cache for refresh
-        ...(forceRefresh && { credentials: 'omit' })
+        // Force bypass cache completely
+        credentials: 'omit',
+        // Add referrer policy to prevent cache issues
+        referrerPolicy: 'no-referrer'
       });
       
       if (!r.ok) {
