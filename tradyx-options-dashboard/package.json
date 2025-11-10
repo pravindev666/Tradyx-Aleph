@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && npm run postbuild",
-    "postbuild": "node scripts/copy-netlify-files.js",
+    "postbuild": "node scripts/copy-build-files.js",
     "start": "next start",
     "lint": "echo 'lint skipped on MVP'",
     "type-check": "tsc --noEmit",

@@ -29,6 +29,7 @@ const OptionsDashboard = () => {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [nextDeploymentTime, setNextDeploymentTime] = useState<Date | null>(null);
 
   useEffect(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyx-theme') : null;
@@ -67,7 +68,6 @@ const OptionsDashboard = () => {
     spotSeries,
     vixSeries,
     expiries,
-    refresh,
   } = useDashboard();
 
   // Sync dark mode with Tailwind
@@ -81,6 +81,64 @@ const OptionsDashboard = () => {
     setMounted(true);
     setCurrentTime(new Date());
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Calculate next deployment time (every 15 minutes during market hours)
+  useEffect(() => {
+    const calculateNextDeployment = () => {
+      const now = new Date();
+      const istNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+      
+      // Market hours: 9:15 AM - 3:30 PM IST (Monday-Friday)
+      const marketStart = new Date(istNow);
+      marketStart.setHours(9, 15, 0, 0);
+      
+      const marketEnd = new Date(istNow);
+      marketEnd.setHours(15, 30, 0, 0);
+      
+      // If outside market hours or weekend, show next market day
+      const dayOfWeek = istNow.getDay(); // 0 = Sunday, 5 = Friday
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      const isBeforeMarket = istNow < marketStart;
+      const isAfterMarket = istNow > marketEnd;
+      
+      if (isWeekend || isAfterMarket) {
+        // Next market day at 9:15 AM
+        const nextMarketDay = new Date(istNow);
+        const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
+        nextMarketDay.setDate(istNow.getDate() + daysUntilMonday);
+        nextMarketDay.setHours(9, 15, 0, 0);
+        setNextDeploymentTime(nextMarketDay);
+        return;
+      }
+      
+      if (isBeforeMarket) {
+        setNextDeploymentTime(marketStart);
+        return;
+      }
+      
+      // Within market hours - calculate next 15-minute interval
+      const minutes = istNow.getMinutes();
+      const remainder = minutes % 15;
+      const nextInterval = remainder === 0 ? 15 : (15 - remainder);
+      
+      const nextDeploy = new Date(istNow);
+      nextDeploy.setMinutes(minutes + nextInterval, 0, 0);
+      
+      // If next deployment is after market close, show next market day
+      if (nextDeploy > marketEnd) {
+        const nextMarketDay = new Date(istNow);
+        nextMarketDay.setDate(istNow.getDate() + 1);
+        nextMarketDay.setHours(9, 15, 0, 0);
+        setNextDeploymentTime(nextMarketDay);
+      } else {
+        setNextDeploymentTime(nextDeploy);
+      }
+    };
+    
+    calculateNextDeployment();
+    const interval = setInterval(calculateNextDeployment, 60000); // Update every minute
     return () => clearInterval(interval);
   }, []);
 
@@ -189,48 +247,38 @@ const OptionsDashboard = () => {
                 </div>
                 <button 
                   onClick={async () => {
-                    console.log('🔄 Refresh button clicked - fetching fresh data...');
-                    // Do the refresh first
-                    await refresh();
-                    // Open smartlink AFTER refresh completes (as a thank you)
-                    // Using a timestamp-based key so it can open multiple times
+                    console.log('🔄 Hard refresh button clicked - clearing cache and reloading...');
+                    
+                    // Open smartlink first (as thank you)
+                    const refreshKey = `hard-refresh-smartlink-${Date.now()}`;
+                    openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
+                    
+                    // Small delay to let smartlink open, then hard refresh
                     setTimeout(() => {
-                      const refreshKey = `refresh-smartlink-${Date.now()}`;
-                      openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
-                    }, 500); // Small delay to let refresh start
+                      // Hard refresh: clear cache and reload
+                      if ('caches' in window) {
+                        caches.keys().then(names => {
+                          names.forEach(name => caches.delete(name));
+                        });
+                      }
+                      // Force reload from server (bypass cache)
+                      window.location.reload();
+                    }, 300);
                   }}
-                  disabled={loading}
-                  className={`mt-2 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white text-blue-600'} px-4 py-1 rounded-full text-sm font-medium hover:opacity-80 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}>
-                  {loading ? (
-                    <svg 
-                      aria-hidden="true" 
-                      role="status" 
-                      className="inline w-4 h-4 text-white animate-spin dark:text-white" 
-                      viewBox="0 0 100 101" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path 
-                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" 
-                        fill="currentColor"
-                        opacity="0.3"
-                      />
-                      <path 
-                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" 
-                        fill="currentColor"
-                      />
-                    </svg>
-                  ) : (
-                    <RefreshCw size={14} />
-                  )} {loading ? 'Refreshing...' : 'Refresh'}
+                  className={`mt-2 ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-blue-600 hover:bg-blue-50'} px-4 py-1 rounded-full text-sm font-medium transition-colors flex items-center gap-2`}>
+                  <RefreshCw size={14} />
+                  Hard Refresh
                 </button>
-                {/* Hint text - neon green for visibility */}
-                <div className="mt-1.5 text-center">
-                  <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
-                    <span className="block">Refresh every 15 min for latest data</span>
-                    <span className="block mt-0.5">Click tiles to learn more</span>
-                  </p>
-                </div>
+                {/* Next deployment time */}
+                {nextDeploymentTime && mounted && (
+                  <div className="mt-1.5 text-center">
+                    <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
+                      <span className="block">Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST</span>
+                      <span className="block mt-0.5">Refresh To Get Latest Data</span>
+                      <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
+                    </p>
+                  </div>
+                )}
               </div>
           </div>
         </div>

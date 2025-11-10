@@ -93,11 +93,11 @@ jobs:
           echo "📋 Git status before add:"
           git status --short || true
           
-          # Add the public data file (Netlify serves from public/)
+          # Add the public data file (Cloudflare Pages serves from public/)
           git add "$DATA_FILE"
           
-          # Touch a file in base directory to ensure Netlify detects changes
-          # This forces Netlify to rebuild even if only data changed
+          # Touch a file in base directory to ensure Cloudflare detects changes
+          # This forces Cloudflare Pages to rebuild even if only data changed
           echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > tradyx-options-dashboard/.build-trigger
           
           # Also update a version file in the app directory to force rebuild
@@ -145,7 +145,7 @@ jobs:
             echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
             if git push origin "$CURRENT_BRANCH"; then
               echo "✅ Data updated and pushed successfully to origin/$CURRENT_BRANCH"
-              echo "🔄 Netlify/Cloudflare will auto-deploy on push"
+              echo "🔄 Cloudflare Pages will auto-deploy on push"
             else
               echo "❌ ERROR: Failed to push to origin/$CURRENT_BRANCH"
               echo "📋 Checking git remote configuration..."
@@ -160,14 +160,14 @@ jobs:
           fi
         continue-on-error: true
       
-      - name: Trigger Netlify rebuild
+      - name: Trigger Cloudflare Pages rebuild
         if: steps.commit.outputs.changed == 'true'
         run: |
-          if [ -n "${{ secrets.NETLIFY_BUILD_HOOK }}" ]; then
-            echo "🔄 Triggering Netlify rebuild..."
-            curl -X POST -d {} "${{ secrets.NETLIFY_BUILD_HOOK }}"
-            echo "✅ Netlify rebuild triggered"
+          if [ -n "${{ secrets.CLOUDFLARE_BUILD_HOOK }}" ]; then
+            echo "🔄 Triggering Cloudflare Pages rebuild..."
+            curl -X POST -d {} "${{ secrets.CLOUDFLARE_BUILD_HOOK }}"
+            echo "✅ Cloudflare Pages rebuild triggered"
           else
-            echo "⚠️ NETLIFY_BUILD_HOOK secret not set. Netlify will auto-deploy on push."
+            echo "ℹ️  CLOUDFLARE_BUILD_HOOK secret not set. Cloudflare Pages will auto-deploy on push."
           fi
         continue-on-error: true
