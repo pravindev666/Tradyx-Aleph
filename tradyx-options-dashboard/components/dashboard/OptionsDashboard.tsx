@@ -224,15 +224,15 @@ const OptionsDashboard = () => {
           <div className="flex flex-col items-center">
             {/* Top row: Next update (widest, centered) */}
             {nextDeploymentTime && mounted && (
-              <div className="text-sm mb-3 text-center">
+              <div className="text-sm mb-3 text-center w-full">
                 <span className={`${darkMode ? 'text-green-400' : 'text-green-200'}`}>
                   Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST
                 </span>
               </div>
             )}
             
-            {/* Middle row: Toggle and Refresh button (same line, narrower) */}
-            <div className="flex items-center gap-3 mb-3">
+            {/* Middle row: Toggle and Refresh button (same line, centered, narrower) */}
+            <div className="flex items-center justify-center gap-3 mb-3">
               <button onClick={() => setDarkMode(!darkMode)}
                 className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-white/20 hover:bg-white/30'} transition-colors`}>
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -242,7 +242,7 @@ const OptionsDashboard = () => {
                   console.log('🔄 Refresh button clicked...');
                   
                   // Show refresh message
-                  setRefreshMessage('Refreshed and Data Computed');
+                  setRefreshMessage('Refreshed and Data Analyzed');
                   
                   // Clear cache without reloading
                   if ('caches' in window) {
