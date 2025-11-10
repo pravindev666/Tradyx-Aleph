@@ -47,6 +47,21 @@ jobs:
         run: |
           cd tradyx-options-dashboard/scripts
           python run_all.py
+          
+          # Verify dashboard.json was created
+          echo "🔍 Verifying dashboard.json was created..."
+          if [ -f "../public/data/dashboard.json" ]; then
+            echo "✅ dashboard.json exists in public/data/"
+            echo "📊 File size: $(wc -c < ../public/data/dashboard.json) bytes"
+            echo "📅 File timestamp: $(stat -c %y ../public/data/dashboard.json 2>/dev/null || stat -f %Sm ../public/data/dashboard.json 2>/dev/null || echo 'unknown')"
+            # Show first few lines to verify it's valid JSON
+            head -n 5 ../public/data/dashboard.json
+          else
+            echo "❌ ERROR: dashboard.json NOT FOUND in public/data/"
+            echo "📁 Listing public/data/ directory:"
+            ls -la ../public/data/ || echo "Directory does not exist"
+            exit 1
+          fi
         env:
           TZ: Asia/Kolkata
       
@@ -56,8 +71,25 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
+          # Verify data file exists before committing
+          DATA_FILE="tradyx-options-dashboard/public/data/dashboard.json"
+          if [ ! -f "$DATA_FILE" ]; then
+            echo "❌ ERROR: $DATA_FILE does not exist!"
+            echo "📁 Listing public/data/ directory:"
+            ls -la tradyx-options-dashboard/public/data/ || echo "Directory does not exist"
+            exit 1
+          fi
+          
+          echo "📊 Checking data file status..."
+          echo "File size: $(wc -c < $DATA_FILE) bytes"
+          echo "File exists: ✅"
+          
+          # Show current git status
+          echo "📋 Git status before add:"
+          git status --short || true
+          
           # Add the public data file (Netlify serves from public/)
-          git add tradyx-options-dashboard/public/data/dashboard.json
+          git add "$DATA_FILE"
           
           # Touch a file in base directory to ensure Netlify detects changes
           # This forces Netlify to rebuild even if only data changed
@@ -69,12 +101,36 @@ jobs:
           git add tradyx-options-dashboard/.build-trigger
           git add tradyx-options-dashboard/app/.data-version.json
           
+          # Show what's staged
+          echo "📋 Staged files:"
+          git diff --staged --name-only || echo "No staged files"
+          
+          # Check if data file is in staged changes
+          if git diff --staged --name-only | grep -q "dashboard.json"; then
+            echo "✅ dashboard.json is staged for commit"
+          else
+            echo "⚠️  WARNING: dashboard.json is NOT staged!"
+            echo "📋 Checking if file changed:"
+            git diff "$DATA_FILE" || echo "No diff (file unchanged or not tracked)"
+            # Force add even if unchanged (to ensure it's committed)
+            git add -f "$DATA_FILE"
+            echo "✅ Force-added dashboard.json"
+          fi
+          
           # Check if there are changes
           if git diff --staged --quiet; then
-            echo "No changes to commit"
+            echo "⚠️  No changes to commit (all files unchanged)"
+            echo "📋 This might mean:"
+            echo "   - Data file wasn't updated by Python scripts"
+            echo "   - Or data is identical to previous run"
             echo "changed=false" >> $GITHUB_OUTPUT
           else
+            echo "✅ Changes detected, committing..."
             git commit -m "chore: update dashboard data [data refresh]"
+            
+            # Show what was committed
+            echo "📋 Committed files:"
+            git show --name-only --oneline HEAD | head -10
             
             # Push to current repository (Netlify)
             git push origin HEAD:main || git push origin HEAD:master

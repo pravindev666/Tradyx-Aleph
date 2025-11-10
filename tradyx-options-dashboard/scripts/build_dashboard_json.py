@@ -81,16 +81,45 @@ def main():
     public_data_dir = os.path.join("..", "public", "data")
     os.makedirs(public_data_dir, exist_ok=True)
     
-    with open("data/dashboard.json", "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
+    # Get absolute paths for better error messages
+    data_file = os.path.abspath("data/dashboard.json")
+    public_file = os.path.abspath(os.path.join(public_data_dir, "dashboard.json"))
     
-    with open(os.path.join(public_data_dir, "dashboard.json"), "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2)
-    
-    print(f"[OK] Dashboard JSON built successfully")
-    print(f"  - Saved to: data/dashboard.json")
-    print(f"  - Saved to: {public_data_dir}/dashboard.json")
-    print(f"  - Volatility Indicators: {'[OK]' if vol_indicators else '[MISSING]'}")
-    print(f"  - Predictions: {'[OK]' if predictions else '[MISSING]'}")
+    try:
+        # Write to scripts/data
+        with open("data/dashboard.json", "w", encoding="utf-8") as f:
+            json.dump(out, f, indent=2)
+        print(f"[OK] Saved to: {data_file}")
+        
+        # Write to public/data (for Next.js)
+        with open(os.path.join(public_data_dir, "dashboard.json"), "w", encoding="utf-8") as f:
+            json.dump(out, f, indent=2)
+        print(f"[OK] Saved to: {public_file}")
+        
+        # Verify files were written
+        if not os.path.exists("data/dashboard.json"):
+            print(f"[ERROR] File not found after write: {data_file}")
+            return
+        if not os.path.exists(os.path.join(public_data_dir, "dashboard.json")):
+            print(f"[ERROR] File not found after write: {public_file}")
+            return
+        
+        # Get file sizes
+        data_size = os.path.getsize("data/dashboard.json")
+        public_size = os.path.getsize(os.path.join(public_data_dir, "dashboard.json"))
+        
+        print(f"[OK] Dashboard JSON built successfully")
+        print(f"  - data/dashboard.json: {data_size} bytes")
+        print(f"  - public/data/dashboard.json: {public_size} bytes")
+        print(f"  - updatedAt: {out.get('updatedAt', 'MISSING')}")
+        print(f"  - spot: {out.get('spot', 'MISSING')}, vix: {out.get('vix', 'MISSING')}")
+        print(f"  - Volatility Indicators: {'[OK]' if vol_indicators else '[MISSING]'}")
+        print(f"  - Predictions: {'[OK]' if predictions else '[MISSING]'}")
+        
+    except Exception as e:
+        print(f"[ERROR] Failed to write dashboard.json: {e}")
+        import traceback
+        traceback.print_exc()
+        return
 if __name__ == "__main__":
     main()
