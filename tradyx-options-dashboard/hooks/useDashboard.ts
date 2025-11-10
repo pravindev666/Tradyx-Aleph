@@ -173,8 +173,8 @@ export function useDashboard() {
           'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0, private',
           'Pragma': 'no-cache',
           'Expires': '0',
-          'If-Modified-Since': '0',
-          'If-None-Match': '*', // Prevent 304 responses
+          // Remove If-Modified-Since and If-None-Match - they can trigger 304
+          // Instead, use unique URL parameters for cache busting
           'X-Requested-With': 'XMLHttpRequest' // Some CDNs respect this
         },
         // Force bypass cache completely
@@ -183,18 +183,80 @@ export function useDashboard() {
         referrerPolicy: 'no-referrer'
       });
       
-      if (!r.ok) {
-        const errorText = await r.text().catch(() => 'Unknown error');
-        console.error(`❌ Failed to fetch dashboard data: HTTP ${r.status}`, {
-          url,
-          status: r.status,
-          statusText: r.statusText,
-          error: errorText.substring(0, 200)
+      // Handle 304 (Not Modified) - retry with stronger cache-busting
+      // 304 means server says "use your cached version", but we want fresh data
+      let responseToUse = r;
+      if (r.status === 304) {
+        console.warn('⚠️ Received 304 (Not Modified), retrying with fresh cache-bust...');
+        const retryUrl = `${FEED_URL}?t=${Date.now()}&_=${Math.random().toString(36).substring(7)}&v=${Date.now()}&nocache=${Date.now()}&bypass=${Date.now()}`;
+        const retryResponse = await fetch(retryUrl, {
+          cache: 'reload', // Force reload
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          credentials: 'omit'
         });
-        throw new Error(`Failed to fetch data: HTTP ${r.status} - ${r.statusText}`);
+        
+        if (retryResponse.ok || retryResponse.status === 304) {
+          responseToUse = retryResponse;
+        } else {
+          const errorText = await retryResponse.text().catch(() => 'Unknown error');
+          console.error(`❌ Failed to fetch dashboard data (retry): HTTP ${retryResponse.status}`, {
+            url: retryUrl,
+            status: retryResponse.status,
+            statusText: retryResponse.statusText,
+            error: errorText.substring(0, 200)
+          });
+          throw new Error(`Failed to fetch data: HTTP ${retryResponse.status} - ${retryResponse.statusText}`);
+        }
       }
       
-      const responseText = await r.text();
+      if (!responseToUse.ok && responseToUse.status !== 304) {
+        const errorText = await responseToUse.text().catch(() => 'Unknown error');
+        console.error(`❌ Failed to fetch dashboard data: HTTP ${responseToUse.status}`, {
+          url,
+          status: responseToUse.status,
+          statusText: responseToUse.statusText,
+          error: errorText.substring(0, 200)
+        });
+        throw new Error(`Failed to fetch data: HTTP ${responseToUse.status} - ${responseToUse.statusText}`);
+      }
+      
+      // Handle 304 by fetching fresh data directly (bypass cache)
+      let responseText: string;
+      if (responseToUse.status === 304) {
+        // 304 means cached version is valid, but we want fresh data
+        // Fetch again with stronger cache-busting to bypass cache
+        const bypassUrl = `${FEED_URL}?nocache=${Date.now()}&_=${Math.random().toString(36).substring(7)}&force=${Date.now()}`;
+        const bypassResponse = await fetch(bypassUrl, {
+          method: 'GET',
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          credentials: 'omit'
+        });
+        
+        if (!bypassResponse.ok && bypassResponse.status !== 304) {
+          const errorText = await bypassResponse.text().catch(() => 'Unknown error');
+          console.error(`❌ Failed to fetch dashboard data (bypass): HTTP ${bypassResponse.status}`, {
+            url: bypassUrl,
+            status: bypassResponse.status,
+            statusText: bypassResponse.statusText,
+            error: errorText.substring(0, 200)
+          });
+          throw new Error(`Failed to fetch data: HTTP ${bypassResponse.status} - ${bypassResponse.statusText}`);
+        }
+        
+        responseText = await bypassResponse.text();
+      } else {
+        responseText = await responseToUse.text();
+      }
       if (!responseText || responseText.trim().length === 0) {
         console.error('❌ Empty response from data file');
         throw new Error('Empty response from data file');
