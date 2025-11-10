@@ -155,22 +155,42 @@ export function useDashboard() {
   const [loading, setLoading] = useState(true);
   const [stale, setStale] = useState<Stale>('hard');
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (forceRefresh = false) => {
     setLoading(true);
     try {
       // Add timestamp to bust cache on refresh - use random to force reload
-      const timestamp = Date.now();
-      const url = `${FEED_URL}?t=${timestamp}&_=${Math.random()}`;
+      // For force refresh, use a unique timestamp to ensure fresh fetch
+      const timestamp = forceRefresh ? Date.now() : Date.now();
+      const random = Math.random();
+      const url = `${FEED_URL}?t=${timestamp}&_=${random}&refresh=${forceRefresh ? 'true' : 'false'}`;
+      
+      // Force reload by adding no-cache headers and using reload mode
       const r = await fetch(url, { 
-        cache: 'no-store', 
+        cache: forceRefresh ? 'reload' : 'no-store',
+        method: 'GET',
         headers: { 
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
           'Pragma': 'no-cache',
-          'Expires': '0'
-        } 
+          'Expires': '0',
+          'If-Modified-Since': '0'
+        },
+        // Force bypass cache for refresh
+        ...(forceRefresh && { credentials: 'omit' })
       });
-      if (!r.ok) throw new Error(`http ${r.status}`);
+      
+      if (!r.ok) {
+        console.error(`Failed to fetch dashboard data: HTTP ${r.status}`);
+        throw new Error(`http ${r.status}`);
+      }
+      
       const j = (await r.json()) as DashboardJson;
+      
+      // Log when data was actually fetched
+      console.log('📊 Dashboard data fetched:', {
+        updatedAt: j.updatedAt,
+        fetchedAt: new Date().toISOString(),
+        forceRefresh
+      });
       
       // Transform Python data to match expected format
       const transformed: DashboardJson = {
@@ -208,9 +228,19 @@ export function useDashboard() {
       }
       
       setData(transformed);
-      setStale(computeStale(j.updatedAt));
+      const newStale = computeStale(j.updatedAt);
+      setStale(newStale);
+      
+      // Log the update status
+      if (forceRefresh) {
+        console.log('✅ Refresh complete:', {
+          updatedAt: j.updatedAt,
+          staleStatus: newStale,
+          ageMinutes: j.updatedAt ? Math.round((Date.now() - Date.parse(j.updatedAt)) / 60000) : 'unknown'
+        });
+      }
     } catch (e) {
-      console.error('Failed to fetch dashboard data:', e);
+      console.error('❌ Failed to fetch dashboard data:', e);
       setData(null);
       setStale('hard');
     } finally {
@@ -232,7 +262,9 @@ export function useDashboard() {
   const expiries = useMemo(() => buildExpiries(new Date()), []);
 
   const refresh = useCallback(async () => {
-    await fetchData();
+    console.log('🔄 Manual refresh triggered - forcing fresh data fetch');
+    // Force refresh with cache bypass
+    await fetchData(true);
   }, [fetchData]);
 
   return {
