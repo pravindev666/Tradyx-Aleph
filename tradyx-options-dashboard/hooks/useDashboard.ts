@@ -184,11 +184,38 @@ export function useDashboard() {
       });
       
       if (!r.ok) {
-        console.error(`Failed to fetch dashboard data: HTTP ${r.status}`);
-        throw new Error(`http ${r.status}`);
+        const errorText = await r.text().catch(() => 'Unknown error');
+        console.error(`❌ Failed to fetch dashboard data: HTTP ${r.status}`, {
+          url,
+          status: r.status,
+          statusText: r.statusText,
+          error: errorText.substring(0, 200)
+        });
+        throw new Error(`Failed to fetch data: HTTP ${r.status} - ${r.statusText}`);
       }
       
-      const j = (await r.json()) as DashboardJson;
+      const responseText = await r.text();
+      if (!responseText || responseText.trim().length === 0) {
+        console.error('❌ Empty response from data file');
+        throw new Error('Empty response from data file');
+      }
+      
+      let j: DashboardJson;
+      try {
+        j = JSON.parse(responseText) as DashboardJson;
+      } catch (parseError) {
+        console.error('❌ Failed to parse JSON:', {
+          error: parseError,
+          responsePreview: responseText.substring(0, 200)
+        });
+        throw new Error('Invalid JSON response');
+      }
+      
+      // Validate data structure
+      if (!j || typeof j !== 'object') {
+        console.error('❌ Invalid data structure:', j);
+        throw new Error('Invalid data structure');
+      }
       
       // Log when data was actually fetched
       console.log('📊 Dashboard data fetched:', {
@@ -244,10 +271,26 @@ export function useDashboard() {
           ageMinutes: j.updatedAt ? Math.round((Date.now() - Date.parse(j.updatedAt)) / 60000) : 'unknown'
         });
       }
-    } catch (e) {
-      console.error('❌ Failed to fetch dashboard data:', e);
+    } catch (e: any) {
+      console.error('❌ Failed to fetch dashboard data:', {
+        error: e,
+        message: e?.message,
+        url: FEED_URL,
+        stack: process.env.NODE_ENV === 'development' ? e?.stack : undefined
+      });
+      
+      // Set error state for UI
       setData(null);
       setStale('hard');
+      
+      // In development, show more details
+      if (process.env.NODE_ENV === 'development') {
+        console.error('💡 Debug info:', {
+          feedUrl: FEED_URL,
+          fullUrl: `${FEED_URL}?t=${Date.now()}`,
+          suggestion: 'Check if /data/dashboard.json exists in build output'
+        });
+      }
     } finally {
       setLoading(false);
     }
