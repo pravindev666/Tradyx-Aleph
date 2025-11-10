@@ -7,7 +7,9 @@ const nextConfig = {
   poweredByHeader: false,
   
   // Image optimization
+  // Disable image optimization for static export (works on all platforms)
   images: {
+    unoptimized: true, // Required for static export (Netlify, Cloudflare, Vercel static)
     formats: ['image/avif', 'image/webp'],
     domains: [],
   },
@@ -46,12 +48,18 @@ const nextConfig = {
   },
   
   // Output configuration
-  output: 'standalone',
+  // Use 'export' for static hosting (works on Netlify, Cloudflare Pages, Vercel static)
+  // This creates a fully static site that works on all platforms
+  output: 'export',
+  
+  // Disable trailing slash for better compatibility
+  trailingSlash: false,
   
   // Experimental features for production
-  experimental: {
-    optimizeCss: true,
-  },
+  // Note: Some experimental features may not work with static export
+  // experimental: {
+  //   optimizeCss: true,
+  // },
 }
 
 module.exports = nextConfig
