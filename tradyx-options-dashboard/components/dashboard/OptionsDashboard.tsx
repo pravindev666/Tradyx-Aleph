@@ -508,11 +508,12 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* 728x90 Ad - Hidden initially, shows automatically when ad loads */}
+            {/* 728x90 Ad - Desktop Only (mobileHide) */}
             <div 
               id="ad-728x90-container"
+              className="mobileHide"
               style={{ 
-                display: 'none', // Hidden initially
+                display: 'block',
                 position: 'relative',
                 width: '100%',
                 minHeight: '110px',
@@ -526,16 +527,16 @@ const OptionsDashboard = () => {
                     width={AD_SIZES.BANNER_728x90.width}
                     height={AD_SIZES.BANNER_728x90.height}
                     label="Banner 728x90"
-                    loadDelay={2000}
+                    loadDelay={0}
                   />
                 </div>
               </div>
             </div>
 
-            {/* Advertisement above Prediction Models (Horizontal 2) - 468x60 - Increased Size */}
+            {/* Advertisement above Prediction Models (Horizontal 2) - 468x60 - Responsive */}
             <SafeAdWrapper>
               <div className="w-full flex justify-center my-4">
-                <div className="w-full max-w-[550px]">
+                <div className="w-full max-w-[550px] mobileHide">
                   <div className="ad-container-transparent p-3 sm:p-4 md:p-5 rounded-xl text-center" style={{ minHeight: '80px' }}>
                     <AdsterraBanner 
                       adKey={AD_KEYS.BANNER_468x60}
@@ -555,6 +556,22 @@ const OptionsDashboard = () => {
               darkMode={darkMode}
               onOpenModal={openModal}
             />
+
+            {/* Native Ad Banner - Content-like ad that blends with page content */}
+            <SafeAdWrapper>
+              <div className="w-full my-6 px-4">
+                <div className={`${darkMode ? 'bg-zinc-900/50' : 'bg-white/60'} rounded-lg p-4 border ${darkMode ? 'border-white/10' : 'border-gray-200'}`}>
+                  <AdsterraBanner 
+                    adKey={AD_KEYS.RECTANGLE_300x250}
+                    width={AD_SIZES.RECTANGLE_300x250.width}
+                    height={AD_SIZES.RECTANGLE_300x250.height}
+                    label="Native Ad Banner (300x250)"
+                    loadDelay={0}
+                    className="mx-auto"
+                  />
+                </div>
+              </div>
+            </SafeAdWrapper>
 
             {/* How to Use Guide */}
             <HowToUseGuide darkMode={darkMode} />
@@ -584,15 +601,17 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Ad Space 2 - Sidebar (300x250) */}
+            {/* Ad Space 2 - Sidebar (300x250) - Desktop Only */}
             <SafeAdWrapper>
-              <HighPerformanceAdSidebar 
-                adKey={AD_KEYS.RECTANGLE_300x250}
-                width={AD_SIZES.RECTANGLE_300x250.width}
-                height={AD_SIZES.RECTANGLE_300x250.height}
-                label="Rectangle 300x250"
-                loadDelay={1000}
-              />
+              <div className="mobileHide">
+                <HighPerformanceAdSidebar 
+                  adKey={AD_KEYS.RECTANGLE_300x250}
+                  width={AD_SIZES.RECTANGLE_300x250.width}
+                  height={AD_SIZES.RECTANGLE_300x250.height}
+                  label="Rectangle 300x250"
+                  loadDelay={0}
+                />
+              </div>
             </SafeAdWrapper>
 
             {/* Drift Direction Indicator */}
@@ -602,15 +621,17 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Ad Space 3 - Sidebar (320x50) */}
+            {/* Ad Space 3 - Sidebar (320x50) - Mobile Only (mobileShow) */}
             <SafeAdWrapper>
-              <HighPerformanceAdSidebar 
-                adKey={AD_KEYS.MOBILE_320x50}
-                width={AD_SIZES.MOBILE_320x50.width}
-                height={AD_SIZES.MOBILE_320x50.height}
-                label="Mobile Banner 320x50"
-                loadDelay={1500}
-              />
+              <div className="mobileShow">
+                <HighPerformanceAdSidebar 
+                  adKey={AD_KEYS.MOBILE_320x50}
+                  width={AD_SIZES.MOBILE_320x50.width}
+                  height={AD_SIZES.MOBILE_320x50.height}
+                  label="Mobile Banner 320x50"
+                  loadDelay={0}
+                />
+              </div>
             </SafeAdWrapper>
 
             {/* Momentum Strength Meter */}

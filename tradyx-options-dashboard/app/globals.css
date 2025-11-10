@@ -34,6 +34,47 @@ html,body{
   .animate-pulse { animation: none !important; }
 }
 
+/* Responsive Ad Banner Styles - Mobile/Desktop */
+.mobileShow {
+  display: none !important;
+}
+
+/* Smartphone Portrait and Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px) {
+  .mobileShow {
+    display: block !important;
+  }
+}
+
+/* Also show on small screens (tablets/mobile) */
+@media (max-width: 768px) {
+  .mobileShow {
+    display: block !important;
+  }
+}
+
+.mobileHide {
+  display: block;
+}
+
+/* Hide on smartphone Portrait and Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px) {
+  .mobileHide {
+    display: none !important;
+  }
+}
+
+/* Also hide on small screens (tablets/mobile) */
+@media (max-width: 768px) {
+  .mobileHide {
+    display: none !important;
+  }
+}
+
 /* Blue backlit hover effect for tiles - border glow around edges */
 .tile-hover-gold {
   transition: all 0.3s ease;

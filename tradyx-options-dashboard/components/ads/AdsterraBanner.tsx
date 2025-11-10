@@ -179,6 +179,7 @@ export default function AdsterraBanner({
           // Check if src contains ad network domains
           const hasAdDomain = iframeSrc && (
             iframeSrc.includes('adsterra') || 
+            iframeSrc.includes('honeywhyvowel') ||
             iframeSrc.includes('highperformanceformat') ||
             iframeSrc.includes('effectivegate') ||
             iframeSrc.includes('adsterra.net') ||
@@ -571,14 +572,15 @@ export default function AdsterraBanner({
           // Create invoke script
           const invokeScript = document.createElement('script');
           invokeScript.type = 'text/javascript';
-          invokeScript.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
+          // Use protocol-relative URL for Adsterra (honeywhyvowel.com)
+          invokeScript.src = `//honeywhyvowel.com/${adKey}/invoke.js`;
           invokeScript.async = true;
           invokeScript.defer = false; // Don't defer - load immediately
           invokeScript.crossOrigin = 'anonymous';
           
           // Debug: Log script URL
           if (process.env.NODE_ENV === 'development') {
-            console.log(`📡 Loading ad script for ${label}:`, `https://www.highperformanceformat.com/${adKey}/invoke.js`);
+            console.log(`📡 Loading ad script for ${label}:`, `//honeywhyvowel.com/${adKey}/invoke.js`);
           }
           
           // For 728x90 and 468x60, load immediately - these banners need faster loading
@@ -651,7 +653,7 @@ export default function AdsterraBanner({
           invokeScript.onerror = (error) => {
             // Log error for debugging (always log to help identify issues)
             console.warn(`⚠️ Ad script failed to load for ${label} (${adKey}):`, error);
-            console.warn(`   Script URL: https://www.highperformanceformat.com/${adKey}/invoke.js`);
+            console.warn(`   Script URL: //honeywhyvowel.com/${adKey}/invoke.js`);
             console.warn(`   Possible causes: Ad blocker, network issue, or invalid ad key`);
             // Don't set error state - keep checking for ads
             // Sometimes ads load even after script error
