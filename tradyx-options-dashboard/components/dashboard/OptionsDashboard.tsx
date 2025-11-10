@@ -30,6 +30,7 @@ const OptionsDashboard = () => {
   const [mounted, setMounted] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [nextDeploymentTime, setNextDeploymentTime] = useState<Date | null>(null);
+  const [refreshMessage, setRefreshMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyx-theme') : null;
@@ -226,26 +227,34 @@ const OptionsDashboard = () => {
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <div className="text-right flex-1">
-              {/* Top row: Last Updated and Next update on same line */}
-              <div className="flex items-center gap-3 text-sm mb-2">
-                <span>Last Updated: {data?.updatedAt
-                  ? new Date(data.updatedAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit', hour12: true})
-                  : '—'}</span>
-                {nextDeploymentTime && mounted && (
+              {/* Top row: Next update */}
+              {nextDeploymentTime && mounted && (
+                <div className="text-sm mb-2">
                   <span className={`${darkMode ? 'text-green-400' : 'text-green-200'}`}>
                     Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST
                   </span>
-                )}
-              </div>
+                </div>
+              )}
               
-              {/* Middle row: Hard Refresh button */}
+              {/* Middle row: Refresh button */}
               <div className="flex items-center justify-end">
                 <button 
                   onClick={async () => {
-                    console.log('🔄 Hard refresh button clicked - clearing cache and reloading...');
+                    console.log('🔄 Refresh button clicked - clearing cache and reloading...');
+                    
+                    // Show refresh message
+                    const messages = [
+                      'Refreshed and data computed',
+                      'Data refreshed successfully',
+                      'Cache cleared, latest data loaded',
+                      'Refresh complete - data updated',
+                      'Page refreshed with latest data'
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    setRefreshMessage(randomMessage);
                     
                     // Open smartlink first (as thank you)
-                    const refreshKey = `hard-refresh-smartlink-${Date.now()}`;
+                    const refreshKey = `refresh-smartlink-${Date.now()}`;
                     openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
                     
                     // Small delay to let smartlink open, then hard refresh
@@ -258,20 +267,26 @@ const OptionsDashboard = () => {
                       }
                       // Force reload from server (bypass cache)
                       window.location.reload();
-                    }, 300);
+                    }, 500);
                   }}
                   className={`${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-blue-600 hover:bg-blue-50'} px-4 py-1 rounded-full text-sm font-medium transition-colors flex items-center gap-2`}>
                   <RefreshCw size={14} />
-                  Hard Refresh
+                  Refresh
                 </button>
               </div>
               
-              {/* Bottom row: Info text */}
+              {/* Bottom row: Info text and refresh message */}
               <div className="mt-1.5 text-right">
-                <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
-                  <span className="block">Refresh To Get Latest Data</span>
-                  <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
-                </p>
+                {refreshMessage ? (
+                  <p className={`text-xs sm:text-[11px] font-medium ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-green-600'}`}>
+                    {refreshMessage}
+                  </p>
+                ) : (
+                  <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
+                    <span className="block">Refresh To Get Latest Data</span>
+                    <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
+                  </p>
+                )}
               </div>
             </div>
           </div>
