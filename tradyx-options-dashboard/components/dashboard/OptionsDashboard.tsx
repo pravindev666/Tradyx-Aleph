@@ -119,10 +119,10 @@ const OptionsDashboard = () => {
         return;
       }
       
-      // Within market hours - calculate next 15-minute interval
+      // Within market hours - calculate next 30-minute interval
       const minutes = istNow.getMinutes();
-      const remainder = minutes % 15;
-      const nextInterval = remainder === 0 ? 15 : (15 - remainder);
+      const remainder = minutes % 30;
+      const nextInterval = remainder === 0 ? 30 : (30 - remainder);
       
       const nextDeploy = new Date(istNow);
       nextDeploy.setMinutes(minutes + nextInterval, 0, 0);
@@ -721,10 +721,10 @@ const OptionsDashboard = () => {
 
       <div className={`${darkMode ? 'bg-gray-950' : 'bg-gray-800'} text-gray-300 px-6 py-4 mt-12 relative z-10`}>
         <div className="max-w-7xl mx-auto text-center text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-3 sm:py-4 space-y-1">
-          <p className="text-sm font-semibold">Data Sources: NSE India, Yahoo Finance (yFinance API)</p>
+          <p className="text-sm font-semibold">Data Sources: NSE India, Yahoo Finance</p>
           <p className="text-xs text-gray-400">Analytics and derived models © Tradyx Quant Dashboard Engine v1.0.0</p>
           <p className="text-xs text-gray-400">Market data © respective owners. Tradyx Analytics is unaffiliated with NSE or Yahoo.</p>
-          <p className="text-xs text-gray-400">Market data may be delayed up to 15 minutes. For educational use only.</p>
+          <p className="text-xs text-gray-400">Market data may be delayed up to 30 minutes. For educational use only.</p>
           <p className="text-xs text-gray-400">Operated by Tradyx Analytics (Individual Proprietorship, India) | © 2025 Pravin A. Mathew | All Rights Reserved.</p>
           <p className="text-xs text-gray-400">
             <a href="mailto:support@tradyx.in" className="hover:text-blue-400 underline">support@tradyx.in</a> | Jurisdiction: Chennai, Tamil Nadu | Version: v1.0.0

@@ -2,11 +2,11 @@ name: Update Dashboard Data
 
 on:
   schedule:
-    # Run every 15 minutes during market hours (IST: 9:15 AM - 3:30 PM)
+    # Run every 30 minutes during market hours (IST: 9:15 AM - 3:30 PM)
     # UTC: 3:45 AM - 10:00 AM (IST is UTC+5:30)
-    # Using compact pattern: start at 3:45, then every 15 min from 4:00-9:45, then 10:00
+    # Using pattern: start at 3:45, then every 30 min from 4:00-9:30, then 10:00
     - cron: '45 3 * * 1-5'                # 3:45 UTC = 9:15 IST (start)
-    - cron: '0,15,30,45 4-9 * * 1-5'      # Every 15 min from 4:00-9:45 UTC (9:30-15:15 IST)
+    - cron: '0,30 4-9 * * 1-5'            # Every 30 min from 4:00-9:30 UTC (9:30-15:00 IST)
     - cron: '0 10 * * 1-5'                # 10:00 UTC = 15:30 IST (end)
   workflow_dispatch:
 

@@ -107,7 +107,7 @@ export default function TermsPage() {
             <p className={`${textSecondary} leading-relaxed`}>
               Market data © respective owners. Tradyx Analytics is <strong>not affiliated</strong> with
               NSE India or Yahoo Finance. Derived analytics and computed indicators are © Tradyx Analytics.
-              Market data may be delayed up to 15 minutes.
+              Market data may be delayed up to 30 minutes.
             </p>
           </section>
 

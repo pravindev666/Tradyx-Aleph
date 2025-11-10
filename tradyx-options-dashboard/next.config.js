@@ -55,11 +55,26 @@ const nextConfig = {
   // Disable trailing slash for better compatibility
   trailingSlash: false,
   
-  // Experimental features for production
-  // Note: Some experimental features may not work with static export
-  // experimental: {
-  //   optimizeCss: true,
-  // },
+  // Compiler optimizations
+  compiler: {
+    // Remove console.log in production (keep errors/warnings)
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
+  
+  // Webpack optimizations for faster builds
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Optimize client bundle
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+        runtimeChunk: 'single',
+      };
+    }
+    return config;
+  },
 }
 
 module.exports = nextConfig

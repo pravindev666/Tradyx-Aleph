@@ -89,7 +89,7 @@ export default function AboutPage() {
             </h2>
             <div className={`${textSecondary} space-y-2`}>
               <p><strong>Frontend:</strong> Next.js 16, React 18, TypeScript, Tailwind CSS</p>
-              <p><strong>Data Sources:</strong> NSE India API, Yahoo Finance (yFinance)</p>
+              <p><strong>Data Sources:</strong> NSE India API, Yahoo Finance</p>
               <p><strong>Analytics Engine:</strong> Python (pandas, numpy, scikit-learn, statsmodels, TensorFlow/Keras)</p>
               <p><strong>Machine Learning Models:</strong> Linear Regression, Logistic Regression, Random Forest, Quantile Regression, LSTM</p>
               <p><strong>Hosting:</strong> Vercel</p>
@@ -108,7 +108,7 @@ export default function AboutPage() {
               <p><strong>Yahoo Finance:</strong> Market data, VIX, historical OHLC data</p>
               <p className="text-sm text-gray-500 mt-2">
                 Market data © respective owners. Tradyx Analytics is unaffiliated with NSE India or Yahoo Finance. 
-                Market data may be delayed up to 15 minutes.
+                Market data may be delayed up to 30 minutes.
               </p>
             </div>
           </section>
