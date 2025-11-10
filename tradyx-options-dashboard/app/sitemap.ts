@@ -1,5 +1,8 @@
 import { MetadataRoute } from 'next';
 
+// Required for static export (Netlify, Cloudflare, Vercel static)
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://tradyx.vercel.app';
   

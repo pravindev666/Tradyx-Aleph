@@ -10,7 +10,8 @@
   
   # Publish directory (where Next.js outputs static files)
   # Next.js with output: 'export' creates 'out' directory
-  publish = "tradyx-options-dashboard/out"
+  # Note: Since base is already 'tradyx-options-dashboard', publish is just 'out'
+  publish = "out"
   
   # Functions directory (not needed for static site)
   # functions = "netlify/functions"
