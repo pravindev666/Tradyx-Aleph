@@ -18,6 +18,9 @@
   
   # Ignore build cache to ensure fresh builds when data changes
   ignore = ".git"
+  
+  # Force rebuild on every deploy (don't skip builds)
+  skip_processing = false
 
 [build.environment]
   # Node.js version
@@ -55,8 +58,12 @@
     Cache-Control = "public, max-age=31536000, immutable"
 
 # Cache data files (but allow refresh)
+# Set very short cache to ensure fresh data
 [[headers]]
   for = "/data/*"
   [headers.values]
-    Cache-Control = "public, max-age=60, must-revalidate"
+    Cache-Control = "no-cache, no-store, must-revalidate, max-age=0"
+    Pragma = "no-cache"
+    Expires = "0"
+    X-Content-Type-Options = "nosniff"
 

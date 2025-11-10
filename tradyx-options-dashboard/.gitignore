@@ -57,3 +57,4 @@ Thumbs.db
 
 # Build trigger (keep in git to force Netlify rebuilds)
 !.build-trigger
+!app/.data-version.json

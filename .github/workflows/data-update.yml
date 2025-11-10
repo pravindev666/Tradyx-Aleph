@@ -62,7 +62,12 @@ jobs:
           # Touch a file in base directory to ensure Netlify detects changes
           # This forces Netlify to rebuild even if only data changed
           echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > tradyx-options-dashboard/.build-trigger
+          
+          # Also update a version file in the app directory to force rebuild
+          echo "{\"version\":\"$(date +%s)\",\"updated\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > tradyx-options-dashboard/app/.data-version.json
+          
           git add tradyx-options-dashboard/.build-trigger
+          git add tradyx-options-dashboard/app/.data-version.json
           
           # Check if there are changes
           if git diff --staged --quiet; then
