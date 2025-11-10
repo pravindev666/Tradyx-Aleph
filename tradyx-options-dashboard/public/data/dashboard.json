@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-10T12:21:49.568655+00:00",
+  "updatedAt": "2025-11-10T14:12:08.934735+00:00",
   "spot": 25574.35,
   "vix": 12.3,
   "spotSeries": [
@@ -246,42 +246,42 @@
     12.319999694824219,
     12.3149995803833
   ],
-  "pcr": 0.98,
+  "pcr": 0.99,
   "maxPain": 25600,
   "atmStrike": 25550,
   "oi": {
     "callsTop": [
       {
         "strike": 25700,
-        "oi": 214557,
-        "change": 34.2
+        "oi": 208003,
+        "change": 32.1
       },
       {
         "strike": 26000,
-        "oi": 182174,
-        "change": -10.5
+        "oi": 179410,
+        "change": -12.2
       },
       {
         "strike": 25800,
-        "oi": 158429,
-        "change": 23.0
+        "oi": 155081,
+        "change": 21.3
       }
     ],
     "putsTop": [
       {
         "strike": 25500,
-        "oi": 191303,
-        "change": 48.7
+        "oi": 182347,
+        "change": 46.2
       },
       {
         "strike": 25000,
-        "oi": 181744,
-        "change": 17.1
+        "oi": 177554,
+        "change": 15.1
       },
       {
         "strike": 25400,
-        "oi": 169474,
-        "change": 16.5
+        "oi": 165086,
+        "change": 14.2
       }
     ]
   },
@@ -345,6 +345,10 @@
   ],
   "ivSkew": [
     {
+      "strike": 17000,
+      "iv": 43.04
+    },
+    {
       "strike": 18000,
       "iv": 49.74
     },
@@ -358,56 +362,52 @@
     },
     {
       "strike": 20000,
+      "iv": 30.94
+    },
+    {
+      "strike": 20000,
       "iv": 23.06
+    },
+    {
+      "strike": 20000,
+      "iv": 20.48
+    },
+    {
+      "strike": 20000,
+      "iv": 20.84
+    },
+    {
+      "strike": 21000,
+      "iv": 26.71
     },
     {
       "strike": 21000,
       "iv": 20.6
     },
     {
+      "strike": 21000,
+      "iv": 18.91
+    },
+    {
+      "strike": 21000,
+      "iv": 19.39
+    },
+    {
+      "strike": 22000,
+      "iv": 22.1
+    },
+    {
       "strike": 22000,
       "iv": 18.12
     },
     {
-      "strike": 22750,
-      "iv": 25.81
-    },
-    {
-      "strike": 22800,
-      "iv": 36.6
-    },
-    {
-      "strike": 22850,
-      "iv": 25.24
-    },
-    {
-      "strike": 22850,
-      "iv": 18.58
-    },
-    {
-      "strike": 23000,
-      "iv": 16.45
-    },
-    {
-      "strike": 23000,
-      "iv": 17.21
-    },
-    {
-      "strike": 23400,
-      "iv": 37.46
-    },
-    {
-      "strike": 23500,
-      "iv": 20.42
-    },
-    {
-      "strike": 23550,
-      "iv": 20.05
+      "strike": 22000,
+      "iv": 16.76
     }
   ],
   "whaleAlerts": [
     {
-      "time": "12:21:42",
+      "time": "14:12:01",
       "strike": 25600,
       "type": "PE",
       "volume": 9363009,
@@ -415,7 +415,7 @@
       "action": "BUY"
     },
     {
-      "time": "12:21:42",
+      "time": "14:12:01",
       "strike": 25650,
       "type": "CE",
       "volume": 7682086,
@@ -423,7 +423,7 @@
       "action": "BUY"
     },
     {
-      "time": "12:21:42",
+      "time": "14:12:01",
       "strike": 25700,
       "type": "CE",
       "volume": 7385525,
@@ -431,7 +431,7 @@
       "action": "BUY"
     },
     {
-      "time": "12:21:42",
+      "time": "14:12:01",
       "strike": 25500,
       "type": "PE",
       "volume": 6689366,
@@ -439,7 +439,7 @@
       "action": "BUY"
     },
     {
-      "time": "12:21:42",
+      "time": "14:12:01",
       "strike": 25550,
       "type": "PE",
       "volume": 6102281,
@@ -449,7 +449,7 @@
   ],
   "ivRank": 18.7,
   "magnetPct": -0.1,
-  "oiMomentum": 64.5,
+  "oiMomentum": 58.4,
   "predictions": {},
   "mlPredictions": {
     "nextDayBias": -0.01,
@@ -461,9 +461,9 @@
     "predictedRangeUpper": 1.08,
     "predictedRangeLower": -1.37,
     "predictedRangeRegime": "Neutral",
-    "volatilityRegimeForecast": 12.66,
-    "volatilityRegimeForecastCategory": "Calm",
-    "updatedAt": "2025-11-10T12:21:48.685574+00:00"
+    "volatilityRegimeForecast": 13.32,
+    "volatilityRegimeForecastCategory": "Normal",
+    "updatedAt": "2025-11-10T14:12:07.979801+00:00"
   },
   "volatilityIndicators": {
     "realizedVol": 7.59,
@@ -479,7 +479,7 @@
     "rangeCompressionIndex": 1.07,
     "volatilityRiskPremium": 0.0094,
     "vrpSlope": 0.0108,
-    "updatedAt": "2025-11-10T12:21:42.518950+00:00"
+    "updatedAt": "2025-11-10T14:12:01.299394+00:00"
   },
   "ohlc": {
     "open": 25503.5,
