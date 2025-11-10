@@ -247,13 +247,25 @@ const OptionsDashboard = () => {
                   // Show toast notification at top
                   const toast = document.createElement('div');
                   toast.textContent = 'Refreshed and ML Model Data Computed';
-                  toast.className = `fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-6 py-3 rounded-lg shadow-lg ${
-                    darkMode 
-                      ? 'bg-green-600 text-white' 
-                      : 'bg-green-500 text-white'
-                  } font-medium text-sm`;
-                  toast.style.animation = 'fadeIn 0.3s ease-in';
+                  toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 9999;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    background-color: ${darkMode ? '#16a34a' : '#22c55e'};
+                    color: white;
+                    font-weight: 500;
+                    font-size: 14px;
+                    white-space: nowrap;
+                    animation: fadeIn 0.3s ease-in;
+                  `;
                   document.body.appendChild(toast);
+                  
+                  console.log('✅ Toast notification created and added to DOM');
                   
                   // Clear cache without reloading
                   if ('caches' in window) {
@@ -272,6 +284,7 @@ const OptionsDashboard = () => {
                     setTimeout(() => {
                       if (toast.parentNode) {
                         toast.parentNode.removeChild(toast);
+                        console.log('✅ Toast notification removed');
                       }
                     }, 300);
                   }, 5000);
