@@ -4,35 +4,10 @@ on:
   schedule:
     # Run every 15 minutes during market hours (IST: 9:15 AM - 3:30 PM)
     # UTC: 3:45 AM - 10:00 AM (IST is UTC+5:30)
-    # Individual cron entries for each time slot (Monday-Friday)
-    # 9:15 AM - 12:00 PM IST
-    - cron: '45 3 * * 1-5'   # 3:45 UTC = 9:15 IST
-    - cron: '0 4 * * 1-5'    # 4:00 UTC = 9:30 IST
-    - cron: '15 4 * * 1-5'   # 4:15 UTC = 9:45 IST
-    - cron: '30 4 * * 1-5'   # 4:30 UTC = 10:00 IST
-    - cron: '45 4 * * 1-5'   # 4:45 UTC = 10:15 IST
-    - cron: '0 5 * * 1-5'    # 5:00 UTC = 10:30 IST
-    - cron: '15 5 * * 1-5'   # 5:15 UTC = 10:45 IST
-    - cron: '30 5 * * 1-5'   # 5:30 UTC = 11:00 IST
-    - cron: '45 5 * * 1-5'   # 5:45 UTC = 11:15 IST
-    - cron: '0 6 * * 1-5'    # 6:00 UTC = 11:30 IST
-    - cron: '15 6 * * 1-5'   # 6:15 UTC = 11:45 IST
-    - cron: '30 6 * * 1-5'   # 6:30 UTC = 12:00 IST
-    # 12:15 PM - 3:30 PM IST
-    - cron: '45 6 * * 1-5'   # 6:45 UTC = 12:15 IST
-    - cron: '0 7 * * 1-5'    # 7:00 UTC = 12:30 IST
-    - cron: '15 7 * * 1-5'   # 7:15 UTC = 12:45 IST
-    - cron: '30 7 * * 1-5'   # 7:30 UTC = 13:00 IST
-    - cron: '45 7 * * 1-5'   # 7:45 UTC = 13:15 IST
-    - cron: '0 8 * * 1-5'    # 8:00 UTC = 13:30 IST
-    - cron: '15 8 * * 1-5'   # 8:15 UTC = 13:45 IST
-    - cron: '30 8 * * 1-5'   # 8:30 UTC = 14:00 IST
-    - cron: '45 8 * * 1-5'   # 8:45 UTC = 14:15 IST
-    - cron: '0 9 * * 1-5'    # 9:00 UTC = 14:30 IST
-    - cron: '15 9 * * 1-5'   # 9:15 UTC = 14:45 IST
-    - cron: '30 9 * * 1-5'   # 9:30 UTC = 15:00 IST
-    - cron: '45 9 * * 1-5'   # 9:45 UTC = 15:15 IST
-    - cron: '0 10 * * 1-5'   # 10:00 UTC = 15:30 IST
+    # Using compact pattern: start at 3:45, then every 15 min from 4:00-9:45, then 10:00
+    - cron: '45 3 * * 1-5'                # 3:45 UTC = 9:15 IST (start)
+    - cron: '0,15,30,45 4-9 * * 1-5'      # Every 15 min from 4:00-9:45 UTC (9:30-15:15 IST)
+    - cron: '0 10 * * 1-5'                # 10:00 UTC = 15:30 IST (end)
   workflow_dispatch:
 
 env:
@@ -43,6 +18,10 @@ jobs:
   update-data:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Prevent multiple runs from overlapping
+    concurrency:
+      group: update-dashboard-data
+      cancel-in-progress: false
     
     steps:
       - name: Checkout code
