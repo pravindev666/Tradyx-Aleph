@@ -221,73 +221,63 @@ const OptionsDashboard = () => {
             <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab</h1>
             <p className={`${darkMode ? 'text-blue-200' : 'text-blue-100'} text-xs sm:text-sm mt-1`}>Advanced Options Analytics & Machine Learning Forecasts</p>
           </div>
-          <div className="flex items-start gap-3">
-            <button onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-white/20 hover:bg-white/30'} transition-colors mt-1`}>
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <div className="text-right flex-1">
-              {/* Top row: Next update */}
-              {nextDeploymentTime && mounted && (
-                <div className="text-sm mb-2">
-                  <span className={`${darkMode ? 'text-green-400' : 'text-green-200'}`}>
-                    Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST
-                  </span>
-                </div>
+          <div className="flex flex-col items-center">
+            {/* Top row: Next update (widest, centered) */}
+            {nextDeploymentTime && mounted && (
+              <div className="text-sm mb-3 text-center">
+                <span className={`${darkMode ? 'text-green-400' : 'text-green-200'}`}>
+                  Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST
+                </span>
+              </div>
+            )}
+            
+            {/* Middle row: Toggle and Refresh button (same line, narrower) */}
+            <div className="flex items-center gap-3 mb-3">
+              <button onClick={() => setDarkMode(!darkMode)}
+                className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-white/20 hover:bg-white/30'} transition-colors`}>
+                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+              <button 
+                onClick={async () => {
+                  console.log('🔄 Refresh button clicked...');
+                  
+                  // Show refresh message
+                  setRefreshMessage('Refreshed and Data Computed');
+                  
+                  // Clear cache without reloading
+                  if ('caches' in window) {
+                    caches.keys().then(names => {
+                      names.forEach(name => caches.delete(name));
+                    });
+                  }
+                  
+                  // Open smartlink (as thank you)
+                  const refreshKey = `refresh-smartlink-${Date.now()}`;
+                  openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
+                  
+                  // Clear message after 3 seconds
+                  setTimeout(() => {
+                    setRefreshMessage(null);
+                  }, 3000);
+                }}
+                className={`${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-blue-600 hover:bg-blue-50'} px-4 py-1 rounded-full text-sm font-medium transition-colors flex items-center gap-2`}>
+                <RefreshCw size={14} />
+                Refresh
+              </button>
+            </div>
+            
+            {/* Bottom row: Info text (narrowest, centered) */}
+            <div className="text-center">
+              {refreshMessage ? (
+                <p className={`text-xs sm:text-[11px] font-medium ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-green-600'}`}>
+                  {refreshMessage}
+                </p>
+              ) : (
+                <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
+                  <span className="block">Refresh To Get Latest Data</span>
+                  <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
+                </p>
               )}
-              
-              {/* Middle row: Refresh button */}
-              <div className="flex items-center justify-end">
-                <button 
-                  onClick={async () => {
-                    console.log('🔄 Refresh button clicked - clearing cache and reloading...');
-                    
-                    // Show refresh message
-                    const messages = [
-                      'Refreshed and data computed',
-                      'Data refreshed successfully',
-                      'Cache cleared, latest data loaded',
-                      'Refresh complete - data updated',
-                      'Page refreshed with latest data'
-                    ];
-                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                    setRefreshMessage(randomMessage);
-                    
-                    // Open smartlink first (as thank you)
-                    const refreshKey = `refresh-smartlink-${Date.now()}`;
-                    openSmartlink('https://honeywhyvowel.com/r7732sr5qc?key=c27a2a5e52b7b85a869f254cca335701', refreshKey, true);
-                    
-                    // Small delay to let smartlink open, then hard refresh
-                    setTimeout(() => {
-                      // Hard refresh: clear cache and reload
-                      if ('caches' in window) {
-                        caches.keys().then(names => {
-                          names.forEach(name => caches.delete(name));
-                        });
-                      }
-                      // Force reload from server (bypass cache)
-                      window.location.reload();
-                    }, 500);
-                  }}
-                  className={`${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-blue-600 hover:bg-blue-50'} px-4 py-1 rounded-full text-sm font-medium transition-colors flex items-center gap-2`}>
-                  <RefreshCw size={14} />
-                  Refresh
-                </button>
-              </div>
-              
-              {/* Bottom row: Info text and refresh message */}
-              <div className="mt-1.5 text-right">
-                {refreshMessage ? (
-                  <p className={`text-xs sm:text-[11px] font-medium ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-green-600'}`}>
-                    {refreshMessage}
-                  </p>
-                ) : (
-                  <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
-                    <span className="block">Refresh To Get Latest Data</span>
-                    <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
-                  </p>
-                )}
-              </div>
             </div>
           </div>
         </div>
