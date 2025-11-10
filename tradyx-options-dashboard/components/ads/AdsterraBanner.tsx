@@ -144,8 +144,16 @@ export default function AdsterraBanner({
       }
       
       try {
-        // Check for iframe - ads are loaded in iframes
+        // Check for iframe - ads might be loaded in iframes (for iframe format)
         const iframe = container.querySelector('iframe');
+        
+        // Check for native ad content (divs, images, links) - native format injects directly
+        const nativeAdContent = container.querySelector('a[href*="adsterra"]') || 
+                                container.querySelector('a[href*="honeywhyvowel"]') ||
+                                container.querySelector('img[src*="adsterra"]') ||
+                                container.querySelector('img[src*="honeywhyvowel"]') ||
+                                container.querySelector('div[id*="ad"]') ||
+                                container.querySelector('div[class*="ad"]');
         
         // Also check for any script tags that might indicate ad loading
         const scripts = container.querySelectorAll('script');
@@ -187,6 +195,24 @@ export default function AdsterraBanner({
           // Check if iframe is visible (not hidden)
           const isVisible = iframe.style.display !== 'none' && 
                            iframe.style.visibility !== 'hidden';
+          
+          // Check for native ad content first (native format works better)
+          if (nativeAdContent && hasAdScripts) {
+            // Native ad content detected - mark as loaded immediately
+            if (!adLoadedRef.current) {
+              adLoadedRef.current = true;
+              setAdLoaded(true);
+              setLoading(false);
+              if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
+              }
+              container.setAttribute('data-ad-loaded', 'true');
+              container.setAttribute('data-ad-key', adKey);
+              console.log(`✅ Native ad content detected: ${label}`);
+            }
+            return;
+          }
           
           // ULTRA LENIENT: For 728x90 banner, if scripts are loaded and iframe exists, consider it loaded
           // Even if iframe is small or src is blank initially, it might be loading
@@ -405,18 +431,32 @@ export default function AdsterraBanner({
               });
             }
           }
-        } else if (hasAdScripts) {
-          // Scripts are loaded but no iframe yet - ad might be loading
+          } else if (hasAdScripts) {
+          // Scripts are loaded - check for native ad content (native format doesn't use iframes)
+          if (nativeAdContent) {
+            // Native ad content found - mark as loaded
+            if (!adLoadedRef.current) {
+              adLoadedRef.current = true;
+              setAdLoaded(true);
+              setLoading(false);
+              if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
+              }
+              container.setAttribute('data-ad-loaded', 'true');
+              container.setAttribute('data-ad-key', adKey);
+              console.log(`✅ Native ad content detected (no iframe): ${label}`);
+            }
+            return;
+          }
+          
+          // Scripts are loaded but no iframe or native content yet - ad might be loading
           // For 728x90 and 468x60, wait longer as ads might load slowly
           if (width >= 700 || (width >= 400 && width < 500)) {
             // Keep checking for longer - these banner ads might take time
-            if (process.env.NODE_ENV === 'development') {
-              console.log(`⏳ Ad scripts loaded, waiting for iframe (${width >= 700 ? '728x90' : '468x60'}): ${label}`);
-            }
+            console.log(`⏳ Ad scripts loaded, waiting for content (${width >= 700 ? '728x90' : '468x60'}): ${label}`);
           } else {
-            if (process.env.NODE_ENV === 'development') {
-              console.log(`⏳ Ad scripts loaded, waiting for iframe: ${label}`);
-            }
+            console.log(`⏳ Ad scripts loaded, waiting for content: ${label}`);
           }
         }
         
@@ -551,33 +591,28 @@ export default function AdsterraBanner({
             return;
           }
 
-          // Create options script
-          // Use simple global atOptions (Adsterra expects this format exactly as shown in their docs)
+          // Create options script - EXACT format from Adsterra (no modifications)
           const optionsScript = document.createElement('script');
           optionsScript.type = 'text/javascript';
-          optionsScript.innerHTML = `
-            atOptions = {
-              'key' : '${adKey}',
-              'format' : 'iframe',
-              'height' : ${height},
-              'width' : ${width},
-              'params' : {}
-            };
-          `;
+          // Use EXACT format as provided by Adsterra - don't modify quotes or spacing
+          optionsScript.innerHTML = `atOptions = {
+	'key' : '${adKey}',
+	'format' : 'iframe',
+	'height' : ${height},
+	'width' : ${width},
+	'params' : {}
+};`;
           
-          // Create invoke script
+          // Create invoke script - EXACT format from Adsterra
           const invokeScript = document.createElement('script');
           invokeScript.type = 'text/javascript';
-          // Use https URL for Adsterra (honeywhyvowel.com)
-          const scriptUrl = `https://honeywhyvowel.com/${adKey}/invoke.js`;
-          invokeScript.src = scriptUrl;
-          invokeScript.async = true;
-          invokeScript.defer = false; // Don't defer - load immediately
-          invokeScript.crossOrigin = 'anonymous';
+          // Use protocol-relative URL exactly as Adsterra provides (//honeywhyvowel.com)
+          invokeScript.src = `//honeywhyvowel.com/${adKey}/invoke.js`;
+          // Don't add async/defer/crossOrigin - use exactly as Adsterra provides
           
-          // Debug: Log script URL (always log to help debug)
-          console.log(`📡 Loading ad script for ${label}:`, scriptUrl);
-          console.log(`   Ad Key: ${adKey}, Size: ${width}x${height}`);
+          // Debug: Log script URL
+          console.log(`📡 Loading ad script (exact Adsterra format):`, `//honeywhyvowel.com/${adKey}/invoke.js`);
+          console.log(`   Ad Key: ${adKey}, Size: ${width}x${height}, Format: iframe`);
           
           // For 728x90 and 468x60, load immediately - these banners need faster loading
           // This ensures ads load quickly and are detected properly
@@ -587,6 +622,7 @@ export default function AdsterraBanner({
             container.style.minHeight = `${height}px`;
             
             // Append scripts immediately (no delay for these sizes)
+            // Append exactly as Adsterra expects - no modifications
             container.appendChild(optionsScript);
             container.appendChild(invokeScript);
             scriptLoadedRef.current = true;
@@ -649,7 +685,7 @@ export default function AdsterraBanner({
           invokeScript.onerror = (error) => {
             // Log error for debugging (always log to help identify issues)
             console.warn(`⚠️ Ad script failed to load for ${label} (${adKey}):`, error);
-            console.warn(`   Script URL: https://honeywhyvowel.com/${adKey}/invoke.js`);
+            console.warn(`   Script URL: //honeywhyvowel.com/${adKey}/invoke.js`);
             console.warn(`   Possible causes: Ad blocker, network issue, CSP blocking, or invalid ad key`);
             // Don't set error state - keep checking for ads
             // Sometimes ads load even after script error
@@ -687,6 +723,7 @@ export default function AdsterraBanner({
           }, initialDelay);
 
           // Append scripts to container (only if not already appended)
+          // Append exactly as Adsterra expects - no wrapping, no modifications
           if (!scriptLoadedRef.current) {
             container.appendChild(optionsScript);
             container.appendChild(invokeScript);
