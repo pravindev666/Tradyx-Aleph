@@ -16,9 +16,6 @@
   # Functions directory (not needed for static site)
   # functions = "netlify/functions"
   
-  # Ignore build cache to ensure fresh builds when data changes
-  ignore = ".git"
-  
   # Force rebuild on every deploy (don't skip builds)
   skip_processing = false
 
