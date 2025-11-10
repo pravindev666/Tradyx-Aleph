@@ -35,15 +35,11 @@ export default function AdsterraBanner({
   const mutationObserverRef = useRef<MutationObserver | null>(null);
 
   // Set mounted flag after hydration to avoid hydration mismatch
-  // Load ads immediately after hydration (reduced delay for better ad loading)
+  // Load ads immediately after hydration
   useEffect(() => {
-    // Small delay to ensure DOM is ready, but load ads quickly
-    const timer = setTimeout(() => {
-      setMounted(true);
-      setIsClient(true);
-    }, 100); // Reduced to 100ms - allows ads to load immediately after hydration
-    
-    return () => clearTimeout(timer);
+    // Load immediately - no delay needed
+    setMounted(true);
+    setIsClient(true);
   }, []);
 
   // Sync ref with state
@@ -556,32 +552,32 @@ export default function AdsterraBanner({
           }
 
           // Create options script
-          // Use simple global atOptions (Adsterra expects this format)
+          // Use simple global atOptions (Adsterra expects this format exactly as shown in their docs)
           const optionsScript = document.createElement('script');
           optionsScript.type = 'text/javascript';
           optionsScript.innerHTML = `
             atOptions = {
-              'key': '${adKey}',
-              'format': 'iframe',
-              'height': ${height},
-              'width': ${width},
-              'params': {}
+              'key' : '${adKey}',
+              'format' : 'iframe',
+              'height' : ${height},
+              'width' : ${width},
+              'params' : {}
             };
           `;
           
           // Create invoke script
           const invokeScript = document.createElement('script');
           invokeScript.type = 'text/javascript';
-          // Use protocol-relative URL for Adsterra (honeywhyvowel.com)
-          invokeScript.src = `//honeywhyvowel.com/${adKey}/invoke.js`;
+          // Use https URL for Adsterra (honeywhyvowel.com)
+          const scriptUrl = `https://honeywhyvowel.com/${adKey}/invoke.js`;
+          invokeScript.src = scriptUrl;
           invokeScript.async = true;
           invokeScript.defer = false; // Don't defer - load immediately
           invokeScript.crossOrigin = 'anonymous';
           
-          // Debug: Log script URL
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`📡 Loading ad script for ${label}:`, `//honeywhyvowel.com/${adKey}/invoke.js`);
-          }
+          // Debug: Log script URL (always log to help debug)
+          console.log(`📡 Loading ad script for ${label}:`, scriptUrl);
+          console.log(`   Ad Key: ${adKey}, Size: ${width}x${height}`);
           
           // For 728x90 and 468x60, load immediately - these banners need faster loading
           // This ensures ads load quickly and are detected properly
@@ -653,8 +649,8 @@ export default function AdsterraBanner({
           invokeScript.onerror = (error) => {
             // Log error for debugging (always log to help identify issues)
             console.warn(`⚠️ Ad script failed to load for ${label} (${adKey}):`, error);
-            console.warn(`   Script URL: //honeywhyvowel.com/${adKey}/invoke.js`);
-            console.warn(`   Possible causes: Ad blocker, network issue, or invalid ad key`);
+            console.warn(`   Script URL: https://honeywhyvowel.com/${adKey}/invoke.js`);
+            console.warn(`   Possible causes: Ad blocker, network issue, CSP blocking, or invalid ad key`);
             // Don't set error state - keep checking for ads
             // Sometimes ads load even after script error
             const checkInterval = width >= 700 ? 300 : 500;

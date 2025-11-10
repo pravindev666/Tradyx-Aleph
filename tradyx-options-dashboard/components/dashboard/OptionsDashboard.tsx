@@ -557,22 +557,6 @@ const OptionsDashboard = () => {
               onOpenModal={openModal}
             />
 
-            {/* Native Ad Banner - Content-like ad that blends with page content */}
-            <SafeAdWrapper>
-              <div className="w-full my-6 px-4">
-                <div className={`${darkMode ? 'bg-zinc-900/50' : 'bg-white/60'} rounded-lg p-4 border ${darkMode ? 'border-white/10' : 'border-gray-200'}`}>
-                  <AdsterraBanner 
-                    adKey={AD_KEYS.RECTANGLE_300x250}
-                    width={AD_SIZES.RECTANGLE_300x250.width}
-                    height={AD_SIZES.RECTANGLE_300x250.height}
-                    label="Native Ad Banner (300x250)"
-                    loadDelay={0}
-                    className="mx-auto"
-                  />
-                </div>
-              </div>
-            </SafeAdWrapper>
-
             {/* How to Use Guide */}
             <HowToUseGuide darkMode={darkMode} />
           </div>
