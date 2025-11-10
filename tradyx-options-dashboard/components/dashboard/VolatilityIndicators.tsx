@@ -44,8 +44,10 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
 
   // Helper to create gauge
   const Gauge = ({ value, min = 0, max = 1, color = '#3b82f6', size = 40 }: { value: number; min?: number; max?: number; color?: string; size?: number }) => {
-    const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-    const rotation = (pct / 100) * 180 - 90;
+    // Ensure value is valid and finite
+    const validValue = (typeof value === 'number' && isFinite(value)) ? value : min;
+    const pct = Math.max(0, Math.min(100, ((validValue - min) / (max - min)) * 100));
+    const rotation = isFinite(pct) ? (pct / 100) * 180 - 90 : 0;
     return (
       <div className="relative" style={{ width: size, height: size / 2 }}>
         <svg viewBox="0 0 200 100" className="w-full">

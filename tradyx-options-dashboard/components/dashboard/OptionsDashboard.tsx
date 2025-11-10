@@ -14,7 +14,6 @@ import DriftDirectionIndicator from './DriftDirectionIndicator';
 import MomentumStrengthMeter from './MomentumStrengthMeter';
 import HowToUseGuide from './HowToUseGuide';
 import ConsentBanner from '@/components/ConsentBanner';
-import AdSlot from '@/components/AdSlot';
 import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import SafeAdWrapper from '@/components/ads/SafeAdWrapper';
 import HighPerformanceAdSidebar from '@/components/HighPerformanceAdSidebar';
