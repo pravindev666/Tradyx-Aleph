@@ -618,6 +618,19 @@ const OptionsDashboard = () => {
               </div>
             </SafeAdWrapper>
 
+            {/* Ad Space 4 - Above Momentum Strength (300x250) */}
+            <SafeAdWrapper>
+              <div className="mobileHide">
+                <HighPerformanceAdSidebar 
+                  adKey={AD_KEYS.RECTANGLE_300x250}
+                  width={AD_SIZES.RECTANGLE_300x250.width}
+                  height={AD_SIZES.RECTANGLE_300x250.height}
+                  label="Rectangle 300x250 (Above Momentum)"
+                  loadDelay={0}
+                />
+              </div>
+            </SafeAdWrapper>
+
             {/* Momentum Strength Meter */}
             <MomentumStrengthMeter 
               value={data?.momentumStrength}

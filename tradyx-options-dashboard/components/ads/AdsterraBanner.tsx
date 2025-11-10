@@ -147,13 +147,24 @@ export default function AdsterraBanner({
         // Check for iframe - ads might be loaded in iframes (for iframe format)
         const iframe = container.querySelector('iframe');
         
+        // Check for ANY content in container (Adsterra might inject various elements)
+        const hasAnyContent = container.children.length > 2; // More than just the 2 scripts we added
+        const hasAnyVisibleContent = Array.from(container.children).some((child) => {
+          const el = child as HTMLElement;
+          return el.tagName !== 'SCRIPT' && 
+                 (el.offsetHeight > 0 || el.offsetWidth > 0 || 
+                  el.style.display !== 'none' || el.style.visibility !== 'hidden');
+        });
+        
         // Check for native ad content (divs, images, links) - native format injects directly
         const nativeAdContent = container.querySelector('a[href*="adsterra"]') || 
                                 container.querySelector('a[href*="honeywhyvowel"]') ||
                                 container.querySelector('img[src*="adsterra"]') ||
                                 container.querySelector('img[src*="honeywhyvowel"]') ||
                                 container.querySelector('div[id*="ad"]') ||
-                                container.querySelector('div[class*="ad"]');
+                                container.querySelector('div[class*="ad"]') ||
+                                container.querySelector('div[style*="display"]') ||
+                                container.querySelector('span[style*="display"]');
         
         // Also check for any script tags that might indicate ad loading
         const scripts = container.querySelectorAll('script');
@@ -196,7 +207,30 @@ export default function AdsterraBanner({
           const isVisible = iframe.style.display !== 'none' && 
                            iframe.style.visibility !== 'hidden';
           
-          // Check for native ad content first (native format works better)
+          // Check for ANY content first - if scripts loaded and container has content, ad is likely loaded
+          if (hasAdScripts && (hasAnyContent || hasAnyVisibleContent || nativeAdContent)) {
+            // Content detected - mark as loaded immediately
+            if (!adLoadedRef.current) {
+              adLoadedRef.current = true;
+              setAdLoaded(true);
+              setLoading(false);
+              if (checkIntervalRef.current) {
+                clearInterval(checkIntervalRef.current);
+                checkIntervalRef.current = null;
+              }
+              container.setAttribute('data-ad-loaded', 'true');
+              container.setAttribute('data-ad-key', adKey);
+              console.log(`✅ Ad content detected: ${label}`, {
+                hasIframe: !!iframe,
+                hasNativeContent: !!nativeAdContent,
+                hasAnyContent: hasAnyContent,
+                childrenCount: container.children.length
+              });
+            }
+            return;
+          }
+          
+          // Check for native ad content (native format works better)
           if (nativeAdContent && hasAdScripts) {
             // Native ad content detected - mark as loaded immediately
             if (!adLoadedRef.current) {
@@ -214,8 +248,8 @@ export default function AdsterraBanner({
             return;
           }
           
-          // ULTRA LENIENT: For 728x90 banner, if scripts are loaded and iframe exists, consider it loaded
-          // Even if iframe is small or src is blank initially, it might be loading
+          // ULTRA LENIENT: If scripts are loaded and iframe exists (even if blank), consider it loaded
+          // Adsterra creates iframes even if they're initially blank - they populate later
           if (iframe && hasAdScripts) {
             // For large banners (728x90, 468x60), be EXTREMELY lenient
             // If scripts are loaded and iframe exists, show it immediately (even if blank)
@@ -432,9 +466,9 @@ export default function AdsterraBanner({
             }
           }
           } else if (hasAdScripts) {
-          // Scripts are loaded - check for native ad content (native format doesn't use iframes)
-          if (nativeAdContent) {
-            // Native ad content found - mark as loaded
+          // Scripts are loaded - check for ANY content (Adsterra might inject content in various ways)
+          if (hasAnyContent || hasAnyVisibleContent || nativeAdContent) {
+            // Content found - mark as loaded
             if (!adLoadedRef.current) {
               adLoadedRef.current = true;
               setAdLoaded(true);
@@ -445,19 +479,23 @@ export default function AdsterraBanner({
               }
               container.setAttribute('data-ad-loaded', 'true');
               container.setAttribute('data-ad-key', adKey);
-              console.log(`✅ Native ad content detected (no iframe): ${label}`);
+              console.log(`✅ Ad content detected (no iframe): ${label}`, {
+                hasAnyContent: hasAnyContent,
+                hasVisibleContent: hasAnyVisibleContent,
+                hasNativeContent: !!nativeAdContent,
+                childrenCount: container.children.length
+              });
             }
             return;
           }
           
-          // Scripts are loaded but no iframe or native content yet - ad might be loading
-          // For 728x90 and 468x60, wait longer as ads might load slowly
-          if (width >= 700 || (width >= 400 && width < 500)) {
-            // Keep checking for longer - these banner ads might take time
-            console.log(`⏳ Ad scripts loaded, waiting for content (${width >= 700 ? '728x90' : '468x60'}): ${label}`);
-          } else {
-            console.log(`⏳ Ad scripts loaded, waiting for content: ${label}`);
-          }
+          // Scripts are loaded but no content yet - log what we're seeing for debugging
+          console.log(`⏳ Ad scripts loaded, waiting for content: ${label}`, {
+            childrenCount: container.children.length,
+            hasIframe: false,
+            scriptCount: scripts.length,
+            containerHTML: container.innerHTML.substring(0, 200)
+          });
         }
         
         // Don't check for non-script children - ads should be in iframes
