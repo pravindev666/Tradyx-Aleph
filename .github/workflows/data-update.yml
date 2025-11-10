@@ -51,6 +51,7 @@ jobs:
           TZ: Asia/Kolkata
       
       - name: Commit and push updated data
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -61,9 +62,23 @@ jobs:
           # Check if there are changes
           if git diff --staged --quiet; then
             echo "No changes to commit"
+            echo "changed=false" >> $GITHUB_OUTPUT
           else
-            git commit -m "chore: update dashboard data [skip ci]"
+            git commit -m "chore: update dashboard data"
             git push origin HEAD:main || git push origin HEAD:master
             echo "✅ Data updated and pushed to repository"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+      
+      - name: Trigger Netlify rebuild
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          if [ -n "${{ secrets.NETLIFY_BUILD_HOOK }}" ]; then
+            echo "🔄 Triggering Netlify rebuild..."
+            curl -X POST -d {} "${{ secrets.NETLIFY_BUILD_HOOK }}"
+            echo "✅ Netlify rebuild triggered"
+          else
+            echo "⚠️ NETLIFY_BUILD_HOOK secret not set. Netlify will auto-deploy on push."
           fi
         continue-on-error: true
