@@ -36,11 +36,11 @@ Cloudflare Pages is different from Workers. Pages is for static sites (like your
    
    **Framework preset:** `Next.js (Static HTML Export)`
    
-   **Build command:** `cd tradyx-options-dashboard && npm run build`
+   **Root directory:** `tradyx-options-dashboard` ⭐ **SET THIS FIRST**
    
-   **Build output directory:** `tradyx-options-dashboard/out`
+   **Build command:** `npm run build` (NOT `cd tradyx-options-dashboard && npm run build`)
    
-   **Root directory:** `tradyx-options-dashboard`
+   **Build output directory:** `out` (relative to root directory)
    
    **Node.js version:** `20`
 
@@ -96,13 +96,20 @@ If you want to use 0 Cloudflare build minutes:
 
 ## 📋 Correct Build Settings
 
+**IMPORTANT:** Set **Root directory** first, then use relative paths!
+
 ```
 Framework preset:     Next.js (Static HTML Export)
-Build command:         cd tradyx-options-dashboard && npm run build
-Build output dir:      tradyx-options-dashboard/out
-Root directory:        tradyx-options-dashboard
+Root directory:       tradyx-options-dashboard  ⭐ SET THIS FIRST
+Build command:         npm run build  (NO cd command needed)
+Build output dir:      out  (relative to root directory)
 Node.js version:       20
 ```
+
+**Why:**
+- When you set Root directory, Cloudflare changes into that directory first
+- So build command should be `npm run build` (not `cd tradyx-options-dashboard && npm run build`)
+- Build output is relative to root directory, so just `out` (not `tradyx-options-dashboard/out`)
 
 ---
 
