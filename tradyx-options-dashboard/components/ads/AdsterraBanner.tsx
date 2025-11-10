@@ -35,13 +35,13 @@ export default function AdsterraBanner({
   const mutationObserverRef = useRef<MutationObserver | null>(null);
 
   // Set mounted flag after hydration to avoid hydration mismatch
-  // Add a delay to keep the spinner visible longer (user requested - show for 3 seconds)
+  // Load ads immediately after hydration (reduced delay for better ad loading)
   useEffect(() => {
-    // Keep spinner visible for at least 3 seconds before switching to InfinityLoader
+    // Small delay to ensure DOM is ready, but load ads quickly
     const timer = setTimeout(() => {
       setMounted(true);
       setIsClient(true);
-    }, 3000); // 3 second delay - gives user time to see the nice spinner animation
+    }, 100); // Reduced to 100ms - allows ads to load immediately after hydration
     
     return () => clearTimeout(timer);
   }, []);
@@ -616,8 +616,10 @@ export default function AdsterraBanner({
               }, 200);
             };
             
-            invokeScript.onerror = () => {
-              // Keep checking even on error
+            invokeScript.onerror = (error) => {
+              // Log error for debugging (helps identify if script fails to load)
+              console.warn(`⚠️ Ad script failed to load for ${label}:`, error);
+              // Keep checking even on error - sometimes ads load despite script errors
               setTimeout(() => {
                 checkForAd();
                 if (!checkIntervalRef.current) {
@@ -646,11 +648,11 @@ export default function AdsterraBanner({
             }, 500); // Start checking sooner
           };
 
-          invokeScript.onerror = () => {
-            // Debug log for script error
-            if (process.env.NODE_ENV === 'development') {
-              console.warn(`⚠️ Script load error for ${label} (${adKey})`);
-            }
+          invokeScript.onerror = (error) => {
+            // Log error for debugging (always log to help identify issues)
+            console.warn(`⚠️ Ad script failed to load for ${label} (${adKey}):`, error);
+            console.warn(`   Script URL: https://www.highperformanceformat.com/${adKey}/invoke.js`);
+            console.warn(`   Possible causes: Ad blocker, network issue, or invalid ad key`);
             // Don't set error state - keep checking for ads
             // Sometimes ads load even after script error
             const checkInterval = width >= 700 ? 300 : 500;
