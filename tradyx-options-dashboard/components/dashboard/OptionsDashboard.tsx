@@ -220,31 +220,26 @@ const OptionsDashboard = () => {
             <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab</h1>
             <p className={`${darkMode ? 'text-blue-200' : 'text-blue-100'} text-xs sm:text-sm mt-1`}>Advanced Options Analytics & Machine Learning Forecasts</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-start gap-3">
             <button onClick={() => setDarkMode(!darkMode)}
-              className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-white/20 hover:bg-white/30'} transition-colors`}>
+              className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-white/20 hover:bg-white/30'} transition-colors mt-1`}>
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-              <div className="text-right">
-                <div className="flex items-center gap-2 text-sm">
-                  <span>Last Updated: {data?.updatedAt
-                    ? new Date(data.updatedAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit', hour12: true})
-                    : '—'}</span>
-                  <span 
-                    className={`flex items-center gap-1 px-2 py-1 rounded text-xs ${
-                    stale==='fresh' ? 'bg-emerald-500/20 text-emerald-400'
-                    : stale==='soft' ? 'bg-amber-500/20 text-amber-400'
-                    : 'bg-rose-500/20 text-rose-400'
-                    }`}
-                    title={
-                      stale === 'fresh' ? 'Data is fresh (< 6 minutes old)' 
-                      : stale === 'soft' ? 'Data is getting stale (6-20 minutes old). Consider refreshing.' 
-                      : 'Data is stale (> 20 minutes old). Please refresh to get latest data.'
-                    }
-                  >
-                    {stale === 'fresh' ? 'FRESH' : stale === 'soft' ? 'STALE' : 'STALE'}
+            <div className="text-right flex-1">
+              {/* Top row: Last Updated and Next update on same line */}
+              <div className="flex items-center gap-3 text-sm mb-2">
+                <span>Last Updated: {data?.updatedAt
+                  ? new Date(data.updatedAt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit', hour12: true})
+                  : '—'}</span>
+                {nextDeploymentTime && mounted && (
+                  <span className={`${darkMode ? 'text-green-400' : 'text-green-200'}`}>
+                    Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST
                   </span>
-                </div>
+                )}
+              </div>
+              
+              {/* Middle row: Hard Refresh button */}
+              <div className="flex items-center justify-end">
                 <button 
                   onClick={async () => {
                     console.log('🔄 Hard refresh button clicked - clearing cache and reloading...');
@@ -265,21 +260,20 @@ const OptionsDashboard = () => {
                       window.location.reload();
                     }, 300);
                   }}
-                  className={`mt-2 ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-blue-600 hover:bg-blue-50'} px-4 py-1 rounded-full text-sm font-medium transition-colors flex items-center gap-2`}>
+                  className={`${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-blue-600 hover:bg-blue-50'} px-4 py-1 rounded-full text-sm font-medium transition-colors flex items-center gap-2`}>
                   <RefreshCw size={14} />
                   Hard Refresh
                 </button>
-                {/* Next deployment time */}
-                {nextDeploymentTime && mounted && (
-                  <div className="mt-1.5 text-center">
-                    <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
-                      <span className="block">Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST</span>
-                      <span className="block mt-0.5">Refresh To Get Latest Data</span>
-                      <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
-                    </p>
-                  </div>
-                )}
               </div>
+              
+              {/* Bottom row: Info text */}
+              <div className="mt-1.5 text-right">
+                <p className={`text-xs sm:text-[11px] font-medium leading-relaxed ${darkMode ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-white'}`}>
+                  <span className="block">Refresh To Get Latest Data</span>
+                  <span className="block mt-0.5 text-[10px] opacity-75">Click tiles to learn more</span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
