@@ -23,11 +23,16 @@ jobs:
       group: update-dashboard-data
       cancel-in-progress: false
     
+    # Explicitly grant permissions for git push
+    permissions:
+      contents: write  # Required to push commits
+      pull-requests: read  # Optional, for PR comments if needed
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Use default GITHUB_TOKEN (no need to specify, it's automatic)
           fetch-depth: 0
           submodules: false
       
@@ -132,10 +137,24 @@ jobs:
             echo "📋 Committed files:"
             git show --name-only --oneline HEAD | head -10
             
-            # Push to current repository (Netlify)
-            git push origin HEAD:main || git push origin HEAD:master
-            echo "✅ Data updated and pushed to Netlify repository"
-            echo "🔄 Netlify will auto-deploy on push"
+            # Detect current branch
+            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            echo "📌 Current branch: $CURRENT_BRANCH"
+            
+            # Push to current repository
+            echo "🚀 Pushing to origin/$CURRENT_BRANCH..."
+            if git push origin "$CURRENT_BRANCH"; then
+              echo "✅ Data updated and pushed successfully to origin/$CURRENT_BRANCH"
+              echo "🔄 Netlify/Cloudflare will auto-deploy on push"
+            else
+              echo "❌ ERROR: Failed to push to origin/$CURRENT_BRANCH"
+              echo "📋 Checking git remote configuration..."
+              git remote -v
+              echo "📋 Checking branch information..."
+              git branch -a
+              echo "⚠️  Push failed, but commit was successful. Check repository permissions."
+              exit 1
+            fi
             
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
