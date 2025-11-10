@@ -56,15 +56,20 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Add only the public data file (Vercel serves from public/)
+          # Add the public data file (Vercel/Netlify/Cloudflare serve from public/)
           git add tradyx-options-dashboard/public/data/dashboard.json
+          
+          # Touch a file in base directory to ensure Netlify detects changes
+          # This forces Netlify to rebuild even if only data changed
+          echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > tradyx-options-dashboard/.build-trigger
+          git add tradyx-options-dashboard/.build-trigger
           
           # Check if there are changes
           if git diff --staged --quiet; then
             echo "No changes to commit"
             echo "changed=false" >> $GITHUB_OUTPUT
           else
-            git commit -m "chore: update dashboard data"
+            git commit -m "chore: update dashboard data [data refresh]"
             git push origin HEAD:main || git push origin HEAD:master
             echo "✅ Data updated and pushed to repository"
             echo "changed=true" >> $GITHUB_OUTPUT

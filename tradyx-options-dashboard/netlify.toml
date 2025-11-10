@@ -15,6 +15,9 @@
   
   # Functions directory (not needed for static site)
   # functions = "netlify/functions"
+  
+  # Ignore build cache to ensure fresh builds when data changes
+  ignore = ".git"
 
 [build.environment]
   # Node.js version
@@ -25,6 +28,9 @@
   
   # Ensure static export
   NEXT_OUTPUT = "export"
+  
+  # Force rebuild detection (don't skip builds)
+  NETLIFY_USE_YARN = "false"
 
 # Redirects for Next.js client-side routing
 # This handles all routes and serves index.html (SPA behavior)

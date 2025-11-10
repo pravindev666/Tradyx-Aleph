@@ -1,29 +1,31 @@
 # Dependencies
 node_modules/
-.pnp
+/.pnp
 .pnp.js
 
 # Testing
-coverage/
-.nyc_output
+/coverage
 
 # Next.js
-.next/
-out/
-build/
-dist/
+/.next/
+/out/
+/build
 
 # Production
-*.log
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# Environment variables
-.env
+# Local env files
 .env*.local
-.env.production
+.env
 
 # Vercel
 .vercel
@@ -42,21 +44,6 @@ env/
 venv/
 ENV/
 .venv
-pip-log.txt
-pip-delete-this-directory.txt
-.pytest_cache/
-.coverage
-htmlcov/
-*.egg-info/
-dist/
-build/
-
-# Scripts data (keep structure, ignore large files)
-scripts/data/*.json
-!scripts/data/.gitkeep
-scripts/data/history/
-scripts/public/data/*.json
-!scripts/public/data/.gitkeep
 
 # IDE
 .vscode/
@@ -64,21 +51,9 @@ scripts/public/data/*.json
 *.swp
 *.swo
 *~
-.DS_Store
 
 # OS
 Thumbs.db
-desktop.ini
 
-# Temporary files
-*.tmp
-*.temp
-.cache/
-
-# Large files
-*.zip
-*.tar.gz
-*.rar
-
-# Fonts (if too large, use Git LFS)
-# app/fonts/*.otf
+# Build trigger (keep in git to force Netlify rebuilds)
+!.build-trigger
