@@ -1,4 +1,4 @@
-# Tradyx Quant Dashboard
+# Tradyxa Quant Dashboard
 
 **Advanced NIFTY Options Analytics & Machine Learning Forecasts**
 
@@ -47,7 +47,7 @@ git --version
 
 ```bash
 git clone <your-repository-url>
-cd Tradyx/tradyx-options-dashboard
+cd Tradyxa/tradyxa-options-dashboard
 ```
 
 ### 3. Install Dependencies
@@ -110,10 +110,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```bash
 # 1. Create Next.js project (if starting fresh)
-npx create-next-app@latest tradyx-options-dashboard --typescript --tailwind --app
+npx create-next-app@latest tradyxa-options-dashboard --typescript --tailwind --app
 
 # 2. Navigate to project directory
-cd tradyx-options-dashboard
+cd tradyxa-options-dashboard
 
 # 3. Install Node.js dependencies
 npm install
@@ -182,7 +182,7 @@ python --version    # Should show Python 3.12+
 ## 📁 Project Structure
 
 ```
-tradyx-options-dashboard/
+tradyxa-options-dashboard/
 ├── app/                          # Next.js App Router
 │   ├── about/                   # About page
 │   ├── api/                     # API routes
@@ -395,7 +395,7 @@ python build_dashboard_json.py  # Build final JSON
 4. Import your GitHub repository
 5. Configure project settings:
    - **Framework Preset**: Next.js
-   - **Root Directory**: `tradyx-options-dashboard`
+   - **Root Directory**: `tradyxa-options-dashboard`
    - **Build Command**: `npm run build`
    - **Output Directory**: `.next`
    - **Install Command**: `npm install`
@@ -990,7 +990,7 @@ Built with ❤️ for NIFTY options traders.
 ## 📧 Support
 
 For issues, questions, or contributions, please contact:
-- **Email**: support@tradyx.in
+- **Email**: zetaaztratech@gmail.com
 - **GitHub**: [Your GitHub Profile]
 
 ---

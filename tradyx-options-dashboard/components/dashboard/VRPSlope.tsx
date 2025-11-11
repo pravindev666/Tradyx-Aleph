@@ -34,7 +34,7 @@ export default function VRPSlope({ value, darkMode, onOpenModal }: VRPSlopeProps
             }}
           />
         </div>
-        <span className={`text-xs font-semibold min-w-[70px] text-right ${isPositive ? 'text-red-500' : 'text-green-500'}`}>
+        <span className={`text-xs font-semibold font-mono min-w-[70px] text-right ${isPositive ? 'text-red-500' : 'text-green-500'}`}>
           {value > center ? '+' : ''}{value.toFixed(4)}
         </span>
       </div>
@@ -66,7 +66,7 @@ export default function VRPSlope({ value, darkMode, onOpenModal }: VRPSlopeProps
       )}
     >
       <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>VRP Slope</div>
-      <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
+      <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-1`}>
         {value !== null && value !== undefined
           ? `${value > 0 ? '+' : ''}${value.toFixed(4)}`
           : '—'}

@@ -4,7 +4,7 @@
 set -e  # Exit on error
 
 echo "=========================================="
-echo "Tradyx Dashboard - Production Setup"
+echo "Tradyxa Dashboard - Production Setup"
 echo "=========================================="
 
 # Check Python version

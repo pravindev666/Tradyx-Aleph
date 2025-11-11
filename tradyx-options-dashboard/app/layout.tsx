@@ -1,106 +1,178 @@
 import './globals.css';
-import localFont from 'next/font/local';
+import { Inter, JetBrains_Mono, Manrope } from 'next/font/google';
 
-// Arteks font configuration using .otf files
-const arteks = localFont({
-  src: [
-    {
-      path: './fonts/Arteks Regular.otf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Arteks Medium.otf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Arteks Bold.otf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Arteks Light.otf',
-      weight: '300',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-arteks',
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+// Inter - Primary UI font (optimized for dashboards)
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+});
+
+// JetBrains Mono - Numeric/Value areas (perfect alignment for volatility metrics)
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+  fallback: ['monospace', 'Courier New', 'mono'],
+});
+
+// Manrope - Brand/Logo font (high-tech premium edge)
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  display: 'swap',
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 });
 
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab",
+  title: {
+    default: "Tradyxa Quant Dashboard — NIFTY Options Volatility & ML Forecast Lab",
+    template: "%s | Tradyxa Quant Dashboard"
+  },
   description:
-    "Tradyx Quant Dashboard delivers real-time NIFTY options analytics, volatility forecasting, and machine learning-based market sentiment insights. Built for professional traders, quant analysts, and volatility researchers.",
+    "Advanced NIFTY options analytics platform with real-time volatility forecasting, machine learning predictions, IV Rank, VRP, and Market Mood Index. Professional-grade tools for quantitative traders, options strategists, and volatility researchers in India.",
   keywords: [
+    "tradyxa",
+    "tradyxa quant",
+    "tradyxa dashboard",
+    "tradyxa options",
     "NIFTY Options",
+    "NIFTY Options Analytics",
     "India VIX",
     "Volatility Forecast",
-    "Machine Learning",
+    "Machine Learning Trading",
     "Quant Dashboard",
-    "Options Analytics",
+    "Options Analytics India",
     "Realized Volatility",
     "HV-IV Spread",
     "IV Rank",
     "Volatility Risk Premium",
+    "VRP",
+    "Market Mood Index",
+    "MMI",
     "Trading Indicators",
     "Options Strategy Lab",
-    "Tradyx Analytics",
+    "Zeta Aztra Technologies",
     "Nifty ML Model",
     "NIFTY Machine Learning",
     "Options Volatility Prediction",
     "India Options Trading",
     "NSE Options Analytics",
+    "NIFTY 50 Options",
+    "Options Chain Analysis",
+    "PCR Ratio",
+    "Max Pain",
+    "Put Call Ratio",
+    "Volatility Indicators",
+    "Quantitative Trading",
+    "Algorithmic Trading India",
+    "Options Greeks",
+    "Delta Gamma Theta Vega",
+    "LSTM Volatility Prediction",
+    "Random Forest Options",
+    "Options Backtesting",
   ],
-  authors: [{ name: "Pravin A. Mathew", url: "https://tradyx.in" }],
-  creator: "Pravin A. Mathew",
-  publisher: "Tradyx Analytics",
-  metadataBase: new URL("https://tradyx.vercel.app"),
+  authors: [{ name: "Zeta Aztra Technologies" }],
+  creator: "Zeta Aztra Technologies",
+  publisher: "Zeta Aztra Technologies",
+  metadataBase: new URL("https://tradyxa-alephx.pages.dev"),
+  applicationName: "Tradyxa Quant Dashboard",
+  category: "Finance",
+  classification: "Financial Analytics Software",
   openGraph: {
     type: "website",
-    url: "https://tradyx.vercel.app",
-    title: "Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab",
+    url: "https://tradyxa-alephx.pages.dev",
+    title: "Tradyxa Quant Dashboard — NIFTY Options Volatility & ML Forecast Lab",
     description:
-      "Advanced NIFTY options analytics and machine learning forecasts. Monitor volatility, correlations, and risk indicators in real-time. Built with Next.js, Tailwind, and Python models.",
-    siteName: "Tradyx Quant Dashboard",
+      "Advanced NIFTY options analytics with real-time volatility forecasting, ML predictions, IV Rank, VRP, and Market Mood Index. Professional tools for quantitative traders and options strategists.",
+    siteName: "Tradyxa Quant Dashboard",
+    locale: "en_IN",
+    alternateLocale: ["en_US", "en_GB"],
     images: [
       {
-        url: "https://tradyx.vercel.app/og-image.png",
+        url: "https://tradyxa-alephx.pages.dev/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Tradyx Quant Dashboard — Advanced Options Analytics",
+        alt: "Tradyxa Quant Dashboard — Advanced NIFTY Options Analytics & Machine Learning Forecasts",
+        type: "image/png",
       },
     ],
-    locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@tradyxquant",
+    site: "@tradyxaquant",
     creator: "@pravindev666",
-    title: "Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab",
+    title: "Tradyxa Quant Dashboard — NIFTY Options Volatility & ML Forecast Lab",
     description:
-      "Advanced NIFTY options analytics and ML-based forecasts powered by Tradyx Quant Engine.",
-    images: ["https://tradyx.vercel.app/og-image.png"],
+      "Advanced NIFTY options analytics and ML-based forecasts. Real-time volatility indicators, IV Rank, VRP, and 5 ML prediction models for professional traders.",
+    images: [
+      {
+        url: "https://tradyxa-alephx.pages.dev/og-image.png",
+        alt: "Tradyxa Quant Dashboard",
+      },
+    ],
   },
   robots: {
     index: true,
     follow: true,
     nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
-  themeColor: "#0f172a",
+  verification: {
+    google: "your-google-verification-code", // Replace with actual verification code
+    // yandex: "your-yandex-verification-code",
+    // bing: "your-bing-verification-code",
+  },
   alternates: {
-    canonical: "https://tradyx.vercel.app",
+    canonical: "https://tradyxa-alephx.pages.dev",
+    languages: {
+      "en-IN": "https://tradyxa-alephx.pages.dev",
+      "en-US": "https://tradyxa-alephx.pages.dev",
+    },
   },
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "Tradyxa Quant",
+    "mobile-web-app-capable": "yes",
+    "msapplication-TileColor": "#0f172a",
+    "theme-color": "#0f172a",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/manifest.json",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
 };
 
 export default function RootLayout({ children }:{ children:React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={arteks.variable}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${manrope.variable}`}>
       <head>
         {/* Google Consent Mode v2 defaults: deny analytics before any tags */}
         <script
@@ -131,7 +203,7 @@ export default function RootLayout({ children }:{ children:React.ReactNode }) {
         />
 
       </head>
-      <body className={`${arteks.className} bg-zinc-50 dark:bg-zinc-950`}>{children}</body>
+      <body className={`${inter.className} bg-zinc-50 dark:bg-zinc-950`}>{children}</body>
     </html>
   );
 }

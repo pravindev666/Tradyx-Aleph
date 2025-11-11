@@ -1,7 +1,85 @@
+# Robots.txt for Tradyxa Quant Dashboard
+# Optimized for maximum search engine visibility
+
+# Allow all search engines
 User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /scripts/
+Disallow: /node_modules/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /legal/
+Allow: /data/dashboard.json
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
 Allow: /
 Disallow: /api/
 Disallow: /_next/
 
-Sitemap: https://tradyx.vercel.app/sitemap.xml
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 0
 
+User-agent: Slurp
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 0
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 1
+
+User-agent: Yandex
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://tradyxa-alephx.pages.dev/sitemap.xml
+
+# Host (optional, helps with canonical URLs)
+Host: https://tradyxa-alephx.pages.dev

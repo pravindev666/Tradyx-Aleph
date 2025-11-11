@@ -1,4 +1,4 @@
-# Tradyx Options Dashboard 📊
+# Tradyxa Options Dashboard 📊
 
 > **Advanced Real-Time NIFTY Options Analytics Platform with Machine Learning**
 
@@ -14,7 +14,7 @@ A production-ready, enterprise-grade financial analytics dashboard built with Ne
 
 ## 🎯 Overview
 
-Tradyx is a sophisticated options trading dashboard designed for professional traders, quants, and financial analysts. It combines real-time market data with advanced analytics, machine learning predictions, and intuitive visualizations to provide actionable insights for NIFTY options trading.
+Tradyxa is a sophisticated options trading dashboard designed for professional traders, quants, and financial analysts. It combines real-time market data with advanced analytics, machine learning predictions, and intuitive visualizations to provide actionable insights for NIFTY options trading.
 
 ### Key Features
 
@@ -487,7 +487,7 @@ Where Z is weighted z-score of 5 components
 ```bash
 # Clone repository
 git clone <repository-url>
-cd tradyx-options-dashboard
+cd tradyxa-options-dashboard
 
 # Install Node dependencies
 npm install
@@ -513,7 +513,7 @@ Open [http://localhost:3000](http://localhost:3000)
 ## 📁 Project Structure
 
 ```
-tradyx-options-dashboard/
+tradyxa-options-dashboard/
 ├── app/                      # Next.js App Router
 │   ├── fonts/               # Custom Arteks fonts
 │   ├── globals.css          # Global styles & theme
@@ -707,13 +707,13 @@ interface DashboardData {
 ## 📞 Support & Contact
 
 ### Commercial Inquiries
-- **Email**: support@tradyx.in
-- **Website**: tradyx.vercel.app
+- **Email**: zetaaztratech@gmail.com
+- **Website**: tradyxa.vercel.app
 - **LinkedIn**: [Your Profile]
-- **Twitter**: [@tradyx]
+- **Twitter**: [@tradyxa]
 
 ### Technical Support
-- **Documentation**: [docs.tradyx.in]
+- **Documentation**: [docs.tradyxa.in]
 - **GitHub Issues**: [repository-url/issues]
 - **Community**: [Discord/Slack]
 
@@ -721,11 +721,11 @@ interface DashboardData {
 
 ## 📄 License
 
-**All Rights Reserved © 2024 Tradyx**
+**All Rights Reserved © 2024 Tradyxa**
 
-This software is proprietary and confidential. Unauthorized copying, modification, distribution, or use of this software, via any medium, is strictly prohibited without explicit written permission from Tradyx.
+This software is proprietary and confidential. Unauthorized copying, modification, distribution, or use of this software, via any medium, is strictly prohibited without explicit written permission from Tradyxa.
 
-For licensing inquiries, contact: licensing@tradyx.in
+For licensing inquiries, contact: zetaaztratech@gmail.com
 
 ---
 
@@ -780,7 +780,7 @@ For licensing inquiries, contact: licensing@tradyx.in
 
 ## 📊 Success Stories (Future)
 
-> "Tradyx's Market Mood Index helped me avoid a major loss during the recent volatility spike." - Anonymous Trader
+> "Tradyxa's Market Mood Index helped me avoid a major loss during the recent volatility spike." - Anonymous Trader
 
 > "The ML predictions are surprisingly accurate. I use them as a confirmation signal for my trades." - Professional Trader
 
@@ -790,7 +790,7 @@ For licensing inquiries, contact: licensing@tradyx.in
 
 ## 🤝 Contributing
 
-This is a proprietary project. For partnership or contribution inquiries, please contact: partnerships@tradyx.in
+This is a proprietary project. For partnership or contribution inquiries, please contact: zetaaztratech@gmail.com
 
 ---
 
@@ -819,4 +819,4 @@ This is a proprietary project. For partnership or contribution inquiries, please
 
 ---
 
-© 2024 Tradyx. All Rights Reserved.
+© 2024 Tradyxa. All Rights Reserved.

@@ -125,17 +125,27 @@ export default function CookiesPage() {
               Third Parties
             </h2>
             <ul className={`list-disc pl-5 ${textSecondary} space-y-2`}>
-              <li><strong>Vercel</strong> — hosting and performance; may log IPs for security.</li>
+              <li><strong>Cloudflare Pages</strong> — hosting and performance; may log IPs for security.</li>
+              <li><strong>Adsterra</strong> — third-party advertising network (adsterra.com); may use cookies for ad delivery and measurement. We do not control Adsterra's data collection practices.</li>
               <li><strong>Optional Google Analytics</strong> — anonymized analytics with Consent Mode v2.</li>
             </ul>
+          </section>
+
+          {/* Affiliation Disclaimer */}
+          <section>
+            <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
+              <p className={`${textSecondary} text-sm`}>
+                <strong>Affiliation Disclaimer:</strong> Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.
+              </p>
+            </div>
           </section>
 
           {/* Footer Note */}
           <div className={`pt-4 border-t ${borderColor} text-center`}>
             <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
               Contact:{' '}
-              <a href="mailto:support@tradyx.in" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
-                support@tradyx.in
+              <a href="mailto:zetaaztratech@gmail.com" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
+                zetaaztratech@gmail.com
               </a>
             </p>
           </div>

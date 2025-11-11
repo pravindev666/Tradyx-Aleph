@@ -33,20 +33,20 @@ const OptionsDashboard = () => {
   const [refreshMessage, setRefreshMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyx-theme') : null;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyxa-theme') : null;
     if (saved) setDarkMode(saved === 'dark');
     
     // Always show disclaimer on page load
     setShowDisclaimer(true);
   }, []);
   useEffect(() => {
-    if (typeof window !== 'undefined') localStorage.setItem('tradyx-theme', darkMode ? 'dark' : 'light');
+    if (typeof window !== 'undefined') localStorage.setItem('tradyxa-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   const handleDisclaimerClose = () => {
     // Save acceptance timestamp for analytics, but always show on next visit
     if (typeof window !== 'undefined') {
-      localStorage.setItem('tradyx-disclaimer-accepted', new Date().toISOString());
+      localStorage.setItem('tradyxa-disclaimer-accepted', new Date().toISOString());
     }
     setShowDisclaimer(false);
   };
@@ -218,7 +218,7 @@ const OptionsDashboard = () => {
       <div className={`${darkMode ? 'bg-gradient-to-r from-blue-900 to-blue-950' : 'bg-gradient-to-r from-blue-600 to-blue-800'} text-white px-6 py-4 shadow-lg relative z-10`}>
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 px-3 sm:px-4 md:px-6">
           <div>
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Tradyx Quant Dashboard — NIFTY Options Volatility & Forecast Lab</h1>
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold font-brand">Tradyxa Quant Dashboard — NIFTY Options Volatility & Forecast Lab</h1>
             <p className={`${darkMode ? 'text-blue-200' : 'text-blue-100'} text-xs sm:text-sm mt-1`}>Advanced Options Analytics & Machine Learning Forecasts</p>
           </div>
           <div className="flex flex-col items-center">
@@ -226,7 +226,7 @@ const OptionsDashboard = () => {
             {nextDeploymentTime && mounted && (
               <div className="text-sm mb-3 text-center w-full">
                 <span className={`${darkMode ? 'text-green-400' : 'text-green-200'}`}>
-                  Next update: {nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })} IST
+                  Next update: <span className="font-mono">{nextDeploymentTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' })}</span> IST
                 </span>
               </div>
             )}
@@ -331,13 +331,13 @@ const OptionsDashboard = () => {
                 )}
               >
                 <div className={`text-sm sm:text-base font-semibold ${textSecondary} mb-1.5`}>Spot Price</div>
-                <div className={`text-xl sm:text-2xl font-bold ${textPrimary} mb-1.5`}>{Number.isFinite(data?.spot) ? `₹${(data!.spot as number).toFixed(2)}` : '—'}</div>
+                <div className={`text-xl sm:text-2xl font-bold font-mono ${textPrimary} mb-1.5`}>{Number.isFinite(data?.spot) ? `₹${(data!.spot as number).toFixed(2)}` : '—'}</div>
                 {(() => {
                   const changePct = (data as any)?.spotChangePct;
                   if (Number.isFinite(changePct)) {
                     const pct = changePct as number;
                     return (
-                      <div className={`text-base font-semibold mb-3 ${pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <div className={`text-base font-semibold font-mono mb-3 ${pct >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                         {pct > 0 ? '+' : ''}{pct.toFixed(2)}%
                 </div>
                     );
@@ -352,25 +352,25 @@ const OptionsDashboard = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs sm:text-sm">
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>Open</div>
-                        <div className={`font-semibold ${textPrimary}`}>
+                        <div className={`font-semibold font-mono ${textPrimary}`}>
                           {Number.isFinite((data as any).ohlc.open) ? `₹${((data as any).ohlc.open as number).toFixed(2)}` : '—'}
                 </div>
               </div>
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>High</div>
-                        <div className={`font-semibold text-green-500`}>
+                        <div className={`font-semibold font-mono text-green-500`}>
                           {Number.isFinite((data as any).ohlc.high) ? `₹${((data as any).ohlc.high as number).toFixed(2)}` : '—'}
                 </div>
               </div>
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>Low</div>
-                        <div className={`font-semibold text-red-500`}>
+                        <div className={`font-semibold font-mono text-red-500`}>
                           {Number.isFinite((data as any).ohlc.low) ? `₹${((data as any).ohlc.low as number).toFixed(2)}` : '—'}
                 </div>
               </div>
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>Close</div>
-                        <div className={`font-semibold ${textPrimary}`}>
+                        <div className={`font-semibold font-mono ${textPrimary}`}>
                           {Number.isFinite((data as any).ohlc.close) ? `₹${((data as any).ohlc.close as number).toFixed(2)}` : '—'}
                 </div>
               </div>
@@ -394,13 +394,13 @@ const OptionsDashboard = () => {
                 )}
               >
                 <div className={`text-sm sm:text-base font-semibold ${textSecondary} mb-1.5`}>India VIX</div>
-                <div className={`text-xl sm:text-2xl font-bold ${textPrimary} mb-1.5`}>{Number.isFinite(data?.vix) ? `${(data!.vix as number).toFixed(2)}%` : '—'}</div>
+                <div className={`text-xl sm:text-2xl font-bold font-mono ${textPrimary} mb-1.5`}>{Number.isFinite(data?.vix) ? `${(data!.vix as number).toFixed(2)}%` : '—'}</div>
                 {(() => {
                   const changePct = (data as any)?.vixChangePct;
                   if (Number.isFinite(changePct)) {
                     const pct = changePct as number;
                     return (
-                      <div className={`text-sm font-semibold mb-3 ${pct >= 0 ? 'text-red-600' : 'text-green-600'}`}>
+                      <div className={`text-sm font-semibold font-mono mb-3 ${pct >= 0 ? 'text-red-600' : 'text-green-600'}`}>
                         {pct > 0 ? '+' : ''}{pct.toFixed(2)}%
                 </div>
                     );
@@ -415,25 +415,25 @@ const OptionsDashboard = () => {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs sm:text-sm">
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>Open</div>
-                        <div className={`font-semibold ${textPrimary}`}>
+                        <div className={`font-semibold font-mono ${textPrimary}`}>
                           {Number.isFinite((data as any).vixOhlc.open) ? `${((data as any).vixOhlc.open as number).toFixed(2)}%` : '—'}
                 </div>
               </div>
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>High</div>
-                        <div className={`font-semibold text-red-500`}>
+                        <div className={`font-semibold font-mono text-red-500`}>
                           {Number.isFinite((data as any).vixOhlc.high) ? `${((data as any).vixOhlc.high as number).toFixed(2)}%` : '—'}
                         </div>
                 </div>
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>Low</div>
-                        <div className={`font-semibold text-green-500`}>
+                        <div className={`font-semibold font-mono text-green-500`}>
                           {Number.isFinite((data as any).vixOhlc.low) ? `${((data as any).vixOhlc.low as number).toFixed(2)}%` : '—'}
                 </div>
               </div>
                       <div>
                         <div className={`${textSecondary} mb-0.5`}>Close</div>
-                        <div className={`font-semibold ${textPrimary}`}>
+                        <div className={`font-semibold font-mono ${textPrimary}`}>
                           {Number.isFinite((data as any).vixOhlc.close) ? `${((data as any).vixOhlc.close as number).toFixed(2)}%` : '—'}
             </div>
                     </div>
@@ -457,7 +457,7 @@ const OptionsDashboard = () => {
                     return (
                         <div key={idx} className="text-center">
                           <div className={`text-sm ${textSecondary} mb-1`}>{e.label}</div>
-                          <div className={`text-xl font-bold text-cyan-500`}>—d —h —m</div>
+                          <div className={`text-xl font-bold font-mono text-cyan-500`}>—d —h —m</div>
                           <div className={`text-sm ${textSecondary} mt-1`}>—</div>
                       </div>
                     );
@@ -471,7 +471,7 @@ const OptionsDashboard = () => {
                     return (
                       <div key={idx} className="text-center">
                         <div className={`text-sm ${textSecondary} mb-1`}>{e.label}</div>
-                        <div className={`text-xl font-bold ${soon ? 'text-red-500' : 'text-cyan-500'}`}>
+                        <div className={`text-xl font-bold font-mono ${soon ? 'text-red-500' : 'text-cyan-500'}`}>
                           {days}d {hours}h {mins}m
                         </div>
                         <div className={`text-sm ${textSecondary} mt-1`}>{expiryDate}</div>
@@ -493,7 +493,7 @@ const OptionsDashboard = () => {
                 )}
               >
                 <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-1`}>IV Rank</div>
-                <div className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>{Number.isFinite((data as any)?.ivRank) ? ((data as any).ivRank as number).toFixed(1) : Number.isFinite(ivRank) ? (ivRank as number).toFixed(1) : '—'}%</div>
+                <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary}`}>{Number.isFinite((data as any)?.ivRank) ? ((data as any).ivRank as number).toFixed(1) : Number.isFinite(ivRank) ? (ivRank as number).toFixed(1) : '—'}%</div>
                 <div className={`text-sm ${textSecondary} mt-1`}>52W Range</div>
                 {(() => {
                   const ivrValue = Number.isFinite((data as any)?.ivRank) ? (data as any).ivRank : Number.isFinite(ivRank) ? ivRank : null;
@@ -533,7 +533,7 @@ const OptionsDashboard = () => {
                   if (!spot || !vix) {
                     return (
                       <>
-                        <div className={`text-2xl font-bold ${textPrimary} mb-1`}>—</div>
+                        <div className={`text-2xl font-bold font-mono ${textPrimary} mb-1`}>—</div>
                         <div className={`text-sm ${textSecondary}`}>Data unavailable</div>
                       </>
                     );
@@ -550,8 +550,8 @@ const OptionsDashboard = () => {
                     <>
                       <div className="space-y-2">
                         <div>
-                          <div className={`text-sm ${textSecondary} mb-0.5`}>Spot: {spot.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
-                          <div className={`text-sm ${textSecondary} mb-0.5`}>VIX: {vix.toFixed(2)}%</div>
+                          <div className={`text-sm font-mono ${textSecondary} mb-0.5`}>Spot: {spot.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
+                          <div className={`text-sm font-mono ${textSecondary} mb-0.5`}>VIX: {vix.toFixed(2)}%</div>
                 </div>
                         <div className={`border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} pt-2`}>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -559,10 +559,10 @@ const OptionsDashboard = () => {
                               <div className={`text-sm font-semibold ${textPrimary}`}>
                                 EM (1-Day)
                 </div>
-                              <div className={`text-xl font-bold ${textPrimary}`}>
+                              <div className={`text-xl font-bold font-mono ${textPrimary}`}>
                                 ±{Math.round(em1Day)} pts
               </div>
-                              <div className={`text-sm ${textSecondary}`}>
+                              <div className={`text-sm font-mono ${textSecondary}`}>
                                 ({em1DayPct.toFixed(2)}%)
               </div>
               </div>
@@ -570,7 +570,7 @@ const OptionsDashboard = () => {
                               <div className={`text-sm font-semibold ${textPrimary}`}>
                                 EM (Weekly)
                 </div>
-                              <div className={`text-xl font-bold ${textPrimary}`}>
+                              <div className={`text-xl font-bold font-mono ${textPrimary}`}>
                                 ±{Math.round(emWeekly)} pts
                 </div>
               </div>
@@ -652,7 +652,7 @@ const OptionsDashboard = () => {
                 regime: mood.regime,
                 tooltip: (
                   <span>
-                    MMI = {mood.mmi.toFixed(0)} • {mood.regime}
+                    MMI = <span className="font-mono">{mood.mmi.toFixed(0)}</span> • {mood.regime}
                   </span>
                 )
               }}
@@ -722,15 +722,19 @@ const OptionsDashboard = () => {
       <div className={`${darkMode ? 'bg-gray-950' : 'bg-gray-800'} text-gray-300 px-6 py-4 mt-12 relative z-10`}>
         <div className="max-w-7xl mx-auto text-center text-xs sm:text-sm px-3 sm:px-4 md:px-6 py-3 sm:py-4 space-y-1">
           <p className="text-sm font-semibold">Data Sources: NSE India, Yahoo Finance</p>
-          <p className="text-xs text-gray-400">Analytics and derived models © Tradyx Quant Dashboard Engine v1.0.0</p>
-          <p className="text-xs text-gray-400">Market data © respective owners. Tradyx Analytics is unaffiliated with NSE or Yahoo.</p>
+          <p className="text-xs text-gray-400">Analytics powered by Tradyxa Analytics Engine v1.0.0</p>
+          <p className="text-xs text-gray-400">Market data © respective owners. Tradyxa Quant Dashboard is unaffiliated with NSE or Yahoo.</p>
           <p className="text-xs text-gray-400">Market data may be delayed up to 30 minutes. For educational use only.</p>
-          <p className="text-xs text-gray-400">Operated by Tradyx Analytics (Individual Proprietorship, India) | © 2025 Pravin A. Mathew | All Rights Reserved.</p>
+          <p className="text-xs text-gray-400">Operated by Zeta Aztra Technologies (Individual Proprietorship, India)</p>
+          <p className="text-xs text-gray-400">© 2025 Zeta Aztra Technologies. All Rights Reserved.</p>
           <p className="text-xs text-gray-400">
-            <a href="mailto:support@tradyx.in" className="hover:text-blue-400 underline">support@tradyx.in</a> | Jurisdiction: Chennai, Tamil Nadu | Version: v1.0.0
+            <a href="mailto:zetaaztratech@gmail.com" className="hover:text-blue-400 underline">zetaaztratech@gmail.com</a> | Jurisdiction: Chennai, Tamil Nadu | Version: v1.0.0
           </p>
           <p className="text-xs text-gray-500 mt-2">
-            Visual models and code protected under Copyright Act, 1957 (India). Unauthorized use of the Tradyx name, logo, or visuals is strictly prohibited.
+            Visual models and code protected under Copyright Act, 1957 (India). Unauthorized use of the Tradyxa or Zeta Aztra name, logo, or visuals is strictly prohibited.
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.
           </p>
           <div className={`flex flex-wrap justify-center gap-3 mt-3 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             <a href="/legal/privacy" className="hover:text-blue-400 underline">Privacy Policy</a>

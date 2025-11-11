@@ -6,7 +6,7 @@ type ConsentChoices = {
   analytics: boolean;
 };
 
-const KEY = 'tradyx-consent';
+const KEY = 'tradyxa-consent';
 const defaultChoices: ConsentChoices = { analytics: false };
 
 export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
@@ -25,9 +25,9 @@ export default function ConsentBanner({ darkMode }: { darkMode: boolean }) {
     };
 
     if (typeof window !== 'undefined') {
-      window.addEventListener('tradyx:openConsent', handler);
+      window.addEventListener('tradyxa:openConsent', handler);
       return () => {
-        window.removeEventListener('tradyx:openConsent', handler);
+        window.removeEventListener('tradyxa:openConsent', handler);
       };
     }
   }, []);

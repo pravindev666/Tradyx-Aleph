@@ -80,9 +80,9 @@ export default function PrivacyPage() {
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
               This website does <strong>not collect, store, or process personally identifiable
-              information (PII)</strong>. Tradyx Quant Dashboard uses publicly available market
+              information (PII)</strong>. Tradyxa Quant Dashboard uses publicly available market
               data (e.g., Yahoo Finance, NSE India) and does not require user accounts or
-              user-submitted data for access.
+              user-submitted data for access. Market data may be delayed up to 30 minutes. For educational use only.
             </p>
           </section>
 
@@ -93,8 +93,8 @@ export default function PrivacyPage() {
               Hosting & Logs
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              The site is hosted by <strong>Vercel Inc.</strong> (U.S./EU). For security and
-              performance, Vercel may process limited technical information such as IP address,
+              The site is hosted by <strong>Cloudflare Pages</strong> (Cloudflare, Inc.). For security and
+              performance, Cloudflare may process limited technical information such as IP address,
               user agent, and timestamps in server logs. <strong>We do not persist or export</strong>
               these logs. To the best of our knowledge, host logs are auto-purged within a short
               retention window (typically ≤ 7 days). We do not combine logs with any other data
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
               Analytics
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              We may use <strong>anonymous, aggregate analytics</strong> (e.g., Vercel Analytics)
+              We may use <strong>anonymous, aggregate analytics</strong> (e.g., Cloudflare Analytics)
               for performance monitoring only. If Google Analytics is enabled, it will operate
               under <strong>Google Consent Mode v2</strong> and respect your consent choices.
               IP anonymization is enabled where applicable.
@@ -125,8 +125,10 @@ export default function PrivacyPage() {
             <p className={`${textSecondary} leading-relaxed`}>
               We use minimal cookies for <strong>theme preferences (dark/light)</strong> and basic
               site functionality. Analytics and advertising cookies (if any) are used
-              <strong> only with your consent</strong>. Users in the EEA/UK are shown a
-              <strong> Google-certified CMP</strong> (Funding Choices) implementing
+              <strong> only with your consent</strong>. This website displays advertisements from <strong>Adsterra</strong> (adsterra.com), 
+              a third-party advertising network. Adsterra may use cookies and similar technologies to deliver relevant ads and measure ad performance. 
+              We do not control Adsterra's data collection practices. For more information about Adsterra's privacy practices, please visit their privacy policy. 
+              Users in the EEA/UK are shown a <strong> Google-certified CMP</strong> (Funding Choices) implementing
               <strong> IAB TCF v2.2</strong>. You can change your choices at any time via the Cookie
               Settings/Preferences link or banner.
             </p>
@@ -168,13 +170,22 @@ export default function PrivacyPage() {
             </p>
           </section>
 
+          {/* Affiliation Disclaimer */}
+          <section>
+            <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
+              <p className={`${textSecondary} text-sm`}>
+                <strong>Affiliation Disclaimer:</strong> Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.
+              </p>
+            </div>
+          </section>
+
           {/* Footer Note */}
           <div className={`pt-4 border-t ${borderColor} text-center`}>
             <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-              Operated by Tradyx Analytics (India) • Jurisdiction: Chennai, Tamil Nadu • Contact:{' '}
-              <a href="mailto:support@tradyx.in" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
-                support@tradyx.in
-              </a>
+              Operated by Zeta Aztra Technologies (Individual Proprietorship, India) • © 2025 Zeta Aztra Technologies. All Rights Reserved. • Jurisdiction: Chennai, Tamil Nadu • Contact:{' '}
+              <a href="mailto:zetaaztratech@gmail.com" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
+                zetaaztratech@gmail.com
+              </a> • Version: v1.0.0
             </p>
           </div>
         </div>

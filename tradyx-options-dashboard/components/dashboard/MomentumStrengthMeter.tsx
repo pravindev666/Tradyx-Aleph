@@ -38,7 +38,7 @@ export default function MomentumStrengthMeter({ value, darkMode, onOpenModal }: 
       )}
     >
       <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Momentum Strength</div>
-      <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-3`}>
+      <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-3`}>
         {value !== null && value !== undefined
           ? `${scaledValue.toFixed(1)}`
           : '—'}
@@ -65,7 +65,7 @@ export default function MomentumStrengthMeter({ value, darkMode, onOpenModal }: 
           </div>
         </div>
         {/* Scale labels */}
-        <div className="flex justify-between text-xs mt-1">
+        <div className="flex justify-between text-xs font-mono mt-1">
           <span className={textSecondary}>0</span>
           <span className={textSecondary}>25</span>
           <span className={textSecondary}>50</span>

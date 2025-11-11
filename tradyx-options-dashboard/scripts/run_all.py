@@ -69,7 +69,7 @@ def main():
     """Run all scripts in the correct order with production-level error handling"""
     start_time_main = datetime.now()
     logger.info("="*70)
-    logger.info("Tradyx Dashboard - Data Update Script")
+    logger.info("Tradyxa Dashboard - Data Update Script")
     logger.info("="*70)
     logger.info("This script will run all data collection and computation scripts")
     logger.info("in the correct order to update the dashboard data.")

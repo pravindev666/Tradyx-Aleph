@@ -1,6 +1,6 @@
-# Tradyx Options Dashboard - Architecture & Reusability Guide
+# Tradyxa Options Dashboard - Architecture & Reusability Guide
 
-A comprehensive guide to the architecture, design patterns, and theme system of the Tradyx Options Dashboard. This document enables you to recreate the entire website and reuse its code and theme for other projects.
+A comprehensive guide to the architecture, design patterns, and theme system of the Tradyxa Options Dashboard. This document enables you to recreate the entire website and reuse its code and theme for other projects.
 
 ---
 
@@ -46,7 +46,7 @@ graph TB
         I[GitHub Repository]
         J[Vercel<br/>Frontend Hosting]
         K[GitHub Actions<br/>Data Updates]
-        L[Production Site<br/>tradyx.vercel.app]
+        L[Production Site<br/>tradyxa.vercel.app]
     end
     
     A --> C
@@ -173,7 +173,7 @@ tradyx-options-dashboard/
 │   │   ├── SchemaMarkup.tsx
 │   │   ├── SEOHead.tsx
 │   │   └── visual/             # Visual components
-│   ├── fonts/                   # Custom fonts (Arteks)
+│   ├── fonts/                   # Font directory (Google Fonts: Inter, JetBrains Mono, Manrope)
 │   ├── legal/                   # Legal pages
 │   │   ├── cookie-settings/
 │   │   ├── cookies/

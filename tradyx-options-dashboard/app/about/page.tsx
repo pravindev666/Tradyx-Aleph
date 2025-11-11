@@ -11,7 +11,7 @@ export default function AboutPage() {
 
   useEffect(() => {
     setMounted(true);
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyx-theme') : null;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyxa-theme') : null;
     if (saved) {
       setDarkMode(saved === 'dark');
     } else {
@@ -52,8 +52,8 @@ export default function AboutPage() {
             <ArrowLeft size={20} />
             <span>Back to Dashboard</span>
           </Link>
-          <h1 className={`text-3xl sm:text-4xl font-bold ${textPrimary} mb-2`}>
-            About Tradyx Quant Dashboard
+          <h1 className={`text-3xl sm:text-4xl font-bold font-brand ${textPrimary} mb-2`}>
+            About Tradyxa Quant Dashboard
           </h1>
           <p className={`text-lg ${textSecondary}`}>
             Advanced NIFTY Options Analytics & Machine Learning Forecasts
@@ -69,7 +69,7 @@ export default function AboutPage() {
               Purpose
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              Tradyx Quant Dashboard is an educational platform designed to provide advanced options analytics, 
+              Tradyxa Quant Dashboard is an educational platform designed to provide advanced options analytics, 
               volatility indicators, and machine learning-based forecasts for NIFTY options trading. The dashboard 
               aggregates real-time market data from NSE India and Yahoo Finance to compute various metrics including 
               IV Rank, Volatility Risk Premium, Market Mood Index, and predictive models using Linear Regression, 
@@ -92,7 +92,8 @@ export default function AboutPage() {
               <p><strong>Data Sources:</strong> NSE India API, Yahoo Finance</p>
               <p><strong>Analytics Engine:</strong> Python (pandas, numpy, scikit-learn, statsmodels, TensorFlow/Keras)</p>
               <p><strong>Machine Learning Models:</strong> Linear Regression, Logistic Regression, Random Forest, Quantile Regression, LSTM</p>
-              <p><strong>Hosting:</strong> Vercel</p>
+              <p><strong>Hosting:</strong> Cloudflare Pages</p>
+              <p><strong>Advertising:</strong> Adsterra (adsterra.com)</p>
               <p><strong>Version:</strong> v1.0.0</p>
             </div>
           </section>
@@ -107,8 +108,8 @@ export default function AboutPage() {
               <p><strong>NSE India:</strong> Real-time option chain data, historical prices</p>
               <p><strong>Yahoo Finance:</strong> Market data, VIX, historical OHLC data</p>
               <p className="text-sm text-gray-500 mt-2">
-                Market data © respective owners. Tradyx Analytics is unaffiliated with NSE India or Yahoo Finance. 
-                Market data may be delayed up to 30 minutes.
+                Market data © respective owners. Tradyxa Quant Dashboard is unaffiliated with NSE or Yahoo. 
+                Market data may be delayed up to 30 minutes. For educational use only.
               </p>
             </div>
           </section>
@@ -121,18 +122,23 @@ export default function AboutPage() {
             </h2>
             <div className={`${textSecondary} space-y-3 text-sm`}>
               <div>
-                <p><strong>Operated by:</strong> Tradyx Analytics (Individual Proprietorship, India)</p>
-                <p><strong>Developer:</strong> Pravin A. Mathew</p>
+                <p><strong>Operated by:</strong> Zeta Aztra Technologies (Individual Proprietorship, India)</p>
                 <p><strong>Jurisdiction:</strong> Chennai, Tamil Nadu, India</p>
-                <p><strong>Contact:</strong> <a href="mailto:support@tradyx.in" className="text-blue-400 hover:underline">support@tradyx.in</a></p>
+                <p><strong>Contact:</strong> <a href="mailto:zetaaztratech@gmail.com" className="text-blue-400 hover:underline">zetaaztratech@gmail.com</a></p>
+                <p><strong>Version:</strong> v1.0.0</p>
               </div>
               <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
                 <p><strong>Data Protection:</strong> This site does not collect or store any personally identifiable information. 
-                Server logs are automatically deleted within 7 days by the host (Vercel).</p>
+                Server logs are automatically deleted within 7 days by the host (Cloudflare Pages).</p>
+                <p><strong>Advertising:</strong> This website displays advertisements provided by Adsterra (adsterra.com), a third-party advertising network. 
+                Adsterra may use cookies and similar technologies to deliver relevant ads. We do not control Adsterra's data collection practices.</p>
               </div>
               <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
                 <p><strong>Intellectual Property:</strong> Visual models and code protected under Copyright Act, 1957 (India). 
-                Unauthorized use of the Tradyx name, logo, or visuals is strictly prohibited.</p>
+                Unauthorized use of the Tradyxa or Zeta Aztra name, logo, or visuals is strictly prohibited.</p>
+              </div>
+              <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
+                <p><strong>Affiliation Disclaimer:</strong> Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.</p>
               </div>
             </div>
           </section>
@@ -146,8 +152,8 @@ export default function AboutPage() {
             <div className={`${textSecondary} space-y-2`}>
               <p>For inquiries, support, or data deletion requests:</p>
               <p>
-                <a href="mailto:support@tradyx.in" className="text-blue-400 hover:underline font-semibold">
-                  support@tradyx.in
+                <a href="mailto:zetaaztratech@gmail.com" className="text-blue-400 hover:underline font-semibold">
+                  zetaaztratech@gmail.com
                 </a>
               </p>
             </div>
@@ -156,7 +162,7 @@ export default function AboutPage() {
           {/* Footer Note */}
           <div className={`pt-4 border-t ${borderColor} text-center`}>
             <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-              © 2025 Tradyx Analytics | All Rights Reserved
+              © 2025 Zeta Aztra Technologies. All Rights Reserved.
             </p>
           </div>
         </div>

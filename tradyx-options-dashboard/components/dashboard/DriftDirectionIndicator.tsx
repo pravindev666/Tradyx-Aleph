@@ -57,7 +57,7 @@ export default function DriftDirectionIndicator({ value, darkMode, onOpenModal }
         
         {value !== null && value !== undefined && (
           <div className="text-center">
-            <div className={`text-2xl font-bold ${isBullish ? 'text-green-500' : isBearish ? 'text-red-500' : textSecondary}`}>
+            <div className={`text-2xl font-bold font-mono ${isBullish ? 'text-green-500' : isBearish ? 'text-red-500' : textSecondary}`}>
               {isBullish ? '+' : ''}{value.toFixed(2)}
             </div>
             <div className={`text-sm ${textSecondary}`}>
@@ -72,7 +72,7 @@ export default function DriftDirectionIndicator({ value, darkMode, onOpenModal }
         <div className="w-full">
           <div className={`flex items-center justify-between mb-1`}>
             <span className={`text-xs ${textSecondary}`}>Magnitude</span>
-            <span className={`text-xs font-semibold ${isBullish ? 'text-green-500' : 'text-red-500'}`}>
+            <span className={`text-xs font-semibold font-mono ${isBullish ? 'text-green-500' : 'text-red-500'}`}>
               {magnitudePct.toFixed(1)}%
             </span>
           </div>

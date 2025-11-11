@@ -91,7 +91,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
             }}
           />
         </div>
-        <span className={`text-xs font-semibold min-w-[60px] text-right ${isPositive ? 'text-red-500' : 'text-green-500'}`}>
+        <span className={`text-xs font-semibold font-mono min-w-[60px] text-right ${isPositive ? 'text-red-500' : 'text-green-500'}`}>
           {value > center ? '+' : ''}{value.toFixed(4)}
         </span>
       </div>
@@ -149,7 +149,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Realized Volatility</div>
           <div className="flex items-center justify-between">
             <div>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>
+              <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary}`}>
                 {indicators.realizedVol ? `${indicators.realizedVol.toFixed(2)}%` : '—'}
               </div>
               <div className={`text-sm font-semibold mt-1 ${getInterpretationColor(getInterpretation('realizedVol', indicators.realizedVol))}`}>
@@ -172,8 +172,8 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>HV–IV Spread</div>
-          <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
-            {indicators.hvIvSpread !== null && indicators.hvIvSpread !== undefined 
+          <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-1`}>
+              {indicators.hvIvSpread !== null && indicators.hvIvSpread !== undefined
               ? `${indicators.hvIvSpread > 0 ? '+' : ''}${indicators.hvIvSpread.toFixed(2)}`
               : '—'}
           </div>
@@ -195,7 +195,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Volatility Ratio</div>
           <div className="flex items-center justify-between">
             <div>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>
+              <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary}`}>
                 {indicators.volatilityRatio ? indicators.volatilityRatio.toFixed(3) : '—'}
               </div>
               <div className={`text-sm font-semibold mt-1 ${getInterpretationColor(getInterpretation('volatilityRatio', indicators.volatilityRatio))}`}>
@@ -218,7 +218,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Parkinson Volatility</div>
-          <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
+          <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-1`}>
             {indicators.parkinsonVol20d ? `${indicators.parkinsonVol20d.toFixed(2)}%` : '—'}
           </div>
           <div className={`text-sm font-semibold mb-2 ${getInterpretationColor(getInterpretation('parkinsonVol20d', indicators.parkinsonVol20d))}`}>
@@ -241,7 +241,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>VIX–NIFTY Correlation</div>
           <div className="flex items-center justify-between">
             <div>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>
+              <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary}`}>
                 {indicators.vixNiftyCorrelation !== null && indicators.vixNiftyCorrelation !== undefined
                   ? indicators.vixNiftyCorrelation.toFixed(3)
                   : '—'}
@@ -272,7 +272,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Trend Consistency</div>
-          <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
+          <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-1`}>
             {indicators.trendConsistencyIndex ? (indicators.trendConsistencyIndex * 100).toFixed(1) + '%' : '—'}
           </div>
           <div className={`text-sm font-semibold mb-2 ${getInterpretationColor(getInterpretation('trendConsistencyIndex', indicators.trendConsistencyIndex))}`}>
@@ -293,7 +293,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Return Quantile Position</div>
           <div className="flex items-center justify-between">
             <div>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>
+              <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary}`}>
                 {indicators.returnQuantilePosition ? `${indicators.returnQuantilePosition.toFixed(1)}%` : '—'}
               </div>
               <div className={`text-sm font-semibold mt-1 ${getInterpretationColor(getInterpretation('returnQuantilePosition', indicators.returnQuantilePosition))}`}>
@@ -350,7 +350,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Range Compression Index</div>
           <div className="flex items-center justify-between">
             <div>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary}`}>
+              <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary}`}>
                 {indicators.rangeCompressionIndex ? indicators.rangeCompressionIndex.toFixed(3) : '—'}
               </div>
               <div className={`text-sm font-semibold mt-1 ${getInterpretationColor(getInterpretation('rangeCompressionIndex', indicators.rangeCompressionIndex))}`}>
@@ -379,7 +379,7 @@ export default function VolatilityIndicators({ data, darkMode, onOpenModal }: Vo
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Volatility Risk Premium</div>
-          <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
+          <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-1`}>
             {indicators.volatilityRiskPremium !== null && indicators.volatilityRiskPremium !== undefined
               ? `${indicators.volatilityRiskPremium > 0 ? '+' : ''}${indicators.volatilityRiskPremium.toFixed(4)}`
               : '—'}

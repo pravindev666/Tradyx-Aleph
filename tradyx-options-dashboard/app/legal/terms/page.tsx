@@ -91,10 +91,10 @@ export default function TermsPage() {
               Intellectual Property
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              © {new Date().getFullYear()} Tradyx Analytics. All rights reserved. All code,
+              © {new Date().getFullYear()} Zeta Aztra Technologies. All rights reserved. All code,
               models, visualizations, and branding are protected under applicable laws, including
               the Indian Copyright Act, 1957. Unauthorized reproduction, scraping, framing, or
-              redistribution is prohibited. "Tradyx" is a brand identifier; unauthorized use is prohibited.
+              redistribution is prohibited. "Tradyxa" and "Zeta Aztra" are brand identifiers; unauthorized use is prohibited.
             </p>
           </section>
 
@@ -105,9 +105,9 @@ export default function TermsPage() {
               Data Attribution
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              Market data © respective owners. Tradyx Analytics is <strong>not affiliated</strong> with
-              NSE India or Yahoo Finance. Derived analytics and computed indicators are © Tradyx Analytics.
-              Market data may be delayed up to 30 minutes.
+              Market data © respective owners. Tradyxa Quant Dashboard is <strong>not affiliated</strong> with
+              NSE or Yahoo. Derived analytics and computed indicators are © Zeta Aztra Technologies.
+              Market data may be delayed up to 30 minutes. For educational use only.
             </p>
           </section>
 
@@ -134,10 +134,15 @@ export default function TermsPage() {
             <p className={`${textSecondary} leading-relaxed`}>
               These Terms are governed by the laws of India. All disputes are subject exclusively to the
               courts of <strong>Chennai, Tamil Nadu</strong>. Contact:{' '}
-              <a href="mailto:support@tradyx.in" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
-                support@tradyx.in
+              <a href="mailto:zetaaztratech@gmail.com" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
+                zetaaztratech@gmail.com
               </a>.
             </p>
+            <div className={`mt-4 p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
+              <p className={`${textSecondary} text-sm`}>
+                <strong>Affiliation Disclaimer:</strong> Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.
+              </p>
+            </div>
           </section>
 
           {/* Footer Note */}

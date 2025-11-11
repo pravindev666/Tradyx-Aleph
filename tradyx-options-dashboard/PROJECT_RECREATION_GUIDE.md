@@ -1,6 +1,6 @@
-# Tradyx Options Dashboard - Complete Project Recreation Guide
+# Tradyxa Options Dashboard - Complete Project Recreation Guide
 
-A comprehensive step-by-step guide to recreate the entire Tradyx Options Dashboard project with all its themes, fonts, architecture, formulas, ad placements, and configurations.
+A comprehensive step-by-step guide to recreate the entire Tradyxa Options Dashboard project with all its themes, fonts, architecture, formulas, ad placements, and configurations.
 
 ---
 
@@ -23,7 +23,7 @@ A comprehensive step-by-step guide to recreate the entire Tradyx Options Dashboa
 
 ## 🎯 Project Overview
 
-The Tradyx Options Dashboard is a real-time financial analytics platform built with Next.js, React, TypeScript, and Python. It provides:
+The Tradyxa Options Dashboard is a real-time financial analytics platform built with Next.js, React, TypeScript, and Python. It provides:
 
 - **Real-time NIFTY Options Data** from NSE
 - **Volatility Indicators** (10+ metrics)
@@ -184,7 +184,7 @@ module.exports = {
 html, body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: var(--font-arteks, system-ui), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-inter, system-ui), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 @layer components {
@@ -307,48 +307,47 @@ export default function ThemeToggle({ darkMode, setDarkMode }: ThemeToggleProps)
 
 ## 🔤 Fonts Configuration
 
-### Arteks Font Setup
+### Google Fonts Setup
 
-The project uses the **Arteks** font family with multiple weights and styles.
+The project uses three Google Fonts optimized for different purposes:
+
+1. **Inter** - Primary UI font (optimized for dashboards)
+2. **JetBrains Mono** - Numeric/Value areas (perfect alignment for volatility metrics)
+3. **Manrope** - Brand/Logo font (high-tech premium edge)
 
 **File**: `app/layout.tsx`
 
 ```typescript
-import localFont from 'next/font/local';
+import { Inter, JetBrains_Mono, Manrope } from 'next/font/google';
 
-// Arteks font configuration using .otf files
-const arteks = localFont({
-  src: [
-    {
-      path: './fonts/Arteks Regular.otf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Arteks Medium.otf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Arteks Bold.otf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Arteks Light.otf',
-      weight: '300',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-arteks',
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+// Inter - Primary UI font (optimized for dashboards)
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+});
+
+// JetBrains Mono - Numeric/Value areas (perfect alignment for volatility metrics)
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+  fallback: ['monospace', 'Courier New', 'mono'],
+});
+
+// Manrope - Brand/Logo font (high-tech premium edge)
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-manrope',
+  display: 'swap',
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={arteks.variable}>
-      <body className={`${arteks.className} bg-zinc-50 dark:bg-zinc-950`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${manrope.variable}`}>
+      <body className={`${inter.className} bg-zinc-50 dark:bg-zinc-950`}>
         {children}
       </body>
     </html>
@@ -356,20 +355,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-### Font Files Required
+### Font Usage
 
-Place the following font files in `app/fonts/`:
+- **Inter (font-sans)**: Default UI text, body content
+- **JetBrains Mono (font-mono)**: Numbers, prices, percentages, volatility metrics
+- **Manrope (font-brand)**: Brand name, headings, premium UI elements
 
-- `Arteks Regular.otf`
-- `Arteks Medium.otf`
-- `Arteks Bold.otf`
-- `Arteks Light.otf`
-- `Arteks Italic.otf` (optional)
-- `Arteks Bold Italic.otf` (optional)
+### Font Licenses
 
-### Using Google Fonts Alternative
+- **Inter**: SIL Open Font License (Free)
+- **JetBrains Mono**: Apache 2.0 (Free)
+- **Manrope**: SIL Open Font License (Free)
 
-If you don't have Arteks fonts, you can use Google Fonts:
+All fonts are loaded via Next.js font optimization for optimal performance.
+
+### Alternative Font Setup
+
+If you prefer different fonts:
 
 ```typescript
 import { Inter } from 'next/font/google';
@@ -440,7 +442,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 tradyx-options-dashboard/
 ├── app/                          # Next.js App Router
-│   ├── fonts/                   # Custom fonts (Arteks)
+│   ├── fonts/                   # Font directory (Google Fonts: Inter, JetBrains Mono, Manrope)
 │   ├── globals.css              # Global styles & theme
 │   ├── layout.tsx               # Root layout
 │   ├── page.tsx                 # Main dashboard page
@@ -1088,7 +1090,7 @@ npm install -D @types/node @types/react @types/react-dom
 
 ### Step 3: Setup Fonts
 
-1. Place Arteks font files in `app/fonts/`
+1. Fonts are automatically loaded from Google Fonts via Next.js (no files needed)
 2. Update `app/layout.tsx` (see [Fonts Configuration](#fonts-configuration))
 
 ### Step 4: Create Component Structure
@@ -1218,11 +1220,11 @@ if __name__ == "__main__":
 
 ## 🎉 Summary
 
-This guide provides everything you need to recreate the Tradyx Options Dashboard:
+This guide provides everything you need to recreate the Tradyxa Options Dashboard:
 
 1. ✅ **Complete Technology Stack** - All dependencies and versions
 2. ✅ **Theme System** - Dark/light mode with glass morphism
-3. ✅ **Fonts Configuration** - Arteks font setup
+3. ✅ **Fonts Configuration** - Google Fonts setup (Inter, JetBrains Mono, Manrope)
 4. ✅ **Architecture** - Data flow and component structure
 5. ✅ **Mathematical Formulas** - All 12+ formulas with implementations
 6. ✅ **Ad Integration** - Complete ad system with placements

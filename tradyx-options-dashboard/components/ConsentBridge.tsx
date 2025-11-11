@@ -8,16 +8,16 @@ export default function ConsentBridge() {
     const handler = () => {
       // Clear saved consent to trigger banner to show again
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('tradyx-consent');
+        localStorage.removeItem('tradyxa-consent');
         // Reload page to show banner
         window.location.reload();
       }
     };
 
     if (typeof window !== 'undefined') {
-      window.addEventListener('tradyx:openConsent', handler);
+      window.addEventListener('tradyxa:openConsent', handler);
       return () => {
-        window.removeEventListener('tradyx:openConsent', handler);
+        window.removeEventListener('tradyxa:openConsent', handler);
       };
     }
   }, []);

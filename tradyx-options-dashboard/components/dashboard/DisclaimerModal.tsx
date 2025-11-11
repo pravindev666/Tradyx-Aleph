@@ -64,7 +64,7 @@ export default function DisclaimerModal({ darkMode, onClose }: DisclaimerModalPr
             </p>
 
             <p>
-              This website may display third-party advertisements or contain external links for informational or promotional purposes. The website owner does not endorse, control, or take responsibility for the accuracy, quality, legality, or reliability of any third-party content, products, or services accessed through such links. Interacting with any third-party content or advertisements is done solely at the user's own risk. <strong>Ad placements are managed by third-party providers; Tradyx Analytics is not responsible for their content or claims.</strong>
+              This website may display third-party advertisements or contain external links for informational or promotional purposes. The website owner does not endorse, control, or take responsibility for the accuracy, quality, legality, or reliability of any third-party content, products, or services accessed through such links. Interacting with any third-party content or advertisements is done solely at the user's own risk. <strong>Ad placements are managed by third-party providers; Zeta Aztra Technologies is not responsible for their content or claims.</strong>
             </p>
 
             <p>
@@ -83,13 +83,15 @@ export default function DisclaimerModal({ darkMode, onClose }: DisclaimerModalPr
 
             <div className={`mt-6 pt-4 border-t ${borderColor} space-y-3`}>
               <div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} space-y-2`}>
-                <p><strong>Data Protection:</strong> This site does not collect or store any personally identifiable information. The site is hosted by Vercel Inc. (U.S./EU), which may automatically log IPs for technical purposes. No personal data is stored; server logs are automatically deleted within 7 days by the host. Anonymous usage statistics may be processed by Vercel for performance analytics only. To request deletion of any stored technical data, email support@tradyx.in</p>
+                <p><strong>Data Protection:</strong> This site does not collect or store any personally identifiable information. The site is hosted by Cloudflare Pages (Cloudflare, Inc.), which may automatically log IPs for technical purposes. No personal data is stored; server logs are automatically deleted within 7 days by the host. Anonymous usage statistics may be processed by Cloudflare for performance analytics only. To request deletion of any stored technical data, email zetaaztratech@gmail.com</p>
+                <p><strong>Advertising:</strong> This website displays advertisements provided by Adsterra (adsterra.com), a third-party advertising network. Adsterra may use cookies and similar technologies to deliver relevant ads. We do not control Adsterra's data collection practices. For more information about Adsterra's privacy practices, please visit their privacy policy. You can manage your cookie preferences using the Cookie Preferences link in the footer.</p>
                 <p><strong>Jurisdiction:</strong> This site operates under Indian law. All disputes subject to Chennai, Tamil Nadu courts.</p>
-                <p><strong>Intellectual Property:</strong> Visual models and code protected under Copyright Act, 1957 (India). Unauthorized use of the Tradyx name, logo, or visuals is strictly prohibited.</p>
+                <p><strong>Intellectual Property:</strong> Visual models and code protected under Copyright Act, 1957 (India). Unauthorized use of the Tradyxa or Zeta Aztra name, logo, or visuals is strictly prohibited.</p>
+                <p><strong>Affiliation Disclaimer:</strong> Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.</p>
               </div>
               <div className={`text-center pt-2 border-t ${borderColor}`}>
                 <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                  © 2025 Tradyx Analytics | <Link href="/about" className="hover:text-blue-400 underline">About</Link> | Disclaimer | Privacy Policy | Terms
+                  © 2025 Zeta Aztra Technologies | <Link href="/about" className="hover:text-blue-400 underline">About</Link> | Disclaimer | Privacy Policy | Terms
                 </p>
               </div>
             </div>

@@ -80,7 +80,7 @@ export default function DisclaimerPage() {
               SEBI Notice
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              Tradyx Analytics, its owner(s), developers, and affiliates are <strong>not SEBI-registered
+              Zeta Aztra Technologies, its owner(s), developers, and affiliates are <strong>not SEBI-registered
               investment advisers or research analysts</strong>. All trading and investment decisions
               made based on the information presented here are taken <strong>entirely at the user's
               own risk</strong>.
@@ -108,7 +108,7 @@ export default function DisclaimerPage() {
               Third-Party Content
             </h2>
             <p className={`${textSecondary} leading-relaxed`}>
-              This website may display advertisements and links to external websites. Tradyx does
+              This website may display advertisements and links to external websites. Zeta Aztra Technologies does
               <strong> not endorse or control</strong> third-party content or claims, and assumes no
               responsibility for any products, services, or information provided by third parties.
               Interactions with such content are at your own discretion and risk.
@@ -126,7 +126,7 @@ export default function DisclaimerPage() {
               NSE India). While reasonable efforts are made to ensure accuracy and timely updates,
               <strong> no guarantee or warranty</strong> is given regarding completeness, reliability,
               timeliness, suitability, or availability for any purpose. Market data may be delayed
-              up to 15 minutes.
+              up to 30 minutes. For educational use only.
             </p>
           </section>
 
@@ -139,8 +139,17 @@ export default function DisclaimerPage() {
             <div className={`${darkMode ? 'bg-gray-700/50 border border-gray-600' : 'bg-gray-50 border border-gray-200'} p-4 rounded-lg`}>
               <p className={`${textSecondary} leading-relaxed mb-3`}>
                 By using this website, you acknowledge and agree that you bear full responsibility for your
-                trading and investment decisions, and that Tradyx Analytics and contributors shall have
+                trading and investment decisions, and that Zeta Aztra Technologies and contributors shall have
                 <strong> no liability whatsoever</strong> for any loss or damage that may result.
+              </p>
+            </div>
+          </section>
+
+          {/* Affiliation Disclaimer */}
+          <section>
+            <div className={`p-3 rounded ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'}`}>
+              <p className={`${textSecondary} text-sm`}>
+                <strong>Affiliation Disclaimer:</strong> Tradyxa Quant Dashboard is a product of Zeta Aztra Technologies (India) and is not affiliated with any other Tradyxa-named companies or domains.
               </p>
             </div>
           </section>
@@ -148,10 +157,10 @@ export default function DisclaimerPage() {
           {/* Footer Note */}
           <div className={`pt-4 border-t ${borderColor} text-center`}>
             <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-              Operated by Tradyx Analytics (India) • Jurisdiction: Chennai, Tamil Nadu • Contact:{' '}
-              <a href="mailto:support@tradyx.in" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
-                support@tradyx.in
-              </a>
+              Operated by Zeta Aztra Technologies (Individual Proprietorship, India) • © 2025 Zeta Aztra Technologies. All Rights Reserved. • Jurisdiction: Chennai, Tamil Nadu • Contact:{' '}
+              <a href="mailto:zetaaztratech@gmail.com" className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700'} underline`}>
+                zetaaztratech@gmail.com
+              </a> • Version: v1.0.0
             </p>
           </div>
         </div>

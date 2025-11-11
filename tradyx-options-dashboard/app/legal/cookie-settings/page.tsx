@@ -11,7 +11,7 @@ export default function CookieSettingsPage() {
 
   useEffect(() => {
     setMounted(true);
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyx-theme') : null;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('tradyxa-theme') : null;
     if (saved) {
       setDarkMode(saved === 'dark');
     } else {
@@ -28,7 +28,7 @@ export default function CookieSettingsPage() {
       window.__tcfapi("displayConsentUi", 2, () => {});
     } else {
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent("tradyx:openConsent"));
+        window.dispatchEvent(new CustomEvent("tradyxa:openConsent"));
       }
     }
   };

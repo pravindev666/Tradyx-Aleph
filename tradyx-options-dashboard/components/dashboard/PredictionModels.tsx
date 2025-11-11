@@ -70,6 +70,7 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
             dominantBaseline="middle"
             className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}
             style={{
+              fontFamily: 'var(--font-jetbrains-mono, monospace)',
               transition: 'opacity 0.3s ease'
             }}
           >
@@ -141,18 +142,15 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Next-Day Bias</div>
           <div className="flex items-center justify-between">
-            <div>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
+            <div className="flex-1">
+              <div className={`text-xl sm:text-2xl font-bold font-mono mb-1 ${textPrimary}`}>
                 {predictions.nextDayBias !== null && predictions.nextDayBias !== undefined && Number.isFinite(predictions.nextDayBias)
                   ? predictions.nextDayBias === 0 
                     ? '0.00%'
                     : `${predictions.nextDayBias > 0 ? '+' : ''}${predictions.nextDayBias.toFixed(2)}%`
                   : '—'}
               </div>
-              {predictions.nextDayBias !== null && predictions.nextDayBias !== undefined && predictions.nextDayBias === 0 && (
-                <div className={`text-sm ${textSecondary} mt-0.5`}>Neutral prediction</div>
-              )}
-              <div className={`text-sm font-semibold ${
+              <div className={`text-base font-semibold ${
                 predictions.nextDayBiasDirection === 'Bullish' ? 'text-green-500' :
                 predictions.nextDayBiasDirection === 'Bearish' ? 'text-red-500' :
                 'text-yellow-500'
@@ -184,18 +182,18 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Market Probability</div>
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <div className={`text-base font-semibold mb-1 ${
+              {predictions.marketProbability !== null && predictions.marketProbability !== undefined && (
+                <div className={`text-xl sm:text-2xl font-bold font-mono mb-1 ${textPrimary}`}>
+                  {predictions.marketProbability.toFixed(1)}%
+                </div>
+              )}
+              <div className={`text-base font-semibold ${
                 predictions.marketProbabilityRegime === 'Bullish' ? 'text-green-500' :
                 predictions.marketProbabilityRegime === 'Bearish' ? 'text-red-500' :
                 'text-yellow-500'
               }`}>
                 {predictions.marketProbabilityRegime || 'Neutral'}
               </div>
-              {predictions.marketProbability !== null && predictions.marketProbability !== undefined && (
-                <div className={`text-sm ${textSecondary}`}>
-                  {predictions.marketProbability.toFixed(1)}%
-                </div>
-              )}
             </div>
             <div>
               {predictions.marketProbability !== null && predictions.marketProbability !== undefined ? (
@@ -217,7 +215,7 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
           )}
         >
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Volatility Forecast</div>
-          <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-1`}>
+          <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-1`}>
             {predictions.volatilityForecast ? `${predictions.volatilityForecast.toFixed(2)}%` : '—'}
           </div>
           <div className={`text-sm font-semibold mb-2 ${
@@ -254,13 +252,13 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
               <div className="space-y-2 mb-2">
                 <div className="flex items-center justify-between">
                   <span className={`text-sm ${textSecondary}`}>Upper (95%)</span>
-                  <span className={`text-xl font-bold text-green-500`}>
+                  <span className={`text-xl font-bold font-mono text-green-500`}>
                     +{predictions.predictedRangeUpper.toFixed(2)}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className={`text-sm ${textSecondary}`}>Lower (5%)</span>
-                  <span className={`text-xl font-bold text-red-500`}>
+                  <span className={`text-xl font-bold font-mono text-red-500`}>
                     {predictions.predictedRangeLower.toFixed(2)}%
                   </span>
                 </div>
@@ -293,7 +291,7 @@ export default function PredictionModels({ data, darkMode, onOpenModal }: Predic
           <div className={`text-base sm:text-lg font-semibold ${textSecondary} mb-2`}>Vol Regime Forecast</div>
           {predictions.volatilityRegimeForecast !== null && predictions.volatilityRegimeForecast !== undefined ? (
             <>
-              <div className={`text-2xl sm:text-3xl font-bold ${textPrimary} mb-2`}>
+              <div className={`text-2xl sm:text-3xl font-bold font-mono ${textPrimary} mb-2`}>
                 {predictions.volatilityRegimeForecast.toFixed(2)}%
               </div>
               <div className="mb-2">

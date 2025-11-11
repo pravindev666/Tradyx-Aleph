@@ -56,8 +56,8 @@ export default function Error({
         <div className="mt-6 pt-4 border-t border-gray-700 text-center">
           <p className="text-xs text-gray-500">
             If the problem persists, please contact{' '}
-            <a href="mailto:support@tradyx.in" className="text-blue-400 hover:underline">
-              support@tradyx.in
+            <a href="mailto:zetaaztratech@gmail.com" className="text-blue-400 hover:underline">
+              zetaaztratech@gmail.com
             </a>
           </p>
         </div>

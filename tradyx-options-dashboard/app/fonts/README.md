@@ -1,25 +1,52 @@
-# Arteks Font Files
+# Font Files
 
-Place your Arteks font files in this directory.
+This directory previously contained Arteks font files, which have been replaced with Google Fonts.
 
-## Required Font Files:
+## Current Font Setup
 
-- `Arteks-Regular.woff2` (weight: 400)
-- `Arteks-Medium.woff2` (weight: 500)
-- `Arteks-SemiBold.woff2` (weight: 600)
-- `Arteks-Bold.woff2` (weight: 700)
+The application now uses three Google Fonts loaded via Next.js font optimization:
 
-## Alternative Formats:
+1. **Inter** - Primary UI font (optimized for dashboards)
+   - License: SIL Open Font License
+   - Usage: Main UI text, body content
+   - CSS Variable: `--font-inter`
+   - Tailwind Class: `font-sans` (default)
 
-If you have `.woff`, `.ttf`, or `.otf` files instead, update the paths in `app/layout.tsx` accordingly.
+2. **JetBrains Mono** - Numeric/Value areas
+   - License: Apache 2.0
+   - Usage: Numbers, prices, percentages, volatility metrics
+   - CSS Variable: `--font-jetbrains-mono`
+   - Tailwind Class: `font-mono`
 
-## Where to Get Arteks Font:
+3. **Manrope** - Brand/Logo font
+   - License: SIL Open Font License
+   - Usage: Brand name, headings, premium UI elements
+   - CSS Variable: `--font-manrope`
+   - Tailwind Class: `font-brand`
 
-1. Download from BeFonts: https://befonts.com/arteks-font-family.html
-2. Or purchase from the official font foundry
-3. Extract the font files and place them in this directory
+## Font Configuration
 
-## Note:
+Fonts are configured in `app/layout.tsx` using Next.js `next/font/google` for optimal performance with automatic font optimization, subsetting, and self-hosting.
 
-The application will fall back to system fonts if Arteks files are not found, so the app will still work without the font files.
+## Usage Examples
+
+```tsx
+// Primary UI (Inter - default)
+<div className="text-base">Regular text</div>
+
+// Numeric values (JetBrains Mono)
+<div className="font-mono text-2xl">₹24,500.00</div>
+
+// Brand/Logo (Manrope)
+<h1 className="font-brand text-3xl font-bold">Tradyxa Quant Dashboard</h1>
+```
+
+## Benefits
+
+- **Performance**: Automatically optimized by Next.js
+- **No Local Files**: Fonts are loaded from Google Fonts CDN
+- **Better Alignment**: JetBrains Mono ensures perfect numeric alignment
+- **Premium Look**: Manrope gives brand elements a high-tech edge
+- **Dashboard Optimized**: Inter is specifically designed for data-heavy interfaces
+
 

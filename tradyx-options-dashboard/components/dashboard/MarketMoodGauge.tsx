@@ -72,7 +72,7 @@ export default function MarketMoodGauge({ mood, darkMode, onOpenModal }: { mood:
       </div>
 
       <div className="text-center mt-3">
-        <div className="text-xl sm:text-2xl font-bold" style={{ color }}>{pct.toFixed(0)}</div>
+        <div className="text-xl sm:text-2xl font-bold font-mono" style={{ color }}>{pct.toFixed(0)}</div>
         <div className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{mood.regime}</div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 REM Production setup script for Windows
 
 echo ==========================================
-echo Tradyx Dashboard - Production Setup
+echo Tradyxa Dashboard - Production Setup
 echo ==========================================
 
 REM Check Python version
