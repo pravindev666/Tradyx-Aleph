@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-11T10:24:03.524380+00:00",
+  "updatedAt": "2025-11-11T23:31:34.624758+00:00",
   "spot": 25694.95,
   "vix": 12.49,
   "spotSeries": [
@@ -253,35 +253,35 @@
     "callsTop": [
       {
         "strike": 25700,
-        "oi": 413382,
-        "change": 49.7
+        "oi": 408380,
+        "change": 49.1
       },
       {
         "strike": 26000,
-        "oi": 146662,
-        "change": -22.3
+        "oi": 143778,
+        "change": -24.8
       },
       {
         "strike": 25750,
-        "oi": 132147,
-        "change": 32.4
+        "oi": 130351,
+        "change": 31.5
       }
     ],
     "putsTop": [
       {
         "strike": 25650,
-        "oi": 334955,
+        "oi": 333151,
         "change": 84.1
       },
       {
         "strike": 25600,
-        "oi": 197087,
-        "change": 34.8
+        "oi": 195559,
+        "change": 34.3
       },
       {
         "strike": 25700,
-        "oi": 173267,
-        "change": 79.0
+        "oi": 170614,
+        "change": 78.7
       }
     ]
   },
@@ -370,7 +370,15 @@
     },
     {
       "strike": 20000,
+      "iv": 29.96
+    },
+    {
+      "strike": 20000,
       "iv": 23.28
+    },
+    {
+      "strike": 20000,
+      "iv": 20.3
     },
     {
       "strike": 20000,
@@ -378,7 +386,15 @@
     },
     {
       "strike": 21000,
+      "iv": 26.83
+    },
+    {
+      "strike": 21000,
       "iv": 20.77
+    },
+    {
+      "strike": 21000,
+      "iv": 19.27
     },
     {
       "strike": 21000,
@@ -387,27 +403,11 @@
     {
       "strike": 22000,
       "iv": 22.07
-    },
-    {
-      "strike": 22000,
-      "iv": 18.53
-    },
-    {
-      "strike": 22000,
-      "iv": 17.04
-    },
-    {
-      "strike": 22750,
-      "iv": 26.46
-    },
-    {
-      "strike": 22850,
-      "iv": 28.16
     }
   ],
   "whaleAlerts": [
     {
-      "time": "10:23:54",
+      "time": "23:31:26",
       "strike": 25700,
       "type": "CE",
       "volume": 36971244,
@@ -415,7 +415,7 @@
       "action": "BUY"
     },
     {
-      "time": "10:23:54",
+      "time": "23:31:26",
       "strike": 25650,
       "type": "CE",
       "volume": 26567484,
@@ -423,7 +423,7 @@
       "action": "SELL"
     },
     {
-      "time": "10:23:54",
+      "time": "23:31:26",
       "strike": 25600,
       "type": "CE",
       "volume": 23806577,
@@ -431,7 +431,7 @@
       "action": "SELL"
     },
     {
-      "time": "10:23:54",
+      "time": "23:31:26",
       "strike": 25500,
       "type": "PE",
       "volume": 22190279,
@@ -439,7 +439,7 @@
       "action": "SELL"
     },
     {
-      "time": "10:23:54",
+      "time": "23:31:26",
       "strike": 25650,
       "type": "PE",
       "volume": 21616212,
@@ -449,7 +449,7 @@
   ],
   "ivRank": 20.2,
   "magnetPct": -0.02,
-  "oiMomentum": 128.8,
+  "oiMomentum": 126.4,
   "predictions": {},
   "mlPredictions": {
     "nextDayBias": -0.02,
@@ -461,9 +461,9 @@
     "predictedRangeUpper": 1.11,
     "predictedRangeLower": -1.38,
     "predictedRangeRegime": "Neutral",
-    "volatilityRegimeForecast": 13.16,
+    "volatilityRegimeForecast": 13.15,
     "volatilityRegimeForecastCategory": "Normal",
-    "updatedAt": "2025-11-11T10:24:02.401779+00:00"
+    "updatedAt": "2025-11-11T23:31:33.643472+00:00"
   },
   "volatilityIndicators": {
     "realizedVol": 7.62,
@@ -479,7 +479,7 @@
     "rangeCompressionIndex": 1.095,
     "volatilityRiskPremium": 0.0098,
     "vrpSlope": -0.0755,
-    "updatedAt": "2025-11-11T10:23:54.547384+00:00"
+    "updatedAt": "2025-11-11T23:31:26.983054+00:00"
   },
   "ohlc": {
     "open": 25617.0,
