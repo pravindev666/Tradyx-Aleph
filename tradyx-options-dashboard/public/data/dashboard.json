@@ -1,13 +1,8 @@
 {
-  "updatedAt": "2025-11-12T09:17:06.660320+00:00",
-  "spot": 25885.7,
-  "vix": 12.1325,
+  "updatedAt": "2025-11-12T09:41:49.860158+00:00",
+  "spot": 25890.85,
+  "vix": 12.0575,
   "spotSeries": [
-    25486.099609375,
-    25478.44921875,
-    25470.400390625,
-    25466.94921875,
-    25472.55078125,
     25475.599609375,
     25484.349609375,
     25496.599609375,
@@ -122,14 +117,14 @@
     25894.150390625,
     25890.80078125,
     25886.55078125,
-    25885.69921875
+    25884.05078125,
+    25895.05078125,
+    25894.55078125,
+    25887.400390625,
+    25895.25,
+    25890.849609375
   ],
   "vixSeries": [
-    12.842499732971191,
-    12.8725004196167,
-    12.667499542236328,
-    12.672499656677246,
-    12.667499542236328,
     12.675000190734863,
     12.654999732971191,
     12.645000457763672,
@@ -244,96 +239,101 @@
     12.077500343322754,
     12.104999542236328,
     12.112500190734863,
-    12.132499694824219
+    12.1274995803833,
+    12.085000038146973,
+    12.125,
+    12.132499694824219,
+    12.1274995803833,
+    12.0625
   ],
-  "pcr": 1.3,
+  "pcr": 1.29,
   "maxPain": 25900,
   "atmStrike": 25900,
   "oi": {
     "callsTop": [
       {
         "strike": 26000,
-        "oi": 129645,
-        "change": 46.3
-      },
-      {
-        "strike": 25900,
-        "oi": 91344,
-        "change": 67.9
+        "oi": 117404,
+        "change": 40.7
       },
       {
         "strike": 26500,
-        "oi": 88387,
-        "change": 31.6
+        "oi": 90076,
+        "change": 32.9
+      },
+      {
+        "strike": 27000,
+        "oi": 89250,
+        "change": 17.3
       }
     ],
     "putsTop": [
       {
         "strike": 25800,
-        "oi": 163690,
-        "change": 88.1
+        "oi": 148949,
+        "change": 86.9
       },
       {
         "strike": 25900,
-        "oi": 140293,
-        "change": 93.8
+        "oi": 121797,
+        "change": 92.8
       },
       {
         "strike": 25000,
-        "oi": 105978,
-        "change": 33.3
+        "oi": 101513,
+        "change": 30.4
       }
     ]
   },
   "straddle": {
-    "call": 155.8,
-    "put": 114.9,
-    "total": 270.70000000000005,
-    "expMovePts": 271.0
+    "call": 156.35,
+    "put": 110.95,
+    "total": 267.3,
+    "expMovePts": 267.0
   },
   "gammaExposure": [
     {
-      "strike": 25885,
+      "strike": 25890,
       "gamma": -1000.0,
       "label": "-1K"
     },
     {
-      "strike": 25785,
+      "strike": 25790,
       "gamma": -998.0,
       "label": "-998"
     },
     {
-      "strike": 25985,
+      "strike": 25990,
       "gamma": 998.0,
       "label": "+998"
     },
     {
-      "strike": 25685,
+      "strike": 25690,
       "gamma": -996.0,
       "label": "-996"
     },
     {
-      "strike": 26085,
+      "strike": 26090,
       "gamma": 996.0,
       "label": "+996"
     },
     {
-      "strike": 25585,
+      "strike": 25590,
       "gamma": -994.0,
       "label": "-994"
     },
     {
-      "strike": 26185,
+      "strike": 26190,
       "gamma": 994.0,
       "label": "+994"
     },
     {
-      "strike": 25385,
+      "strike": 25390,
       "gamma": -990.0,
       "label": "-990"
     },
     {
-      "strike": 26385,
+      "strike": 26390,
       "gamma": 990.0,
       "label": "+990"
     },
@@ -350,11 +350,11 @@
     },
     {
       "strike": 17000,
-      "iv": 42.81
+      "iv": 42.47
     },
     {
       "strike": 18000,
-      "iv": 40.74
+      "iv": 40.58
     },
     {
       "strike": 19000,
@@ -366,11 +366,11 @@
     },
     {
       "strike": 20000,
-      "iv": 31.39
+      "iv": 31.44
     },
     {
       "strike": 20000,
-      "iv": 23.53
+      "iv": 23.57
     },
     {
       "strike": 20000,
@@ -382,123 +382,123 @@
     },
     {
       "strike": 21000,
-      "iv": 27.1
+      "iv": 27.14
     },
     {
       "strike": 21000,
-      "iv": 21.28
+      "iv": 21.22
     },
     {
       "strike": 21000,
-      "iv": 19.42
+      "iv": 19.29
     },
     {
       "strike": 21000,
-      "iv": 19.68
+      "iv": 19.63
     },
     {
       "strike": 22000,
-      "iv": 22.78
+      "iv": 22.82
     },
     {
       "strike": 22000,
-      "iv": 18.98
+      "iv": 18.89
     }
   ],
   "whaleAlerts": [
     {
-      "time": "09:16:58",
+      "time": "09:41:41",
       "strike": 25800,
       "type": "PE",
-      "volume": 2522722,
-      "premium": 79,
+      "volume": 2624847,
+      "premium": 75.85,
       "action": "BUY"
     },
     {
-      "time": "09:16:58",
+      "time": "09:41:41",
       "strike": 26000,
       "type": "CE",
-      "volume": 2380022,
-      "premium": 103.55,
+      "volume": 2502006,
+      "premium": 104.45,
       "action": "BUY"
     },
     {
-      "time": "09:16:58",
+      "time": "09:41:41",
       "strike": 25900,
       "type": "CE",
-      "volume": 2218397,
-      "premium": 155.8,
+      "volume": 2336085,
+      "premium": 156.35,
       "action": "BUY"
     },
     {
-      "time": "09:16:58",
+      "time": "09:41:41",
       "strike": 25900,
       "type": "PE",
-      "volume": 2040474,
-      "premium": 114.9,
+      "volume": 2178707,
+      "premium": 110.95,
       "action": "BUY"
     },
     {
-      "time": "09:16:58",
+      "time": "09:41:41",
       "strike": 25850,
       "type": "PE",
-      "volume": 1650261,
-      "premium": 95.6,
+      "volume": 1749801,
+      "premium": 92.05,
       "action": "BUY"
     }
   ],
-  "ivRank": 17.4,
-  "magnetPct": -0.06,
-  "oiMomentum": 180.5,
+  "ivRank": 16.8,
+  "magnetPct": -0.04,
+  "oiMomentum": 150.5,
   "predictions": {},
   "mlPredictions": {
-    "nextDayBias": 0.01,
+    "nextDayBias": 0.02,
     "nextDayBiasDirection": "Bullish",
-    "marketProbability": 52.5,
+    "marketProbability": 52.7,
     "marketProbabilityRegime": "Neutral",
-    "volatilityForecast": 7.92,
+    "volatilityForecast": 7.87,
     "volatilityForecastRegime": "Calm",
-    "predictedRangeUpper": 1.04,
-    "predictedRangeLower": -1.34,
+    "predictedRangeUpper": 1.02,
+    "predictedRangeLower": -1.33,
     "predictedRangeRegime": "Neutral",
-    "volatilityRegimeForecast": 12.85,
+    "volatilityRegimeForecast": 12.49,
     "volatilityRegimeForecastCategory": "Calm",
-    "updatedAt": "2025-11-12T09:17:05.653226+00:00"
+    "updatedAt": "2025-11-12T09:41:48.959834+00:00"
   },
   "volatilityIndicators": {
-    "realizedVol": 7.86,
-    "hvIvSpread": 4.27,
-    "volatilityRatio": 0.648,
+    "realizedVol": 7.88,
+    "hvIvSpread": 4.18,
+    "volatilityRatio": 0.654,
     "parkinsonVol20d": 7.68,
     "parkinsonVol60d": 6.98,
-    "expectedMove1Day": 164.39,
-    "vixNiftyCorrelation": -0.204,
+    "expectedMove1Day": 163.41,
+    "vixNiftyCorrelation": -0.212,
     "trendConsistencyIndex": 0.632,
     "returnQuantilePosition": 93.3,
     "volatilityRegime": "Calm",
     "rangeCompressionIndex": 1.1,
-    "volatilityRiskPremium": 0.0085,
-    "vrpSlope": -0.1667,
-    "updatedAt": "2025-11-12T09:16:58.855493+00:00"
+    "volatilityRiskPremium": 0.0083,
+    "vrpSlope": -0.1863,
+    "updatedAt": "2025-11-12T09:41:41.577205+00:00"
   },
   "ohlc": {
     "open": 25834.30078125,
     "high": 25934.55078125,
     "low": 25781.150390625,
-    "close": 25885.900390625,
+    "close": 25891.400390625,
     "previousClose": 25694.94921875,
-    "changePct": 0.7431467182494371
+    "changePct": 0.764551703148129
   },
   "vixOhlc": {
     "open": 12.489999771118164,
     "high": 12.712499618530273,
     "low": 11.442500114440918,
-    "close": 12.132499694824219,
+    "close": 12.0625,
     "previousClose": 12.489999771118164
   },
-  "spotChangePct": 0.7431467182494371,
-  "vixChangePct": -2.8622904951577928,
-  "driftDirection": 252.45,
-  "momentumStrength": 82.5,
-  "vrpSlope": -0.1667
+  "spotChangePct": 0.764551703148129,
+  "vixChangePct": -3.422736420754091,
+  "driftDirection": 252.76,
+  "momentumStrength": 82.6,
+  "vrpSlope": -0.1863
 }
