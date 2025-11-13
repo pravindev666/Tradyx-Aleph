@@ -1,1 +1,0 @@
-{"spot": 25519.35, "pcr": 0.77, "maxPain": 25650, "atmStrike": 25500, "oi": {"callsTop": [{"strike": 26000, "oi": 171656}, {"strike": 26500, "oi": 145313}, {"strike": 25700, "oi": 145201}], "putsTop": [{"strike": 25000, "oi": 115199}, {"strike": 25200, "oi": 101196}, {"strike": 24500, "oi": 90175}]}, "straddle": {"call": 134, "put": 78.55, "total": 212.55, "expMovePts": 213.0}}
