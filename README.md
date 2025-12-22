@@ -6,33 +6,72 @@
 
 ---
 
-## 🏗️ The Dual-Channel Intelligence
+## 🏗️ Evolution: Old Loop vs. H-ORBITAL Mesh
 
-RubiX communicates through two distinct channels to ensure both mathematical precision and actionable intuition. If you feel the text is redundant, understand that they serve two different cognitive roles:
+You are exactly right about the **Old Version**. It was a linear "Train -> Predict -> Compare" loop. The **New Version (H-ORBITAL)** is a multi-dimensional mesh where the system doesn't just "retrain" but "Self-Corrects" in real-time.
 
-### 1. The "AI Consensus" (Math Channel)
-- **Goal**: Quantitative "Engine Room" output.
-- **Components**: `Ultimate ML Conf`, `Sequence Brain`, and `Reliability Score`.
-- **Logic**: Counts "votes" (Bullish vs Bearish) from all 23 tiles.
-- **Usage**: Used for **Risk Management**. If the Consensus is mixed, you reduce position size.
+### 📉 The Old Loop (Linear Learning)
+```mermaid
+graph LR
+    A[yfinance Data] --> B[Model Training]
+    B --> C[Conclusion]
+    C --> D[Next Day Outcome]
+    D --> E[Pit Prediction vs Actual]
+    E -->|Manual/Wait| B
+```
 
-### 2. The "Llama Executive Analyst" (Voice Channel)
-- **Goal**: Qualitative "Intelligence Officer" synthesis.
-- **Function**: Takes the mathematical summary from the Consensus and merges it with **BERT News Sentiment** and **Macro Cues** (GIFT Nifty).
-- **Necessity**: It explains **WHY** the math is leaning a certain way. (e.g., "Momentum is high, but we are in a Chaotic regime, so scalp quickly").
+### 🧠 The New H-ORBITAL Mesh (Living Brain 4.0)
+The new system adds a **Synthesis Layer** (Llama) and **Sensory Inputs** (News/Macro) that filter the mathematical results.
+
+```mermaid
+graph TD
+    subgraph "Sensory Inputs"
+        Price[Price Action]
+        News[BERT News Sentiment]
+        Global[Global Macro / GIFT]
+    end
+
+    subgraph "Council of Experts (The Tiles)"
+        T1[Momentum]
+        T2[Regime]
+        T3[GEX Support]
+        T4[Anomaly Radar]
+    end
+
+    subgraph "Executive Layer (Synthesis)"
+        Consensus[AI Consensus Math]
+        Llama[Llama Executive Analyst]
+    end
+
+    Price --> T1 & T2 & T3 & T4
+    T1 & T2 & T3 & T4 --> Consensus
+    Consensus & News & Global --> Llama
+    Llama --> Action[Actionable Trade Strategy]
+    
+    Action --> Feedback[online_learner.py]
+    Feedback -->|Daily Self-Weighting| Consensus
+```
 
 ---
 
-## 🛰️ H-ORBITAL Architecture: "The Living Brain" 4.0
+## 💬 What does Llama actually do?
 
-The "Living Brain" is an active feedback loop (`online_learner.py`) that executes daily to ensure the AI learns from its mistakes.
+You asked if the `AI Consensus` is enough. For raw math, yes. But for **trading**, you need an Executive.
 
-### 🧠 The Learning Cycle
-1. **Prediction**: `infer.py` logs every choice to `predictions_log.csv`.
-2. **Outcome Fetch**: Daily at market close, the system fetches actual yfinance data.
-3. **Evaluation**: If the "Llama" was Bullish but the market crashed, a **Negative Reward (-1.0)** is issued.
-4. **Self-Correction**: The `brain_state.json` is updated. This modifies the weights in the **Ultimate ML Meta-Model**, effectively "penalizing" the models that were wrong.
-5. **Reliability Score**: This reflects the system's "Trust" level in its recent performance.
+- **The Tiles (Analysts)**: "Momentum is high (+82)." "Vol is low."
+- **Llama (The CEO)**: "Momentum is high, but my **Global Sentinel** sees Gift Nifty down -0.5% and my **Public Pulse** sees bearish news. Therefore, **ignore the technical momentum**—high risk of a Gap Down. Stay Cash."
+
+Llama merges the "Math" of the expert models with the "Noise" of the real world.
+
+---
+
+## 🔄 The Living Brain: Continuous Learning
+
+The system learns from mistakes via the `online_learner.py` script:
+- **T-Day**: Llama gives a "Bullish" Action.
+- **T+1 Day (Morning)**: The **Living Brain** fetches actual prices.
+- **The Correction**: If the market went DOWN, the system lowers the **Reliability Score** and reduces the weight of the "Momentum" model in today's verdict. 
+- **Cognitive State**: This is why you see **"Self-Correcting"**—it means the brain is actively adjusting its formulas based on recent misses.
 
 ---
 
@@ -61,7 +100,7 @@ The "Living Brain" is an active feedback loop (`online_learner.py`) that execute
 | 19 | **Global Sentinel** | `data_fetcher.py` | Gift Nifty - US Market Spillover |
 | 20 | **Public Pulse** | `sentiment_engine.py` | FinBERT Sentiment Analysis |
 | 21 | **Expected Range** | `qr_range.py` | Quantile Regression (Q10/Q90) |
-| 22 | **Monte Carlo Cones** | `probability_models.py` | Merton Jump-Diffusion Simulation |
+| 22 | **Monte Carlo (Prediction 5D)** | `probability_models.py` | Merton Jump-Diffusion Simulation |
 | 23 | **Anomaly Radar** | `anomaly_detector.py` | Deep Neural Auto-Encoder (AE) |
 
 ---
