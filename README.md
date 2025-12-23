@@ -12,6 +12,423 @@
 
 ---
 
+## 🧬 COMPLETE SENTIENT v2.0 ARCHITECTURE
+
+### The Full System Diagram:
+
+```mermaid
+flowchart TB
+    subgraph INPUTS["👁️ SENSORY INPUTS (Every 30 Min)"]
+        direction LR
+        SPOT[("🔴 SPOT PRICE<br/>Live Feed")]
+        VIX[("📊 VIX<br/>Fear Gauge")]
+        MACRO[("🌍 MACRO<br/>DXY/Bonds")]
+        SENT[("📰 SENTIMENT<br/>News NLP")]
+    end
+
+    subgraph MEMORY["📚 THREE MEMORY SYSTEMS"]
+        direction TB
+        LTM[("🏛️ LONG-TERM MEMORY<br/>━━━━━━━━━━━━━━━━<br/>• 20-Year Patterns<br/>• Trained .pkl Models<br/>• Historical Signatures<br/>• Updates: Weekly")]
+        STM[("⚡ SHORT-TERM MEMORY<br/>━━━━━━━━━━━━━━━━<br/>• 30-Day Error Window<br/>• Recent Predictions<br/>• Bias Statistics<br/>• Updates: Daily")]
+        WM[("💭 WORKING MEMORY<br/>━━━━━━━━━━━━━━━━<br/>• Today's Context<br/>• Current Hypotheses<br/>• Live Observations<br/>• Updates: Every 30min")]
+    end
+
+    subgraph REASONING["🧠 COGNITIVE REASONING ENGINE"]
+        direction TB
+        
+        subgraph PATTERN["🔍 PATTERN LAYER"]
+            PAT1[Pattern Matcher]
+            PAT2[Analogy Finder]
+            PAT3[Similarity Scorer]
+        end
+        
+        subgraph BAYES["📊 BAYESIAN LAYER"]
+            HYP1["Hypothesis: BULLISH"]
+            HYP2["Hypothesis: BEARISH"]
+            HYP3["Hypothesis: NEUTRAL"]
+            UPDATE[Bayesian Updater]
+        end
+        
+        subgraph META["🔮 META-COGNITION LAYER"]
+            BIAS[Bias Detector]
+            DOUBT[Self-Doubt Engine]
+            FAIL[Failure Pattern Matcher]
+            CONF[Confidence Calibrator]
+        end
+    end
+
+    subgraph SYNTHESIS["⚖️ DECISION SYNTHESIS"]
+        FUSE[Fusion Engine]
+        EXPLAIN[Explanation Generator]
+        VERDICT[("🎯 FINAL VERDICT<br/>+ Confidence<br/>+ Reasoning<br/>+ Warnings")]
+    end
+
+    subgraph VETO["🛡️ VETO GATE"]
+        CHAOS{Chaos<br/>Filter}
+        PASS[✅ PASS]
+        BLOCK[❌ HARD VETO]
+    end
+
+    subgraph FEEDBACK["🔄 FEEDBACK LOOP (T+1)"]
+        LOG[Prediction Logger]
+        VERIFY[Outcome Fetcher]
+        LEARN[Learning Engine]
+    end
+
+    %% Data Flow
+    INPUTS --> WM
+    LTM --> PATTERN
+    STM --> META
+    WM --> BAYES
+    
+    PATTERN --> FUSE
+    BAYES --> FUSE
+    META --> FUSE
+    
+    FUSE --> EXPLAIN
+    EXPLAIN --> VERDICT
+    VERDICT --> CHAOS
+    
+    CHAOS -->|Pass| PASS
+    CHAOS -->|Fail| BLOCK
+    
+    PASS --> LOG
+    LOG --> VERIFY
+    VERIFY --> LEARN
+    LEARN --> STM
+    LEARN -.->|Failure| META
+
+    %% Styling
+    style LTM fill:#4ecdc4,color:#000
+    style STM fill:#ffd93d,color:#000
+    style WM fill:#ff6b6b,color:#fff
+    style META fill:#a8e6cf,color:#000
+    style VERDICT fill:#6c5ce7,color:#fff
+```
+
+---
+
+## 📖 COMPONENT EXPLANATIONS
+
+### 🏛️ MEMORY SYSTEMS
+
+#### 1. Long-Term Memory (LTM) - The Institutional DNA
+```
+┌─────────────────────────────────────────────────────────┐
+│  LONG-TERM MEMORY (LTM)                                 │
+├─────────────────────────────────────────────────────────┤
+│  Purpose:    Store permanent market patterns            │
+│  Timeframe:  20 years of historical data                │
+│  Updates:    Weekly (during model training)             │
+│  Contents:   - Trained .pkl model weights               │
+│              - Historical pattern signatures            │
+│              - Market regime fingerprints               │
+│              - Crash/Rally profile templates            │
+├─────────────────────────────────────────────────────────┤
+│  Analogy:    Human's education and life experiences     │
+│              "I studied this for 20 years"              │
+└─────────────────────────────────────────────────────────┘
+```
+
+#### 2. Short-Term Memory (STM) - The Error Diary
+```
+┌─────────────────────────────────────────────────────────┐
+│  SHORT-TERM MEMORY (STM)                                │
+├─────────────────────────────────────────────────────────┤
+│  Purpose:    Track recent prediction errors             │
+│  Timeframe:  30-day sliding window                      │
+│  Updates:    Daily (after T+1 verification)             │
+│  Contents:   - Recent predictions & outcomes            │
+│              - Bias statistics (over-bullish/bearish)   │
+│              - Rolling accuracy metrics                 │
+│              - Failure pattern signatures               │
+├─────────────────────────────────────────────────────────┤
+│  Analogy:    Human's recent memory of mistakes          │
+│              "I was wrong 3 times last week about X"    │
+└─────────────────────────────────────────────────────────┘
+```
+
+#### 3. Working Memory (WM) - Today's Scratchpad
+```
+┌─────────────────────────────────────────────────────────┐
+│  WORKING MEMORY (WM)                                    │
+├─────────────────────────────────────────────────────────┤
+│  Purpose:    Hold current session context               │
+│  Timeframe:  Today only (resets each day)               │
+│  Updates:    Every 30 minutes (each poll)               │
+│  Contents:   - Current spot price                       │
+│              - Live VIX, DXY, macro data                │
+│              - Running hypothesis probabilities         │
+│              - Accumulated evidence for today           │
+├─────────────────────────────────────────────────────────┤
+│  Analogy:    Human's active thinking space              │
+│              "What am I looking at right now?"          │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🧠 COGNITIVE REASONING LAYERS
+
+#### Layer A: Pattern Recognition
+```mermaid
+flowchart LR
+    subgraph PATTERN["🔍 PATTERN RECOGNITION"]
+        IN[Current State] --> QUERY[Query LTM]
+        QUERY --> MATCH[Find Similar Patterns]
+        MATCH --> SCORE[Score Similarity]
+        SCORE --> TOP[Return Top 3 Matches]
+    end
+```
+
+**What It Does:**
+- Takes current market state (RSI, VIX, momentum, etc.)
+- Searches 20-year LTM for similar historical patterns
+- Returns top 3 matches with outcomes
+- Example: "This looks 78% similar to Nov 2016 setup"
+
+---
+
+#### Layer B: Bayesian Hypothesis Testing
+```mermaid
+flowchart TD
+    subgraph BAYES["📊 BAYESIAN REASONING"]
+        PRIOR[Prior Beliefs<br/>Bull=33%, Bear=33%, Neutral=34%]
+        PRIOR --> EVIDENCE["New Evidence Arrives<br/>(RSI, VIX, Momentum)"]
+        EVIDENCE --> LIKELIHOOD[Calculate Likelihoods<br/>P(Evidence | Hypothesis)]
+        LIKELIHOOD --> UPDATE[Bayesian Update<br/>P(H|E) = P(E|H) × P(H) / P(E)]
+        UPDATE --> POSTERIOR[Updated Beliefs<br/>Bull=52%, Bear=28%, Neutral=20%]
+    end
+```
+
+**What It Does:**
+- Maintains 3 competing hypotheses (Bull, Bear, Neutral)
+- Each new evidence updates probabilities
+- Gradually converges to most likely direction
+- Never fully commits (always probabilistic)
+
+**Example Flow:**
+```
+Start:     Bull=33%  Bear=33%  Neutral=34%
++ RSI<30:  Bull=45%  Bear=25%  Neutral=30%  (oversold = bullish)
++ VIX>25:  Bull=38%  Bear=35%  Neutral=27%  (fear = bearish bump)
++ Mom>60:  Bull=52%  Bear=28%  Neutral=20%  (momentum = bullish)
+```
+
+---
+
+#### Layer C: Meta-Cognition (Self-Awareness)
+```mermaid
+flowchart TD
+    subgraph META["🔮 META-COGNITION"]
+        PRED[Current Prediction] --> CHECK1{Am I Biased?}
+        CHECK1 -->|Yes| WARN1["⚠️ Over-bullish warning"]
+        CHECK1 -->|No| CHECK2{Matches Failure Pattern?}
+        CHECK2 -->|Yes| WARN2["⚠️ Similar to past mistake"]
+        CHECK2 -->|No| CHECK3{Overconfident?}
+        CHECK3 -->|Yes| WARN3["⚠️ High confidence, low accuracy"]
+        CHECK3 -->|No| CHECK4{Chaotic Regime?}
+        CHECK4 -->|Yes| WARN4["⚠️ Regime unreliable"]
+        
+        WARN1 & WARN2 & WARN3 & WARN4 --> ADJUST[Adjust Confidence Down]
+        ADJUST --> OUTPUT[Warnings + Adjusted Confidence]
+    end
+```
+
+**What It Does:**
+1. **Bias Detection**: "Have I been calling BULLISH too often?"
+2. **Failure Pattern Match**: "Is this similar to when I was wrong before?"
+3. **Overconfidence Check**: "Am I 85% confident but only 50% accurate lately?"
+4. **Regime Check**: "Is the market too chaotic to predict?"
+
+**Output Example:**
+```
+Warnings:
+⚠️ I've been over-bullish 7 of last 10 predictions
+⚠️ Similar to failure pattern from Dec 15
+⚠️ High confidence (85%) but recent accuracy is only 52%
+
+Confidence Adjustment: -35%
+Raw Confidence: 85% → Adjusted: 50%
+```
+
+---
+
+### ⚖️ DECISION SYNTHESIS FLOW
+
+```mermaid
+flowchart LR
+    subgraph SYNTHESIS["⚖️ DECISION SYNTHESIS"]
+        direction TB
+        
+        PAT_IN[Pattern Vote<br/>30% weight] --> COMBINE
+        BAY_IN[Bayesian Vote<br/>50% weight] --> COMBINE
+        META_IN[Meta Adjustment<br/>Subtractive] --> COMBINE
+        
+        COMBINE[Weighted Fusion] --> VERDICT[Final Verdict]
+        VERDICT --> EXPLAIN[Generate Explanation]
+    end
+```
+
+**The Fusion Formula:**
+```python
+# Step 1: Weight the inputs
+pattern_contribution = pattern_vote × 0.30
+bayesian_contribution = bayesian_posterior × 0.50
+heritage_contribution = heritage_verdict × 0.20
+
+# Step 2: Combine
+raw_confidence = sum of weighted contributions
+
+# Step 3: Apply meta-cognition penalty
+final_confidence = raw_confidence + meta_adjustment  # (negative if warnings)
+
+# Step 4: Generate verdict
+if final_confidence > 0.65: verdict = "BULLISH"
+elif final_confidence > 0.55: verdict = "LEAN BULLISH"
+elif final_confidence < 0.35: verdict = "BEARISH"
+elif final_confidence < 0.45: verdict = "LEAN BEARISH"
+else: verdict = "NEUTRAL"
+```
+
+---
+
+### 🔄 FEEDBACK LOOP (Learning)
+
+```mermaid
+sequenceDiagram
+    participant PRED as Today's Prediction
+    participant LOG as Prediction Logger
+    participant WAIT as Wait T+1
+    participant FETCH as Outcome Fetcher
+    participant EVAL as Evaluator
+    participant STM as Short-Term Memory
+    participant META as Meta-Cognition
+
+    PRED->>LOG: Save prediction + context
+    LOG->>WAIT: Wait until tomorrow 3:30 PM
+    WAIT->>FETCH: Fetch actual close price
+    FETCH->>EVAL: Compare prediction vs actual
+    
+    alt Prediction was CORRECT
+        EVAL->>STM: Log success
+    else Prediction was WRONG
+        EVAL->>STM: Log failure
+        EVAL->>META: Record failure pattern
+    end
+    
+    STM->>STM: Update 30-day window
+    META->>META: Update bias statistics
+```
+
+---
+
+## 🎯 THE COMPLETE OODA CYCLE
+
+```mermaid
+graph TD
+    subgraph OBSERVE["👁️ OBSERVE"]
+        O1[Fetch Spot Price]
+        O2[Fetch VIX]
+        O3[Fetch Macro Data]
+        O4[Fetch Sentiment]
+    end
+
+    subgraph ORIENT["🧭 ORIENT"]
+        OR1[Load from LTM]
+        OR2[Load from STM]
+        OR3[Update WM]
+        OR4[Pattern Match]
+        OR5[Bayesian Update]
+        OR6[Meta Audit]
+    end
+
+    subgraph DECIDE["⚖️ DECIDE"]
+        D1[Fuse All Signals]
+        D2[Generate Explanation]
+        D3[Apply Veto Check]
+    end
+
+    subgraph ACT["🎬 ACT"]
+        A1[Output Verdict]
+        A2[Log Prediction]
+        A3[Display to User]
+    end
+
+    OBSERVE --> ORIENT
+    ORIENT --> DECIDE
+    DECIDE --> ACT
+    ACT -.->|T+1 Feedback| ORIENT
+
+    style OBSERVE fill:#ff6b6b
+    style ORIENT fill:#ffd93d
+    style DECIDE fill:#4ecdc4
+    style ACT fill:#a8e6cf
+```
+
+**Timing:**
+| Phase | When | Duration |
+|:------|:-----|:---------|
+| OBSERVE | Every 30 min | ~2 seconds |
+| ORIENT | Every 30 min | ~1 second |
+| DECIDE | Every 30 min | ~0.5 seconds |
+| ACT | Every 30 min | ~0.5 seconds |
+| FEEDBACK | T+1 (next day) | ~3 seconds |
+
+---
+
+## 📊 DATA FLOW SUMMARY
+
+```mermaid
+flowchart TB
+    subgraph EXTERNAL["🌐 EXTERNAL WORLD"]
+        MKT[Market Data]
+        NEWS[News/Sentiment]
+    end
+
+    subgraph SENTIENT["🧠 SENTIENT PIPELINE"]
+        subgraph SENSE["SENSING"]
+            SPOT[Spot Price]
+            VIX[VIX]
+            MACRO[DXY/Bonds]
+        end
+
+        subgraph THINK["THINKING"]
+            MEM[3 Memory Systems]
+            REASON[3 Reasoning Layers]
+        end
+
+        subgraph JUDGE["JUDGING"]
+            FUSE[Fusion + Meta]
+            VETO[Veto Gate]
+        end
+    end
+
+    subgraph OUTPUT["📤 OUTPUT"]
+        VERDICT[Verdict]
+        EXPLAIN[Explanation]
+        WARNINGS[Warnings]
+    end
+
+    subgraph LEARN["📚 LEARNING"]
+        LOG[Logger]
+        VERIFY[Verifier]
+        UPDATE[Memory Updater]
+    end
+
+    MKT --> SENSE
+    NEWS --> SENSE
+    SENSE --> THINK
+    THINK --> JUDGE
+    JUDGE --> OUTPUT
+    OUTPUT --> LOG
+    LOG --> VERIFY
+    VERIFY --> UPDATE
+    UPDATE --> MEM
+```
+
+---
+
 ## 🏗️ WHAT EACH PROJECT ALREADY HAS
 
 ```mermaid
