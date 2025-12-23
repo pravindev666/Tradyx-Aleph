@@ -147,6 +147,39 @@ Every morning, the system runs its own audit. If the math predicted "BULLISH" bu
 
 ## 🔄 THE AXIOM LIFECYCLE (24-Hour Institutional Loop)
 
+```mermaid
+graph TD
+    subgraph MORNING ["🌅 PHASE 1: ANTHOGENESIS (Training)"]
+        YF[yfinance Data] --> ML1[Master Core: Verdict 1]
+    end
+
+    subgraph MARKET ["📊 PHASE 2: SYNAPSIS (Mixing)"]
+        SPOT[Spot Price Every 30m] --> MIX{Fusion Engine}
+        DIARY[Brain Diary] --> MIX
+        ML1 --> MIX
+        MIX --> V3[Consensus: Verdict 3]
+    end
+
+    subgraph CLOSE ["🔒 PHASE 3: THE LOCK (3:30 PM)"]
+        V3 --> CSV[(predictions.csv)]
+    end
+
+    subgraph AUDIT ["🧠 PHASE 4: THE AUDIT (Next Day 3:30 PM)"]
+        CSV --> TEACH[Teacher Learner]
+        ACTUAL[Actual Market Close] --> TEACH
+    end
+
+    subgraph EVOLVE ["🧬 PHASE 5: EVOLUTION (Feedback)"]
+        TEACH -->|Self-Correction| DIARY
+    end
+
+    MORNING --> MARKET
+    MARKET --> CLOSE
+    CLOSE --> AUDIT
+    AUDIT --> EVOLVE
+    EVOLVE -.->|New Knowledge| MORNING
+```
+
 To make the self-learning crystal clear, here is the exact 24-hour sequence:
 
 1.  **Phase 1: Anthogenesis (Morning Preparation)**:
