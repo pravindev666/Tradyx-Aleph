@@ -1,610 +1,597 @@
-# 🧠 SENTIENT COGNITIVE PIPELINE v2.0
-## The Ultimate Self-Aware Trading Intelligence
+# 🎯 UNIVERSAL CORE LOGIC PIPELINE v1.0
+## The Absolute Standard for Tradyxa Projects
 
 > [!IMPORTANT]
-> This pipeline is based on **4 proven institutional frameworks**:
-> 1. **OODA Loop** (US Military Decision Making)
-> 2. **ACT-R / SOAR** (Cognitive Architecture from CMU/Michigan)
-> 3. **Bayesian Brain** (Hedge Fund Probabilistic Reasoning)
-> 4. **Meta-Cognition** (Learning to Learn - DeepMind)
+> This is a **model-agnostic** pipeline. It works with ANY ML models (HMM, RF, XGB, LSTM, etc.). The pipeline is the **orchestration logic**, not the models themselves.
 
 ---
 
-## 🎯 THE CORE PHILOSOPHY
-
-Traditional ML pipelines: **"What is the prediction?"**
-
-Cognitive pipelines: **"Why am I predicting this, and where might I be wrong?"**
-
-```
-IRON MAN'S JARVIS doesn't just give answers.
-It says: "Sir, based on pattern X, I predict Y. 
-         However, I was wrong about similar situations 3 times last month.
-         Confidence adjusted from 85% to 62%."
-```
-
----
-
-## 🏛️ THE 4 COGNITIVE FRAMEWORKS
-
-### 1. OODA LOOP (Military Decision Science)
-**Origin**: Colonel John Boyd, US Air Force
-
-```mermaid
-graph LR
-    O[OBSERVE<br/>Sense the market] --> O2[ORIENT<br/>Contextualize]
-    O2 --> D[DECIDE<br/>Choose action]
-    D --> A[ACT<br/>Execute]
-    A --> O
-```
-
-**Why it works**: Fighter pilots who cycle through OODA faster than enemies WIN. Markets are no different.
-
-### 2. ACT-R / SOAR (Cognitive Architecture)
-**Origin**: Carnegie Mellon / University of Michigan
+## 🏛️ THE PIPELINE ARCHITECTURE
 
 ```mermaid
 flowchart TB
-    subgraph LONG_TERM["LONG-TERM MEMORY"]
-        DECLARATIVE[("Declarative Memory<br/>'What I know'")]
-        PROCEDURAL[("Procedural Memory<br/>'How I do things'")]
+    subgraph LAYER0["⏰ REAL-TIME FEED (Every 30 Min)"]
+        SPOT[("🔴 LIVE SPOT PRICE<br/>Polled Every 30 Min")]
+        MACRO[("🌍 MACRO DATA<br/>DXY / VIX / Yields")]
     end
-    
-    subgraph WORKING["WORKING MEMORY"]
-        CURRENT[Current Goals]
-        CONTEXT[Current Context]
+
+    subgraph LAYER1["LAYER 1: DATA INGESTION"]
+        A1[Historical Archive<br/>20 Years .pkl Models]
+        SPOT --> B1[Live Feature Builder]
+        MACRO --> B1
+        A1 --> B1
+        B1 --> C1[Normalized Feature Vector<br/>with Live Context]
     end
-    
-    subgraph PRODUCTION["PRODUCTION SYSTEM"]
-        IF[IF condition matches] --> THEN[THEN fire action]
+
+    subgraph LAYER2["LAYER 2: HERITAGE VERDICT (V1)"]
+        C1 --> E1[Heritage Models<br/>Trained on 20-Year Data]
+        SPOT -.->|"Live Price Input"| E1
+        E1 --> F1[Raw Probability]
+        F1 --> G1["VERDICT 1<br/>(Heritage Signal)"]
     end
-    
-    DECLARATIVE --> WORKING
-    PROCEDURAL --> PRODUCTION
-    WORKING --> PRODUCTION
-    PRODUCTION --> MOTOR[Output]
+
+    subgraph LAYER3["LAYER 3: REFLEX AUDIT (V2)"]
+        G1 --> H1[Error Log<br/>Last 30 Days]
+        H1 --> I1[Reflex Model<br/>Bias Detection]
+        MACRO -.->|"Macro Context"| I1
+        I1 --> J1["VERDICT 2<br/>(Correction Factor)"]
+    end
+
+    subgraph LAYER4["LAYER 4: FUSION (V3)"]
+        G1 --> K1[Fusion Engine]
+        J1 --> K1
+        SPOT -.->|"Live Recalibration"| K1
+        K1 --> L1["VERDICT 3<br/>(Fused Signal)"]
+    end
+
+    subgraph LAYER5["LAYER 5: VETO GATE"]
+        L1 --> M1{Chaos Filter}
+        MACRO -.->|"VIX Check"| M1
+        M1 -->|PASS| N1[FINAL VERDICT]
+        M1 -->|FAIL| O1[HARD VETO]
+    end
+
+    subgraph LAYER6["LAYER 6: FEEDBACK LOOP"]
+        N1 --> P1[Prediction Logger]
+        P1 --> Q1[T+1 Outcome Fetch]
+        Q1 --> R1[Accuracy Tracker]
+        R1 --> H1
+    end
+
+    style SPOT fill:#ff6b6b,color:#fff
+    style MACRO fill:#4ecdc4,color:#fff
 ```
-
-**Why it works**: Separates "knowledge" from "skills" - just like a human trader.
-
-### 3. BAYESIAN BRAIN (Probabilistic Reasoning)
-**Origin**: Hedge Funds, Quant Research
-
-```
-Prior Belief + New Evidence = Updated Belief
-
-P(Market UP | New Data) = P(New Data | Market UP) × P(Market UP) / P(New Data)
-```
-
-**Why it works**: Doesn't flip-flop. Gradually updates confidence as evidence accumulates.
-
-### 4. META-COGNITION (Thinking About Thinking)
-**Origin**: DeepMind, OpenAI
-
-```
-"I know that I don't know."
-"I know that I'm biased towards bullish calls."
-"I know that I fail in high-VIX environments."
-```
-
-**Why it works**: Self-awareness prevents overconfidence.
 
 ---
 
-## 🧬 THE SENTIENT COGNITIVE PIPELINE ARCHITECTURE
+## ⏰ THE 30-MINUTE MIXING LOGIC
+
+The Live Spot Price feeds into **THREE places**:
 
 ```mermaid
-flowchart TB
-    subgraph OODA["🎯 OODA LOOP (Outer Shell)"]
-        direction TB
-        
-        subgraph OBSERVE["👁️ OBSERVE"]
-            O1[Live Price Feed]
-            O2[Macro Sensors]
-            O3[Sentiment Feed]
-        end
-        
-        subgraph ORIENT["🧭 ORIENT (Cognitive Core)"]
-            direction TB
-            
-            subgraph MEMORY["📚 MEMORY SYSTEMS"]
-                LTM[("Long-Term Memory<br/>20-Year Patterns")]
-                STM[("Short-Term Memory<br/>30-Day Errors")]
-                WM[("Working Memory<br/>Today's Context")]
-            end
-            
-            subgraph REASONING["🧠 REASONING ENGINE"]
-                BAYES[Bayesian Updater]
-                PATTERN[Pattern Matcher]
-                ANALOGY[Analogy Finder]
-            end
-            
-            subgraph META["🔮 META-COGNITION"]
-                CONFIDENCE[Confidence Calibrator]
-                BIAS[Bias Detector]
-                DOUBT[Self-Doubt Engine]
-            end
-            
-            MEMORY --> REASONING
-            REASONING --> META
-        end
-        
-        subgraph DECIDE["⚖️ DECIDE"]
-            V1[Hypothesis 1: Bullish]
-            V2[Hypothesis 2: Bearish]
-            V3[Hypothesis 3: Neutral]
-            WINNER{Select Best<br/>with Confidence}
-        end
-        
-        subgraph ACT["🎬 ACT"]
-            VERDICT[Final Verdict]
-            LOG[Log Prediction]
-            LEARN[Queue for Learning]
-        end
-        
-        OBSERVE --> ORIENT
-        ORIENT --> DECIDE
-        DECIDE --> ACT
-        ACT -.->|Feedback| ORIENT
+flowchart LR
+    SPOT[("🔴 SPOT PRICE<br/>Every 30 Min")] --> L2["LAYER 2<br/>Heritage Models"]
+    SPOT --> L4["LAYER 4<br/>Fusion Engine"]
+    SPOT --> FEATURES["Feature Builder<br/>(RSI, MACD, etc.)"]
+    
+    L2 --> |"V1 uses live indicators"| V1[Verdict 1]
+    V1 --> L4
+    L4 --> |"V3 recalibrates with live price"| V3[Verdict 3]
+```
+
+### Why This Matters:
+
+| Without Live Mixing | With Live Mixing (Every 30 Min) |
+|:--------------------|:-------------------------------|
+| Heritage models use stale data | Heritage models use live indicators (RSI, MACD calculated on current price) |
+| Verdict is fixed for the day | Verdict updates every 30 minutes during market hours |
+| Missing intraday moves | Captures intraday regime shifts |
+| Static prediction | Dynamic, adaptive prediction |
+
+---
+
+## � THE MARKET HOURS CYCLE
+
+### Complete 24-Hour Institutional Loop:
+
+```mermaid
+graph TD
+    subgraph MORNING["🌅 PHASE 1: ANTHOGENESIS (Pre-Market)"]
+        A1[Load 20-Year .pkl Models] --> A2[Fetch Latest Historical Data]
+        A2 --> A3["Generate Baseline V1<br/>(Before Market Opens)"]
     end
+
+    subgraph MARKET["📊 PHASE 2: SYNAPSIS (Market Hours 9:15 AM - 3:30 PM)"]
+        B1[("🔴 Fetch Spot Price<br/>Every 30 Min")] --> B2[Recalculate Features<br/>RSI, MACD, ATR with LIVE price]
+        B2 --> B3[Run Heritage Models<br/>with Live Indicators]
+        B3 --> B4["Update V1<br/>(Heritage + Live)"]
+        B4 --> B5[Apply Reflex Correction V2]
+        B5 --> B6["Generate V3<br/>(Fused with Live Context)"]
+        B6 --> B1
+    end
+
+    subgraph CLOSE["🔒 PHASE 3: THE LOCK (3:30 PM)"]
+        C1[Capture Final Spot Price] --> C2[Lock Final Verdict for the Day]
+        C2 --> C3[Write to predictions.csv]
+    end
+
+    subgraph AUDIT["🧠 PHASE 4: THE AUDIT (Next Day 3:30 PM)"]
+        D1[Read Yesterday's Prediction] --> D2[Fetch Actual Close from yfinance]
+        D2 --> D3[Compare: Was V3 Correct?]
+        D3 --> D4[Update Error Log]
+        D4 --> D5[Feed into Layer 3 for Tomorrow]
+    end
+
+    MORNING --> MARKET
+    MARKET --> CLOSE
+    CLOSE --> AUDIT
+    AUDIT -.->|"Error Log Updates"| MORNING
+```
+
+### The 30-Minute Polling Schedule (IST):
+
+| Time | Action | Live Data Used |
+|:-----|:-------|:---------------|
+| 9:00 AM | Pre-market preparation | Historical only |
+| **9:15 AM** | Market opens, first poll | ✅ Live spot price |
+| 9:45 AM | Poll #2 | ✅ Live spot, 30-min OHLC |
+| 10:15 AM | Poll #3 | ✅ Live spot, 1-hour OHLC |
+| ... | Every 30 minutes | ✅ All live data |
+| **3:00 PM** | Last regular poll | ✅ Full day's data |
+| **3:30 PM** | Market close, FINAL LOCK | ✅ Closing price |
+
+### What Happens Each 30-Minute Poll:
+
+```python
+def thirty_minute_poll():
+    """
+    This runs EVERY 30 MINUTES during market hours.
+    It MIXES the live spot price with the heritage models.
+    """
+    
+    # 1. Fetch LIVE spot price (not cached)
+    live_spot = yfinance.download(symbol, period="1d")['Close'].iloc[-1]
+    
+    # 2. Fetch recent 1-year data (for indicators)
+    historical = yfinance.download(symbol, period="1y")
+    
+    # 3. APPEND live spot to historical (THIS IS THE MIXING)
+    historical.loc[datetime.now()] = {
+        'Open': live_spot, 'High': live_spot, 
+        'Low': live_spot, 'Close': live_spot
+    }
+    
+    # 4. Recalculate ALL indicators with live price
+    features = calculate_features(historical)
+    # NOW RSI, MACD, etc. include the live price!
+    
+    # 5. Run heritage models on LIVE-MIXED features
+    verdict_1 = heritage_models.predict(features)
+    
+    # 6. Apply reflex correction
+    verdict_2 = reflex_audit(verdict_1, error_log)
+    
+    # 7. Fuse into V3
+    verdict_3 = fuse(verdict_1, verdict_2)
+    
+    return verdict_3
+```
+
+### The Key Insight:
+
+> [!IMPORTANT]
+> **The Heritage .pkl models are FROZEN** - they were trained on 20 years of data and don't change during the day.
+> 
+> **BUT** - the FEATURES fed to them are LIVE. Every 30 minutes:
+> 1. New spot price → recalculates RSI, MACD, Bollinger Bands
+> 2. Heritage models see these live indicators
+> 3. Output changes based on where spot price is NOW vs historical patterns
+
+```
+FROZEN: The .pkl model weights (trained weekly)
+LIVE:   The feature vector (recalculated every 30 min)
+RESULT: Same model, different inputs → different verdict
 ```
 
 ---
 
-## 📐 THE 7 COGNITIVE LAYERS
+## �📋 THE 6 LAYERS (Mandatory for Both Projects)
 
-### LAYER 1: SENSORY INPUT (OBSERVE)
-**What**: Raw data ingestion
-**Analogy**: Human eyes, ears, touch
+### LAYER 1: DATA INGESTION
+**Purpose**: Get clean, normalized data into the system.
 
 ```python
-class SensoryLayer:
-    """The system's 'senses' - gathering raw market data."""
+def layer_1_data_ingestion(symbol: str) -> dict:
+    """
+    INPUT:  Symbol (e.g., '^NSEI', '^NSEBANK')
+    OUTPUT: Normalized feature vector
     
-    def observe(self):
+    RULES:
+    1. Fetch live price (real-time)
+    2. Fetch 1-year historical data (for indicators)
+    3. Calculate all features (RSI, MACD, ATR, etc.)
+    4. Normalize features to [0, 1] or Z-score
+    5. Return as dictionary with timestamp
+    """
+    live_price = fetch_live_price(symbol)
+    historical = fetch_historical(symbol, period="1y")
+    features = calculate_all_features(historical, live_price)
+    normalized = normalize_features(features)
+    
+    return {
+        "timestamp": datetime.now().isoformat(),
+        "symbol": symbol,
+        "spot_price": live_price,
+        "features": normalized
+    }
+```
+
+---
+
+### LAYER 2: HERITAGE VERDICT (V1)
+**Purpose**: Generate the base prediction from long-term trained models.
+
+```python
+def layer_2_heritage_verdict(features: dict, models: dict) -> dict:
+    """
+    INPUT:  Normalized features, trained heritage models (20Y)
+    OUTPUT: Verdict 1 (Heritage Signal)
+    
+    RULES:
+    1. Load ALL heritage models (HMM, RF, XGB, etc.)
+    2. Run inference on each model
+    3. Collect raw probabilities
+    4. Ensemble into single Heritage Verdict
+    5. DO NOT apply any correction yet
+    """
+    predictions = {}
+    
+    for model_name, model in models.items():
+        prob = model.predict_proba(features)[1]  # Bullish probability
+        predictions[model_name] = prob
+    
+    # Simple weighted average (weights from training accuracy)
+    heritage_prob = weighted_average(predictions, model_weights)
+    
+    # Convert to verdict
+    if heritage_prob > 0.65:
+        verdict_1 = "BULLISH"
+    elif heritage_prob < 0.35:
+        verdict_1 = "BEARISH"
+    else:
+        verdict_1 = "NEUTRAL"
+    
+    return {
+        "verdict_1": verdict_1,
+        "heritage_prob": heritage_prob,
+        "model_breakdown": predictions
+    }
+```
+
+---
+
+### LAYER 3: REFLEX AUDIT (V2)
+**Purpose**: Detect if the Heritage model is currently biased/drifting.
+
+```python
+def layer_3_reflex_audit(verdict_1: dict, error_log: list) -> dict:
+    """
+    INPUT:  Verdict 1, last 30 days of prediction errors
+    OUTPUT: Verdict 2 (Correction Factor)
+    
+    RULES:
+    1. Load last 30 predictions and their outcomes
+    2. Calculate recent accuracy of Verdict 1
+    3. Identify bias pattern (over-bullish? over-bearish?)
+    4. Generate correction factor
+    5. This layer ONLY looks at errors, not raw prices
+    """
+    recent_errors = error_log[-30:]  # Last 30 days
+    
+    # Count directional errors
+    over_bullish = sum(1 for e in recent_errors 
+                       if e['predicted'] == 'BULLISH' and e['actual'] == 'DOWN')
+    over_bearish = sum(1 for e in recent_errors 
+                       if e['predicted'] == 'BEARISH' and e['actual'] == 'UP')
+    
+    total_predictions = len(recent_errors)
+    
+    # Calculate correction factor
+    if total_predictions > 5:
+        bullish_error_rate = over_bullish / total_predictions
+        bearish_error_rate = over_bearish / total_predictions
+        
+        # Bias detection
+        if bullish_error_rate > 0.4:
+            correction = -0.15  # System is over-bullish, dampen
+        elif bearish_error_rate > 0.4:
+            correction = +0.15  # System is over-bearish, boost
+        else:
+            correction = 0.0  # No bias detected
+    else:
+        correction = 0.0  # Not enough data
+    
+    return {
+        "verdict_2": correction,
+        "bias_detected": "OVER_BULLISH" if correction < 0 else "OVER_BEARISH" if correction > 0 else "NONE",
+        "reflex_accuracy": (total_predictions - over_bullish - over_bearish) / max(total_predictions, 1)
+    }
+```
+
+---
+
+### LAYER 4: FUSION (V3)
+**Purpose**: Combine Heritage + Reflex into final signal.
+
+```python
+def layer_4_fusion(verdict_1: dict, verdict_2: dict) -> dict:
+    """
+    INPUT:  Verdict 1 (Heritage), Verdict 2 (Correction)
+    OUTPUT: Verdict 3 (Fused Signal)
+    
+    THE FUSION FORMULA:
+    Fused_Probability = Heritage_Prob + Correction_Factor
+    
+    RULES:
+    1. Apply correction to heritage probability
+    2. Clamp result to [0, 1]
+    3. Generate final stance
+    4. Calculate confidence level
+    """
+    heritage_prob = verdict_1['heritage_prob']
+    correction = verdict_2['verdict_2']
+    
+    # THE CORE FORMULA
+    fused_prob = heritage_prob + correction
+    fused_prob = max(0.0, min(1.0, fused_prob))  # Clamp to [0, 1]
+    
+    # Generate stance (5 levels)
+    if fused_prob >= 0.70:
+        stance = "BULLISH"
+    elif fused_prob >= 0.55:
+        stance = "LEAN BULLISH"
+    elif fused_prob <= 0.30:
+        stance = "BEARISH"
+    elif fused_prob <= 0.45:
+        stance = "LEAN BEARISH"
+    else:
+        stance = "NEUTRAL"
+    
+    # Confidence = distance from 0.5
+    confidence = abs(fused_prob - 0.5) * 2  # 0 at 50%, 1 at 0% or 100%
+    
+    return {
+        "verdict_3": stance,
+        "fused_prob": fused_prob,
+        "confidence": confidence,
+        "heritage_contribution": heritage_prob,
+        "reflex_contribution": correction
+    }
+```
+
+---
+
+### LAYER 5: VETO GATE
+**Purpose**: Override all signals if market is too chaotic.
+
+```python
+def layer_5_veto_gate(verdict_3: dict, market_data: dict) -> dict:
+    """
+    INPUT:  Verdict 3, current market conditions
+    OUTPUT: Final Verdict (or VETO)
+    
+    VETO CONDITIONS (ANY triggers veto):
+    1. VIX > 25 (extreme fear)
+    2. Intraday range > 2% (wild swings)
+    3. Confidence < 0.3 (weak signal)
+    4. Regime = CHAOTIC (from HMM)
+    
+    RULES:
+    1. Check all veto conditions
+    2. If ANY triggers, output HARD VETO
+    3. If none trigger, pass Verdict 3 through
+    """
+    veto_triggered = False
+    veto_reasons = []
+    
+    # Condition 1: VIX threshold
+    if market_data.get('vix', 0) > 25:
+        veto_triggered = True
+        veto_reasons.append("VIX > 25")
+    
+    # Condition 2: Intraday range
+    intraday_range = (market_data['high'] - market_data['low']) / market_data['close']
+    if intraday_range > 0.02:
+        veto_triggered = True
+        veto_reasons.append("Range > 2%")
+    
+    # Condition 3: Low confidence
+    if verdict_3['confidence'] < 0.3:
+        veto_triggered = True
+        veto_reasons.append("Confidence < 30%")
+    
+    # Condition 4: Chaotic regime
+    if market_data.get('regime') == 'CHAOTIC':
+        veto_triggered = True
+        veto_reasons.append("Regime = CHAOTIC")
+    
+    if veto_triggered:
         return {
-            "spot_price": fetch_live_price(),      # Vision
-            "vix": fetch_vix(),                     # Pain/Fear sensor
-            "dxy": fetch_dollar_index(),            # Global pulse
-            "news_sentiment": fetch_news_nlp(),     # Hearing
-            "volume": fetch_volume(),               # Touch (market pressure)
-            "option_flow": fetch_option_data()      # Institutional whispers
+            "final_verdict": "HARD VETO",
+            "veto_triggered": True,
+            "veto_reasons": veto_reasons,
+            "action": "NO TRADE - Wait for clarity"
         }
-```
-
----
-
-### LAYER 2: PATTERN RECOGNITION (ORIENT - Part 1)
-**What**: Match current state to known patterns
-**Analogy**: "This looks like 2008..." or "This feels like a breakout..."
-
-```python
-class PatternLayer:
-    """Pattern matching against Long-Term Memory."""
-    
-    def recognize(self, current_state: dict) -> list:
-        # Query Long-Term Memory for similar patterns
-        similar_patterns = self.ltm.find_similar(current_state, top_k=5)
-        
-        # Each pattern has: signature, outcome, confidence
-        return [
-            {"pattern": "Pre-Breakout Consolidation", "outcome": "UP", "historical_accuracy": 0.72},
-            {"pattern": "VIX Spike Exhaustion", "outcome": "REVERSAL", "historical_accuracy": 0.65},
-            {"pattern": "DXY Divergence", "outcome": "DOWN", "historical_accuracy": 0.58}
-        ]
-```
-
----
-
-### LAYER 3: ANALOGY ENGINE (ORIENT - Part 2)
-**What**: Find structural similarities, not just numerical
-**Analogy**: Detective connecting unrelated clues
-
-```python
-class AnalogyEngine:
-    """
-    The 'Detective' layer - finds non-obvious connections.
-    
-    Like Sherlock Holmes: "The case of the missing butler in 1892 
-    had the same structural pattern as this market..."
-    """
-    
-    def find_analogies(self, current_state: dict) -> list:
-        # Not just numerical similarity, but STRUCTURAL similarity
-        analogies = []
-        
-        # Example: 2024 market structure similar to 2016 post-election
-        if self.is_structural_match(current_state, "2016_post_election"):
-            analogies.append({
-                "reference": "Nov 2016 Post-Election",
-                "insight": "Initial chaos followed by 18-month rally",
-                "relevance_score": 0.78
-            })
-        
-        return analogies
-```
-
----
-
-### LAYER 4: BAYESIAN HYPOTHESIS TESTING (ORIENT - Part 3)
-**What**: Multiple competing hypotheses, each with probability
-**Analogy**: Jury weighing evidence for different verdicts
-
-```python
-class BayesianHypothesisTester:
-    """
-    The 'Jury' - maintains multiple hypotheses simultaneously.
-    Updates probabilities with each new piece of evidence.
-    """
-    
-    def __init__(self):
-        # Start with prior beliefs (can be uniform)
-        self.hypotheses = {
-            "BULLISH": 0.33,
-            "BEARISH": 0.33,
-            "NEUTRAL": 0.34
-        }
-    
-    def update_with_evidence(self, evidence: dict):
-        """
-        Bayesian update: P(H|E) = P(E|H) * P(H) / P(E)
-        """
-        for hypothesis in self.hypotheses:
-            # Calculate likelihood: How probable is this evidence if hypothesis is true?
-            likelihood = self.calculate_likelihood(evidence, hypothesis)
-            
-            # Update probability
-            self.hypotheses[hypothesis] *= likelihood
-        
-        # Normalize to sum to 1
-        total = sum(self.hypotheses.values())
-        self.hypotheses = {h: p/total for h, p in self.hypotheses.items()}
-        
-        return self.hypotheses
-    
-    def get_leading_hypothesis(self):
-        return max(self.hypotheses, key=self.hypotheses.get)
-```
-
----
-
-### LAYER 5: META-COGNITION (Self-Awareness)
-**What**: Know your own biases, blind spots, and limitations
-**Analogy**: JARVIS saying "Sir, I may be wrong because..."
-
-```python
-class MetaCognitionLayer:
-    """
-    The 'Self-Doubt' layer - critical for avoiding overconfidence.
-    
-    This is what separates good traders from blown-up accounts.
-    """
-    
-    def __init__(self):
-        self.known_biases = []
-        self.failure_patterns = []
-        self.confidence_history = []
-    
-    def audit_myself(self, current_prediction: dict) -> dict:
-        warnings = []
-        confidence_adjustment = 0.0
-        
-        # 1. Check for known failure patterns
-        if self.matches_failure_pattern(current_prediction):
-            warnings.append("⚠️ Similar to past failure pattern")
-            confidence_adjustment -= 0.15
-        
-        # 2. Check for overconfidence
-        if current_prediction['raw_confidence'] > 0.85:
-            recent_accuracy = self.get_recent_accuracy(days=30)
-            if recent_accuracy < 0.6:
-                warnings.append("⚠️ High confidence but recent accuracy is low")
-                confidence_adjustment -= 0.20
-        
-        # 3. Check for known biases
-        if self.am_i_biased_towards(current_prediction['direction']):
-            warnings.append(f"⚠️ I have a historical bias towards {current_prediction['direction']}")
-            confidence_adjustment -= 0.10
-        
-        # 4. Check for regime mismatch
-        if self.current_regime != self.trained_regime:
-            warnings.append("⚠️ Market regime differs from training data")
-            confidence_adjustment -= 0.10
-        
+    else:
         return {
-            "warnings": warnings,
-            "confidence_adjustment": confidence_adjustment,
-            "adjusted_confidence": max(0.1, current_prediction['raw_confidence'] + confidence_adjustment),
-            "self_awareness_score": len(warnings)  # Higher = more cautious
+            "final_verdict": verdict_3['verdict_3'],
+            "veto_triggered": False,
+            "fused_prob": verdict_3['fused_prob'],
+            "confidence": verdict_3['confidence'],
+            "action": get_action_recommendation(verdict_3['verdict_3'])
         }
-    
-    def am_i_biased_towards(self, direction: str) -> bool:
-        """Check if I've been calling this direction too often."""
-        recent_calls = self.get_recent_predictions(days=30)
-        direction_ratio = sum(1 for p in recent_calls if p == direction) / len(recent_calls)
-        return direction_ratio > 0.7  # Biased if >70% same direction
 ```
 
 ---
 
-### LAYER 6: DECISION SYNTHESIS (DECIDE)
-**What**: Combine all reasoning into final verdict
-**Analogy**: Judge delivering verdict after hearing all evidence
+### LAYER 6: FEEDBACK LOOP
+**Purpose**: Learn from outcomes to improve future predictions.
 
 ```python
-class DecisionSynthesis:
+def layer_6_feedback_loop(prediction: dict, actual_outcome: dict) -> dict:
     """
-    The 'Judge' - makes the final call after hearing all evidence.
+    INPUT:  Yesterday's prediction, today's actual outcome
+    OUTPUT: Updated error log, accuracy metrics
+    
+    RULES:
+    1. Compare prediction vs actual
+    2. Log the error (if any)
+    3. Update 30-day sliding window
+    4. Calculate rolling accuracy
+    5. This feeds back into LAYER 3
     """
+    predicted_direction = prediction['final_verdict']
+    actual_direction = "UP" if actual_outcome['change_pct'] > 0.1 else \
+                       "DOWN" if actual_outcome['change_pct'] < -0.1 else "FLAT"
     
-    def synthesize(self, 
-                   patterns: list,
-                   analogies: list,
-                   bayesian_posterior: dict,
-                   meta_audit: dict) -> dict:
-        
-        # Weight contributions
-        pattern_vote = self.aggregate_patterns(patterns)         # 30%
-        analogy_vote = self.aggregate_analogies(analogies)       # 20%
-        bayesian_vote = bayesian_posterior                       # 40%
-        
-        # Combine votes
-        combined = {
-            "BULLISH": 0.3 * pattern_vote["BULLISH"] + 
-                       0.2 * analogy_vote["BULLISH"] + 
-                       0.5 * bayesian_vote["BULLISH"],
-            "BEARISH": 0.3 * pattern_vote["BEARISH"] + 
-                       0.2 * analogy_vote["BEARISH"] + 
-                       0.5 * bayesian_vote["BEARISH"],
-            "NEUTRAL": 0.3 * pattern_vote["NEUTRAL"] + 
-                       0.2 * analogy_vote["NEUTRAL"] + 
-                       0.5 * bayesian_vote["NEUTRAL"]
-        }
-        
-        # Apply meta-cognition adjustment
-        winning_direction = max(combined, key=combined.get)
-        raw_confidence = combined[winning_direction]
-        adjusted_confidence = raw_confidence + meta_audit['confidence_adjustment']
-        adjusted_confidence = max(0.1, min(0.95, adjusted_confidence))
-        
-        return {
-            "verdict": winning_direction,
-            "raw_confidence": raw_confidence,
-            "adjusted_confidence": adjusted_confidence,
-            "meta_warnings": meta_audit['warnings'],
-            "reasoning": self.generate_explanation(patterns, analogies, bayesian_vote)
-        }
+    # Determine correctness
+    correct = (
+        (predicted_direction in ['BULLISH', 'LEAN BULLISH'] and actual_direction == 'UP') or
+        (predicted_direction in ['BEARISH', 'LEAN BEARISH'] and actual_direction == 'DOWN') or
+        (predicted_direction == 'NEUTRAL' and actual_direction == 'FLAT')
+    )
     
-    def generate_explanation(self, patterns, analogies, bayesian) -> str:
-        """Generate human-readable explanation like JARVIS."""
-        return f"""
-        VERDICT REASONING:
-        - Pattern Recognition: {patterns[0]['pattern']} suggests {patterns[0]['outcome']}
-        - Historical Analogy: Similar to {analogies[0]['reference']}
-        - Bayesian Probability: {max(bayesian, key=bayesian.get)} at {max(bayesian.values()):.1%}
-        - Self-Assessment: {len(self.meta_warnings)} concerns identified
-        """
+    # Create error log entry
+    error_entry = {
+        "date": prediction['date'],
+        "predicted": predicted_direction,
+        "actual": actual_direction,
+        "correct": correct,
+        "change_pct": actual_outcome['change_pct']
+    }
+    
+    # Append to error log
+    error_log.append(error_entry)
+    
+    # Maintain 30-day window
+    if len(error_log) > 30:
+        error_log.pop(0)
+    
+    # Calculate rolling accuracy
+    rolling_accuracy = sum(1 for e in error_log if e['correct']) / len(error_log)
+    
+    return {
+        "error_logged": True,
+        "was_correct": correct,
+        "rolling_accuracy": rolling_accuracy,
+        "window_size": len(error_log)
+    }
 ```
 
 ---
 
-### LAYER 7: LEARNING & ADAPTATION (ACT + FEEDBACK)
-**What**: Log, verify, and update all memory systems
-**Analogy**: Iron Man improving suit after each battle
+## 🔄 THE COMPLETE PIPELINE FLOW
 
 ```python
-class LearningLayer:
+def run_universal_pipeline(symbol: str) -> dict:
     """
-    The 'Self-Improvement' layer.
+    THE COMPLETE UNIVERSAL CORE LOGIC PIPELINE
     
-    After each prediction is verified:
-    1. Update Long-Term Memory (slowly)
-    2. Update Short-Term Memory (quickly)
-    3. Update Meta-Cognition (bias detection)
+    This is the single entry point that orchestrates all 6 layers.
+    Works with ANY ML models you plug in.
     """
     
-    def learn_from_outcome(self, prediction: dict, actual_outcome: dict):
-        was_correct = self.evaluate_correctness(prediction, actual_outcome)
-        
-        # 1. Update Short-Term Memory (30-day window)
-        self.stm.append({
-            "date": prediction['date'],
-            "predicted": prediction['verdict'],
-            "actual": actual_outcome['direction'],
-            "correct": was_correct,
-            "confidence": prediction['adjusted_confidence']
-        })
-        self.stm = self.stm[-30:]  # Keep only 30 days
-        
-        # 2. Update failure patterns in Meta-Cognition
-        if not was_correct:
-            self.meta.record_failure(
-                context=prediction['context'],
-                predicted=prediction['verdict'],
-                actual=actual_outcome['direction']
-            )
-        
-        # 3. Update bias detector
-        self.meta.update_bias_tracking(prediction['verdict'], was_correct)
-        
-        # 4. Update Bayesian priors (slowly)
-        self.bayesian.update_priors_from_outcome(actual_outcome)
-        
-        # 5. Calculate rolling accuracy
-        rolling_accuracy = sum(1 for p in self.stm if p['correct']) / len(self.stm)
-        
-        return {
-            "learned": True,
-            "was_correct": was_correct,
-            "rolling_accuracy": rolling_accuracy,
-            "failures_recorded": len(self.meta.failure_patterns),
-            "known_biases": self.meta.known_biases
-        }
-```
-
----
-
-## 🔄 THE COMPLETE SENTIENT PIPELINE
-
-```python
-class SentientCognitivePipeline:
-    """
-    THE ULTIMATE PIPELINE
+    # LAYER 1: Get data
+    data = layer_1_data_ingestion(symbol)
     
-    Combines:
-    - OODA Loop (decision speed)
-    - Cognitive Architecture (structured reasoning)
-    - Bayesian Inference (probabilistic updates)
-    - Meta-Cognition (self-awareness)
-    """
+    # LAYER 2: Heritage verdict from your trained models
+    verdict_1 = layer_2_heritage_verdict(data['features'], HERITAGE_MODELS)
     
-    def __init__(self):
-        # Memory Systems
-        self.ltm = LongTermMemory()      # 20 years of patterns
-        self.stm = ShortTermMemory()     # 30 days of errors
-        self.wm = WorkingMemory()        # Today's context
-        
-        # Cognitive Layers
-        self.sensory = SensoryLayer()
-        self.pattern = PatternLayer(self.ltm)
-        self.analogy = AnalogyEngine(self.ltm)
-        self.bayesian = BayesianHypothesisTester()
-        self.meta = MetaCognitionLayer()
-        self.decision = DecisionSynthesis()
-        self.learning = LearningLayer(self.stm, self.meta)
+    # LAYER 3: Reflex audit (error awareness)
+    verdict_2 = layer_3_reflex_audit(verdict_1, ERROR_LOG)
     
-    def run(self, symbol: str) -> dict:
-        """
-        THE OODA CYCLE
-        """
-        # ═══════════════════════════════════════════
-        # OBSERVE: Gather all sensory data
-        # ═══════════════════════════════════════════
-        senses = self.sensory.observe()
-        self.wm.update(senses)
-        
-        # ═══════════════════════════════════════════
-        # ORIENT: Process through cognitive layers
-        # ═══════════════════════════════════════════
-        
-        # Pattern matching
-        patterns = self.pattern.recognize(senses)
-        
-        # Analogy finding
-        analogies = self.analogy.find_analogies(senses)
-        
-        # Bayesian hypothesis update
-        for evidence in senses.values():
-            self.bayesian.update_with_evidence(evidence)
-        posterior = self.bayesian.hypotheses
-        
-        # Meta-cognitive audit
-        preliminary_verdict = {
-            "direction": self.bayesian.get_leading_hypothesis(),
-            "raw_confidence": max(posterior.values())
-        }
-        meta_audit = self.meta.audit_myself(preliminary_verdict)
-        
-        # ═══════════════════════════════════════════
-        # DECIDE: Synthesize into final verdict
-        # ═══════════════════════════════════════════
-        verdict = self.decision.synthesize(
-            patterns=patterns,
-            analogies=analogies,
-            bayesian_posterior=posterior,
-            meta_audit=meta_audit
-        )
-        
-        # ═══════════════════════════════════════════
-        # ACT: Output and log
-        # ═══════════════════════════════════════════
-        self.log_prediction(verdict)
-        
-        return {
-            "timestamp": datetime.now().isoformat(),
-            "symbol": symbol,
-            "verdict": verdict['verdict'],
-            "confidence": verdict['adjusted_confidence'],
-            "reasoning": verdict['reasoning'],
-            "warnings": verdict['meta_warnings'],
-            "pipeline_version": "SENTIENT_2.0"
-        }
+    # LAYER 4: Fusion
+    verdict_3 = layer_4_fusion(verdict_1, verdict_2)
+    
+    # LAYER 5: Veto gate
+    final = layer_5_veto_gate(verdict_3, data)
+    
+    # Package result
+    return {
+        "timestamp": data['timestamp'],
+        "symbol": symbol,
+        "spot_price": data['spot_price'],
+        "verdict_1": verdict_1,  # Heritage
+        "verdict_2": verdict_2,  # Correction
+        "verdict_3": verdict_3,  # Fused
+        "final": final,          # After veto check
+        "pipeline_version": "1.0"
+    }
 ```
 
 ---
 
-## 🎯 HOW THIS IS DIFFERENT FROM v1.0
+## 📊 REQUIRED CSV SCHEMA (Mandatory for Both Projects)
 
-| Aspect | v1.0 (Universal Pipeline) | v2.0 (Sentient Cognitive) |
-|:-------|:--------------------------|:--------------------------|
-| **Philosophy** | "Calculate the prediction" | "Reason about the prediction" |
-| **Memory** | Single error log | 3 memory systems (LTM, STM, WM) |
-| **Reasoning** | Direct model output | Pattern + Analogy + Bayesian |
-| **Self-Awareness** | None | Full meta-cognition layer |
-| **Explanation** | None | Human-readable reasoning |
-| **Bias Detection** | Manual | Automatic + self-correcting |
-| **Confidence** | From model | Adjusted by self-doubt |
-| **Learning** | Simple accuracy tracking | Multi-system memory update |
+```csv
+date,timestamp,symbol,spot_price,verdict_1,verdict_1_prob,verdict_2_correction,verdict_3,verdict_3_prob,confidence,veto_triggered,veto_reasons,final_verdict,outcome_direction,outcome_change_pct,was_correct
+2025-12-23,10:00:00,^NSEI,26177,BULLISH,0.72,-0.05,LEAN BULLISH,0.67,0.34,False,,LEAN BULLISH,UP,0.58,True
+```
+
+| Column | Description |
+|:-------|:------------|
+| `verdict_1` | Heritage model output (before correction) |
+| `verdict_1_prob` | Raw probability from heritage models |
+| `verdict_2_correction` | Correction factor from reflex audit |
+| `verdict_3` | Fused verdict (after correction) |
+| `verdict_3_prob` | Fused probability |
+| `confidence` | Signal strength (0-1) |
+| `veto_triggered` | Was the veto gate triggered? |
+| `final_verdict` | The actual output (may be HARD VETO) |
+| `was_correct` | T+1 verification |
 
 ---
 
-## 🧠 THE JARVIS EFFECT
+## 🎯 THE 5 VERDICT STANCES (Standard Output)
 
-With this pipeline, your system doesn't just say:
-
-```
-"BULLISH - 72% confidence"
-```
-
-It says:
-
-```
-VERDICT: BULLISH
-CONFIDENCE: 72% → 58% (adjusted)
-
-REASONING:
-- Pattern: "Pre-breakout consolidation" identified (72% historical accuracy)
-- Analogy: Similar to Nov 2016 post-election setup
-- Bayesian: 68% probability after incorporating VIX drop
-
-SELF-ASSESSMENT:
-⚠️ I have been over-bullish 7 of last 10 days
-⚠️ My accuracy in high-VIX environments is only 42%
-⚠️ Confidence adjusted from 72% to 58%
-
-RECOMMENDED ACTION: Small position, tight stop-loss
-```
+| Stance | Probability Range | Action |
+|:-------|:------------------|:-------|
+| **BULLISH** | ≥ 70% | Buy dips, sell puts |
+| **LEAN BULLISH** | 55-70% | Small longs, tight stops |
+| **NEUTRAL** | 45-55% | Range trade or wait |
+| **LEAN BEARISH** | 30-45% | Stay light, hedge |
+| **BEARISH** | ≤ 30% | Sell rallies, buy puts |
+| **HARD VETO** | Any (chaos) | NO TRADE |
 
 ---
 
-## ✅ IMPLEMENTATION PRIORITY
+## ✅ IMPLEMENTATION CHECKLIST
 
-### Phase 1: Core Cognitive (Week 1)
-- [ ] Implement 3 memory systems (LTM, STM, WM)
-- [ ] Build Pattern Recognition layer
-- [ ] Build Bayesian Hypothesis Tester
+### For DeltaX (AuztinX):
+- [ ] Rename `ML1` → `Heritage Models` (Layer 2)
+- [ ] Rename `ML2` → `Reflex Audit` (Layer 3)
+- [ ] Standardize CSV to new schema
+- [ ] Implement veto gate with 4 conditions
+- [ ] Add `verdict_1_prob` and `verdict_2_correction` to logs
 
-### Phase 2: Meta-Cognition (Week 2)
-- [ ] Implement bias detector
-- [ ] Implement failure pattern recorder
-- [ ] Build confidence calibrator
-
-### Phase 3: Integration (Week 3)
-- [ ] Wire up OODA loop
-- [ ] Add explanation generator
-- [ ] Deploy and test
-
----
-
-## 🏛️ INSTITUTIONAL REFERENCES
-
-| Framework | Used By | Key Paper |
-|:----------|:--------|:----------|
-| OODA Loop | US Air Force, Hedge Funds | Boyd, J. (1987) |
-| ACT-R | CMU, NASA, Defense | Anderson, J. (2007) |
-| Bayesian Brain | Citadel, Two Sigma | Friston, K. (2010) |
-| Meta-Learning | DeepMind, OpenAI | Finn, C. (2017) |
+### For ZetaX:
+- [ ] Add Layer 3 (Reflex Audit) - currently missing
+- [ ] Separate logging for V1/V2/V3
+- [ ] Replace decaying learning rate with 30-day window
+- [ ] Add veto gate with 4 conditions
+- [ ] Upgrade CSV schema
 
 ---
 
-*Sentient Cognitive Pipeline v2.0 - Designed for Human-Like Trading Intelligence*
+## 🔐 THE GOLDEN RULES
+
+1. **Heritage models NEVER see error logs** - They only see historical prices
+2. **Reflex layer ONLY sees errors** - It predicts correction, not direction
+3. **Fusion is ARITHMETIC** - `V3 = V1 + V2`, not a model
+4. **Veto is BINARY** - One trigger = full veto, no partial
+5. **Feedback is DELAYED** - T+1 only, never same-day
+6. **Window is FIXED** - Always 30 days, no decay
+
+---
+
+*Universal Core Logic Pipeline v1.0 - Designed for Tradyxa Projects*
