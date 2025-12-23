@@ -145,20 +145,31 @@ Every morning, the system runs its own audit. If the math predicted "BULLISH" bu
 
 ---
 
-## 🧩 THE LIVING BRAIN SIMPLIFIED (Connecting the Dots)
+## 🔄 THE AXIOM LIFECYCLE (24-Hour Institutional Loop)
 
-To avoid confusion, think of the system in three simple steps that happen every day:
+To make the self-learning crystal clear, here is the exact 24-hour sequence:
 
-1.  **The Memory (`brain_state.json`)**:
-    *   This is the "Brain's Diary." It remembers if the system has been right or wrong lately.
-    *   `predict.py` reads this first to see how much it should "trust" its own math today.
+1.  **Phase 1: Anthogenesis (Morning Preparation)**:
+    *   The system fetches historical data from **yfinance**.
+    *   It trains/refines the **ML1 (Master Models)**: Random Forest, Kalman Filters, and Fourier Cycles.
+    *   This is the pure mathematical base.
 
-2.  **The Action (`predict.py` & `prediction_logger.py`)**:
-    *   The **Master (ML1)** looks at 20 years of math.
-    *   The **Apprentice (ML2)** looks at the Diary and says "Boss, we've been too bullish lately, let's tone it down."
-    *   The **Fused Verdict (V3)** is the final consensus saved to `predictions.csv`.
+2.  **Phase 2: Synapsis (Market Hours)**:
+    *   The system polls the **Spot Price every 30 minutes**.
+    *   It "mixes" the ML1 math with the live price action and the **Memory (Diary)** from previous days.
+    *   This "mixing" creates the **Verdict 3 (Fused Consensus)**.
 
-3.  **The Teacher (`online_learner.py`)**:
-    *   Every afternoon, the Teacher looks at `predictions.csv`.
-    *   It checks what actually happened in the market.
-    *   It writes a new entry in the **Diary (`brain_state.json`)**, updating the trust scores for tomorrow.
+3.  **Phase 3: The Sentinel Verdict (3:30 PM Closing)**:
+    *   At **3:30 PM**, the final verdict (Verdict 1 & Verdict 3) is locked.
+    *   The result is saved permanently in `predictions.csv` along with all 21+ institutional metrics.
+
+4.  **Phase 4: The Audit (Next Day @ 3:30 PM)**:
+    *   On the **Next Trading Day at 3:30 PM**, the "Teacher" (`online_learner.py`) looks back at yesterday's prediction.
+    *   It compares the prediction against where the market actually closed.
+    *   It marks its own homework (Right/Wrong).
+
+5.  **Phase 5: Self-Evolution (The Feedback)**:
+    *   The Audit result is written into the **Living Brain Diary (`brain_state.json`)**.
+    *   If the math was wrong, the system "learns" to trust that specific model less for tomorrow's 9:00 AM preparation.
+
+---
