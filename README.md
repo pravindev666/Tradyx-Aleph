@@ -10,14 +10,22 @@
 
 ```mermaid
 flowchart TB
+    subgraph LAYER0["⏰ REAL-TIME FEED (Every 30 Min)"]
+        SPOT[("🔴 LIVE SPOT PRICE<br/>Polled Every 30 Min")]
+        MACRO[("🌍 MACRO DATA<br/>DXY / VIX / Yields")]
+    end
+
     subgraph LAYER1["LAYER 1: DATA INGESTION"]
-        A1[Live Price Feed] --> B1[Historical Archive]
-        B1 --> C1[Feature Engineering]
-        C1 --> D1[Normalized Feature Vector]
+        A1[Historical Archive<br/>20 Years .pkl Models]
+        SPOT --> B1[Live Feature Builder]
+        MACRO --> B1
+        A1 --> B1
+        B1 --> C1[Normalized Feature Vector<br/>with Live Context]
     end
 
     subgraph LAYER2["LAYER 2: HERITAGE VERDICT (V1)"]
-        D1 --> E1[Heritage Models<br/>20-Year Training]
+        C1 --> E1[Heritage Models<br/>Trained on 20-Year Data]
+        SPOT -.->|"Live Price Input"| E1
         E1 --> F1[Raw Probability]
         F1 --> G1["VERDICT 1<br/>(Heritage Signal)"]
     end
@@ -25,17 +33,20 @@ flowchart TB
     subgraph LAYER3["LAYER 3: REFLEX AUDIT (V2)"]
         G1 --> H1[Error Log<br/>Last 30 Days]
         H1 --> I1[Reflex Model<br/>Bias Detection]
+        MACRO -.->|"Macro Context"| I1
         I1 --> J1["VERDICT 2<br/>(Correction Factor)"]
     end
 
     subgraph LAYER4["LAYER 4: FUSION (V3)"]
         G1 --> K1[Fusion Engine]
         J1 --> K1
+        SPOT -.->|"Live Recalibration"| K1
         K1 --> L1["VERDICT 3<br/>(Fused Signal)"]
     end
 
     subgraph LAYER5["LAYER 5: VETO GATE"]
         L1 --> M1{Chaos Filter}
+        MACRO -.->|"VIX Check"| M1
         M1 -->|PASS| N1[FINAL VERDICT]
         M1 -->|FAIL| O1[HARD VETO]
     end
@@ -46,11 +57,145 @@ flowchart TB
         Q1 --> R1[Accuracy Tracker]
         R1 --> H1
     end
+
+    style SPOT fill:#ff6b6b,color:#fff
+    style MACRO fill:#4ecdc4,color:#fff
 ```
 
 ---
 
-## 📋 THE 6 LAYERS (Mandatory for Both Projects)
+## ⏰ THE 30-MINUTE MIXING LOGIC
+
+The Live Spot Price feeds into **THREE places**:
+
+```mermaid
+flowchart LR
+    SPOT[("🔴 SPOT PRICE<br/>Every 30 Min")] --> L2["LAYER 2<br/>Heritage Models"]
+    SPOT --> L4["LAYER 4<br/>Fusion Engine"]
+    SPOT --> FEATURES["Feature Builder<br/>(RSI, MACD, etc.)"]
+    
+    L2 --> |"V1 uses live indicators"| V1[Verdict 1]
+    V1 --> L4
+    L4 --> |"V3 recalibrates with live price"| V3[Verdict 3]
+```
+
+### Why This Matters:
+
+| Without Live Mixing | With Live Mixing (Every 30 Min) |
+|:--------------------|:-------------------------------|
+| Heritage models use stale data | Heritage models use live indicators (RSI, MACD calculated on current price) |
+| Verdict is fixed for the day | Verdict updates every 30 minutes during market hours |
+| Missing intraday moves | Captures intraday regime shifts |
+| Static prediction | Dynamic, adaptive prediction |
+
+---
+
+## � THE MARKET HOURS CYCLE
+
+### Complete 24-Hour Institutional Loop:
+
+```mermaid
+graph TD
+    subgraph MORNING["🌅 PHASE 1: ANTHOGENESIS (Pre-Market)"]
+        A1[Load 20-Year .pkl Models] --> A2[Fetch Latest Historical Data]
+        A2 --> A3["Generate Baseline V1<br/>(Before Market Opens)"]
+    end
+
+    subgraph MARKET["📊 PHASE 2: SYNAPSIS (Market Hours 9:15 AM - 3:30 PM)"]
+        B1[("🔴 Fetch Spot Price<br/>Every 30 Min")] --> B2[Recalculate Features<br/>RSI, MACD, ATR with LIVE price]
+        B2 --> B3[Run Heritage Models<br/>with Live Indicators]
+        B3 --> B4["Update V1<br/>(Heritage + Live)"]
+        B4 --> B5[Apply Reflex Correction V2]
+        B5 --> B6["Generate V3<br/>(Fused with Live Context)"]
+        B6 --> B1
+    end
+
+    subgraph CLOSE["🔒 PHASE 3: THE LOCK (3:30 PM)"]
+        C1[Capture Final Spot Price] --> C2[Lock Final Verdict for the Day]
+        C2 --> C3[Write to predictions.csv]
+    end
+
+    subgraph AUDIT["🧠 PHASE 4: THE AUDIT (Next Day 3:30 PM)"]
+        D1[Read Yesterday's Prediction] --> D2[Fetch Actual Close from yfinance]
+        D2 --> D3[Compare: Was V3 Correct?]
+        D3 --> D4[Update Error Log]
+        D4 --> D5[Feed into Layer 3 for Tomorrow]
+    end
+
+    MORNING --> MARKET
+    MARKET --> CLOSE
+    CLOSE --> AUDIT
+    AUDIT -.->|"Error Log Updates"| MORNING
+```
+
+### The 30-Minute Polling Schedule (IST):
+
+| Time | Action | Live Data Used |
+|:-----|:-------|:---------------|
+| 9:00 AM | Pre-market preparation | Historical only |
+| **9:15 AM** | Market opens, first poll | ✅ Live spot price |
+| 9:45 AM | Poll #2 | ✅ Live spot, 30-min OHLC |
+| 10:15 AM | Poll #3 | ✅ Live spot, 1-hour OHLC |
+| ... | Every 30 minutes | ✅ All live data |
+| **3:00 PM** | Last regular poll | ✅ Full day's data |
+| **3:30 PM** | Market close, FINAL LOCK | ✅ Closing price |
+
+### What Happens Each 30-Minute Poll:
+
+```python
+def thirty_minute_poll():
+    """
+    This runs EVERY 30 MINUTES during market hours.
+    It MIXES the live spot price with the heritage models.
+    """
+    
+    # 1. Fetch LIVE spot price (not cached)
+    live_spot = yfinance.download(symbol, period="1d")['Close'].iloc[-1]
+    
+    # 2. Fetch recent 1-year data (for indicators)
+    historical = yfinance.download(symbol, period="1y")
+    
+    # 3. APPEND live spot to historical (THIS IS THE MIXING)
+    historical.loc[datetime.now()] = {
+        'Open': live_spot, 'High': live_spot, 
+        'Low': live_spot, 'Close': live_spot
+    }
+    
+    # 4. Recalculate ALL indicators with live price
+    features = calculate_features(historical)
+    # NOW RSI, MACD, etc. include the live price!
+    
+    # 5. Run heritage models on LIVE-MIXED features
+    verdict_1 = heritage_models.predict(features)
+    
+    # 6. Apply reflex correction
+    verdict_2 = reflex_audit(verdict_1, error_log)
+    
+    # 7. Fuse into V3
+    verdict_3 = fuse(verdict_1, verdict_2)
+    
+    return verdict_3
+```
+
+### The Key Insight:
+
+> [!IMPORTANT]
+> **The Heritage .pkl models are FROZEN** - they were trained on 20 years of data and don't change during the day.
+> 
+> **BUT** - the FEATURES fed to them are LIVE. Every 30 minutes:
+> 1. New spot price → recalculates RSI, MACD, Bollinger Bands
+> 2. Heritage models see these live indicators
+> 3. Output changes based on where spot price is NOW vs historical patterns
+
+```
+FROZEN: The .pkl model weights (trained weekly)
+LIVE:   The feature vector (recalculated every 30 min)
+RESULT: Same model, different inputs → different verdict
+```
+
+---
+
+## �📋 THE 6 LAYERS (Mandatory for Both Projects)
 
 ### LAYER 1: DATA INGESTION
 **Purpose**: Get clean, normalized data into the system.
