@@ -1,99 +1,164 @@
-# 🌌 ZetaX 6.0: The Sentient Master Terminal
-## The Ultimate Fusion of Institutional DNA & Anticipatory Intelligence
+# 🌌 AuztinX 4.0: The Axiom-Sentient Living Brain
+## The Sentient Evolution of Math-First Intelligence
 
-> [!IMPORTANT]
-> **ZetaX 6.0** is no longer just a dashboard; it is a **Sentient Intelligence Pipeline**. It marks the death of "Reactive Weighting" and the birth of **Anticipatory Error-Correction**.
-
----
-
-## 💀 The Brutal Truth: Why Legacy 4.0 Failed
-In previous versions (ZetaX 1.0 - 4.0), the system was **Reactive**. It used the "Volume Knob" approach:
-*   **The Problem**: If a model failed today, the system lowered its weight tomorrow. This is closing the barn door *after* the horse has bolted. 
-*   **The Result**: Shuffling weights on failing models is just "shuffling deck chairs on the Titanic." You aren't fixing the brain; you're just muting the losers.
+> [!NOTE]
+> This document outlines the transformation of AuztinX (formerly DeltaX) from an institutional math filter (2.0) into a sentient, macro-aware agent (4.0). It incorporates the rigorous "Red Team" logic and the "Jump-Diffusion" mechanics of **Axiom-Sentient Intelligence**.
 
 ---
 
-## 🧬 ZetaX 6.0: The "Brain Surgery" Architecture
-ZetaX 6.0 abandons weight-shuffling for **Hierarchical Logic Stacking**. It uses the **Master-Apprentice** model to fix the signal *before* it reaches the trader.
+## 🔍 Viability Assessment: Is AuztinX Ready?
 
-### 1. The Master (ML1): The Keeper of DNA
-*   **Window**: 20 Years (2005 - Present).
-*   **Role**: Deep Institutional Memory. It understands the "Law of Gravitation" (Long-term probability).
-*   **Philosophy**: "I have seen this setup 100 times. Historically, it is 70% Bullish."
+**Verdict: EXTREMELY VIABLE.**
 
-### 2. The Apprentice (ML2): The Sentient Sentinel
-*   **Window**: 10-90 Days (The Reflex).
-*   **Role**: Anticipatory Auditor. It is trained on the **Residual Errors** of the Master.
-*   **Logic Surgery**: It doesn't just turn down the Master's volume; it **corrects his aim**.
-*   **Philosophy**: "The Master is Bullish, but I know he's wrong today because he doesn't see that DXY spikes are currently killing this trend. I will subtract 15% from his signal NOW."
-
-### 3. The Final Verdict (Verdict 3)
-*   **Sentient Synthesis**: `Master_Signal - Apprentice_Correction = Fused Conclusion`.
-*   **Result**: You receive a signal that has already "self-healed" its own biases in real-time.
+AuztinX is the perfect candidate for Living Brain 4.0 for three reasons:
+1.  **Solid Foundation**: It already possesses the "Micro-Senses" (Adaptive Filters, GARCH) that other systems lack. It has "Sharp Eyes."
+2.  **Modular Core**: The transition from 2.0 to 4.0 only requires adding a "Reasoning Layer" (LLM) and a "Skepticism Layer" (Red Team) on top of existing math.
+3.  **The Math Paradox**: Financial models are often "too accurate" to the numbers, which makes them blind to "Narrative Shifts" (Black Swans). Living Brain 4.0 solves this by adding Global Macro awareness.
 
 ---
 
-## 🏛️ H-ORBITAL Integrated Flow
+## 🆚 Legacy DeltaX vs. Modern AuztinX 4.0
+
+| Feature | Legacy DeltaX (2.0) | Modern AuztinX (Axiom 4.0) |
+| :--- | :--- | :--- |
+| **Intelligence** | **Reactive**: Adjusts filters after an error. | **Sentient**: Anticipates error via macro-fusion. |
+| **Brain Level** | Living Brain 2.0/3.0 | **Living Brain 4.0** |
+| **Math Engine** | Standard Kalman / GARCH | **Jump-Adaptive Kalman / GJR-GARCH** |
+| **Data Scope** | Local NIFTY/BANKNIFTY Prices | **Cross-Asset Fusion** (DXY, Bonds, Oil) |
+| **Validation** | Basic Optimization | **Red Team Protocol (Hard Veto)** |
+| **Interface** | 12 Technical Tiles | **Cinematic 16-Tile UI + LLM Synthesis** |
+| **Output** | "Math is Bullish/Bearish" | **Executive Verdict: Synthesized Reasoning.** |
+
+---
+
+## 🧬 THE LIVING BRAIN EVOLUTION MATRIX
+
+| Version | Name | Philosophy | Capability |
+| :--- | :--- | :--- | :--- |
+| **1.0** | **The Calculator** | Static Heuristics | High-frequency calculation of technical indicators (RSI, EMA). |
+| **2.0** | **The Reflex** | Self-Adjusting | Can "Sense" error. Adjusts internal multipliers based on misses. |
+| **3.0** | **The Meta-Judge** | Strategic Meritocracy| Judges the "Council of Experts." Learns which math to trust. |
+| **4.0** | **The Sentient** | Global Awareness | **Sentience.** Understands Cross-Asset relationships. Features Agency (Reasoning) and Skepticism (Red Team). |
+
+---
+
+## 🏛️ AXIOM 4.0 ARCHITECTURE
 
 ```mermaid
 flowchart TB
-    subgraph INPUTS["👁️ GLOBAL SENSORS"]
-        SPOT[Nifty/BankNifty Spot]
-        VIX[India VIX / VXX]
-        MACRO[Macro: DXY, Bond Yields, Crude]
-        SENT[Sentiment: FinBERT RSS]
+    subgraph SENSES["👁️ SENSING LAYER"]
+        YF[yfinance: Spot/VIX]
+        MACRO[Macro: DXY/Bonds/S&P]
+        RSS[News RSS: NLP Analysis]
     end
 
-    subgraph MASTER_BRAIN["🧠 THE MASTER (ML1)"]
-        DNA[20-Year Institutional Training]
-        V1[Verdict 1: Base Signal]
+    subgraph BRAIN["🧠 COGNITIVE PROCESSING (models/)"]
+        direction LR
+        RF["Probability Ensemble"]
+        GB["Structure Analysis"]
+        AE["Structure Radar"]
+        QR["Expected Range"]
     end
 
-    subgraph ERROR_LOGS["📊 AUDIT TRAIL"]
-        LOGS[(CSV: Master Errors & Outcomes)]
+    subgraph MATH["🧬 PRECISION MATH (Exotic)"]
+        JKF[Adaptive Trend Filter]
+        GJR[GJR-GARCH Vol]
+        FOUR[Signal SNR: Fourier]
     end
 
-    subgraph SENTINEL_BRAIN["⚡ THE APPRENTICE SENTINEL (ML2)"]
-        REFLEX[10-90 Day Reflexive Training]
-        V2[Verdict 2: Bias Correction]
+    subgraph VETO["🛡️ THE COMMAND CENTER (Validation)"]
+        RT[Red Team Protocol]
+        Blue[Blue Team: Kelly Risk]
+        RT & Blue -->|PASS/FAIL| LOGIC{Executive Analyst}
     end
 
-    subgraph SYNTHESIS["🎯 EXEC-6 SYNTHESIS"]
-        V3[Verdict 3: Fused Conclusion]
-        RT[Red Team Protocol: Statistical Veto]
+    subgraph FEEDBACK["🧠 THE LIVING BRAIN (Learning)"]
+        LOG[3:30 PM Close Log]
+        VER[T+1 Outcome Verify]
+        LEARN[brain_state.json Accuracy]
+        VER --> LEARN -->|Update Weights| BRAIN
     end
 
-    INPUTS --> MASTER_BRAIN
-    MASTER_BRAIN --> V1
-    V1 --> LOGS
-    LOGS --> SENTINEL_BRAIN
-    SENTINEL_BRAIN --> V2
-    V1 & V2 --> SYNTHESIS
-    MACRO --> SENTINEL_BRAIN
-    RT -->|Pass/Fail| OUTPUT[Cinematic 23-Tile UI]
+    SENSES --> MATH & BRAIN
+    MATH & BRAIN --> RT
+    LOGIC --> UI["Cinematic 16-Tile UI"]
+    UI --> LOG
+    LOG --> VER
 ```
 
 ---
 
-## 🏆 Competitive Differentiation: Reactive vs. Sentient
+## 📊 THE 16-TILE COMMAND CENTER
 
-| Metric | Legacy ZetaX (Reactive) | ZetaX 6.0 (Sentient) |
-| :--- | :--- | :--- |
-| **Philosophy** | **Punishment**: Benching a player after they miss. | **Coaching**: Fixing the player's aim *before* they shoot. |
-| **Learning Speed** | T+1 (Lagging Reflection) | **Real-Time (Anticipatory Reflex)** |
-| **Logic** | Volume Knob (Weights) | **Brain Surgery (Correction Factors)** |
-| **Safety** | Statistical Z-Score | **Red Team Veto + Apprentice Sentinel** |
-| **Verdict** | Consensus Average | **Fused Self-Healed Intelligence** |
+| # | Tile Name | Type | Institutional Logic | Role |
+|:--|:----------|:-----|:-------------------|:-----|
+| 1 | **Spot Price** | Senses | Live Quote Engine | Baseline Monitoring |
+| 2 | **India VIX** | Senses | Live Fear Engine | Regime Filtering |
+| 3 | **Red Team** | Meta | Military Hard Veto | Risk Sentinel |
+| 4 | **DXY Sentinel** | Macro | Currency Liquidity | Emerging Market Proxy |
+| 5 | **Adaptive Trend**| Exotic| Jump-Adaptive Filter | Primary Direction |
+| 6 | **Expected Range**| Exotic| GJR-GARCH Volatility| Volatility Cone |
+| 7 | **Signal SNR** | Math | Fourier Cycles | Cycle Predictability |
+| 8 | **Logic Levels** | ML | K-Means Clusters | Structural Support/Res |
+| 9 | **Reversal Prob.**| Ensemble| Probabilistic Logic | Overbought/Oversold |
+| 10| **SNR Strength** | Math | Spectral Density | Momentum Confidence |
+| 11| **Structure Radar**| ML | Neural Anomaly Detection| Black Swan Detection |
+| 12| **Consensus Pulse**| ML | NLP Narrative Engine | News Sentiment |
+| 13| **Option Skew** | Synth | Monte Carlo | Fat-Tail Risk |
+| 14| **Dealer Pos.** | Synth | Gamma Simulation | Market Maker Magnet |
+| 15| **Kelly Bet** | Risk | Allocation Optimization| Position Sizing |
+| 16| **AI Consensus**| Executive| Synthesized Reasoning | Human-Readable Verdict |
 
 ---
 
-## 🧪 Technical Implementation: The Error Audit
-To transition to 6.0, the `online_learner.py` is replaced by a **Sentinel Auditor**:
-1.  **Log Every Prediction**: Record `V1` and the `actual_outcome`.
-2.  **Calculate Residuals**: `Error = Outcome - V1`.
-3.  **Train ML2 on Errors**: Use a short-term XGBoost to predict the *Size* and *Direction* of the next Error.
-4.  **Subtract Error**: Before displaying the verdict, subtract the predicted error from the Master's signal.
+## 🐍 TECHNICAL BLUEPRINT: AUZTINX INTEGRATION
+
+### 1. Adaptive Trend Filter (Jump-Adaptive)
+Located at `jump_adaptive_kalman.py`. Focuses on minimizing lag during parabolic moves.
+
+### 2. The Red Team Protocol
+Located at `red_team_veto.py`. Ensures no trade is taken in high-chaos regimes.
+
+### 3. Executive Synthesis (LLM Interface)
+Located at `executive_synthesis_llama.py`. The "Brain" that resolves "Math vs Logic" conflicts.
 
 ---
-**Tradyxa Quant Labs | ZetaX 6.0 Project**
-*Mastering the DNA. Correcting the Reflex. Eliminating the Lag.*
+
+## 📅 STRATEGIC ROADMAP
+
+1.  **Phase 1**: Rebranding and Logic Concealment (Complete).
+2.  **Phase 2**: Deployment of the **Axiom** math core (Complete).
+3.  **Phase 3**: Integration of **Executive Synthesis** reasoning (Complete).
+4.  **Phase 4**: The Living Brain (Feedback Learning) - **LIVE**.
+    *   T+1 Outcome Analysis via `online_learner.py`.
+    *   Intelligence Scorecard via `brain_state.json`.
+    *   Autonomous position-size calibration based on track record.
+
+---
+
+Every morning, the system runs its own audit. If the math predicted "BULLISH" but the market was "BEARISH," the system marks its own homework. It reduces the weight of the failing model in the `brain_state.json` diary.
+
+**Technical Constraints**:
+- **The Floodlight (ML1)**: Operates on a **20-year Heritage Window** to maintain ancestral stability.
+- **The Spotlight (ML2)**: Operates on a **30-day Sliding Window** (Reflex Memory) to ensure high-agility responses to immediate regime shifts.
+- **The No-Loss Vault**: All results are archived perpetually in `predictions.csv`.
+
+---
+
+## 🧩 THE LIVING BRAIN SIMPLIFIED (Connecting the Dots)
+
+To avoid confusion, think of the system in three simple steps that happen every day:
+
+1.  **The Memory (`brain_state.json`)**:
+    *   This is the "Brain's Diary." It remembers if the system has been right or wrong lately.
+    *   `predict.py` reads this first to see how much it should "trust" its own math today.
+
+2.  **The Action (`predict.py` & `prediction_logger.py`)**:
+    *   The **Master (ML1)** looks at 20 years of math.
+    *   The **Apprentice (ML2)** looks at the Diary and says "Boss, we've been too bullish lately, let's tone it down."
+    *   The **Fused Verdict (V3)** is the final consensus saved to `predictions.csv`.
+
+3.  **The Teacher (`online_learner.py`)**:
+    *   Every afternoon, the Teacher looks at `predictions.csv`.
+    *   It checks what actually happened in the market.
+    *   It writes a new entry in the **Diary (`brain_state.json`)**, updating the trust scores for tomorrow.
