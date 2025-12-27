@@ -247,13 +247,24 @@ A very important distinction to resolve your doubt:
 *   **The `.pkl` (The Brain):** This is a **Static Formula**. It is weighted once a week and never changes its internal math during the day.
 *   **The 30-Min Snapshot (The Question):** This is the **Input Data**. It is simply a list of numbers that we "plug into" the static formula.
 
-**Analogy (The Calculator):**
-Imagine a calculator. 
-*   The **Calculator's Internal Chips** are the `.pkl`. They know the rule: `2 + 2 = 4`.
-*   The **Numbers you type in** are the 30-Min Price. 
-*   When you type `10 + 10`, the calculator gives you `20`. But the calculator itself didn't change its "brain"—it just used its brain to answer your specific numbers.
+## 🎯 THE ENTRY POINT: From Internet to Intelligence
+You asked: "That price goes where?"
 
-**Verdict:** The 30-minute spot price is **never stored** in the `.pkl` during inference. It is simply processed by it to give you a result.
+Here is the exact technical path of that 30-min price:
+
+1.  **Fetcher Layer:** `yfinance_fetcher.py` grabs the price from the internet.
+2.  **Memory Layer:** The price is appended to `archive_nifty.csv`.
+3.  **Refinery Layer:** `engineer.py` takes that archive and calculates the **RSI/SMA** for the *very last row* (Today's Price).
+4.  **The Hand-off:** The system takes that **Single Row of Math** and passes it as an "Argument" to the model.
+
+### 🧪 The Code-Level View
+In all projects, the price always ends up here:
+```python
+# The model (.pkl) is already loaded in memory
+# 'X' is the 13-pillar math for the 30-min price
+verdict = model.predict(X) 
+```
+**Conclusion:** The price goes into the **`.predict()` function**. The model then uses its "Trained Memory" to look at that 'X' and spit out a "Verdict." It is a 1-second process!
 
 ---
 
