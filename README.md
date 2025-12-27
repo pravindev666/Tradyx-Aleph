@@ -13,16 +13,14 @@ This document provides the "Minute-Level" technical breakdown of the entire Trad
 
 ```mermaid
 graph TD
-    subgraph "SENSING"
-        B_YF[yfinance OHLCV] --> B_DB[(brain/archive.csv)]
-    end
-
-    subgraph "FEATURES"
+    subgraph "SENSING (The Archive)"
+        B_LIVE[⚡ 30-Min Live Spot] --> B_ENG
+        B_YF[yfinance OHLCV Archive] --> B_DB[(brain/archive.csv)]
         B_DB --> B_ENG[Feature Builder]
-        B_ENG --> B_13[13-Pillar Vector]
     end
 
     subgraph "INTELLIGENCE (The Council)"
+        B_ENG --> B_13[13-Pillar Vector]
         B_13 --> B_XGB[XGBoost Momentum]
         B_13 --> B_RF[RF Trend]
         B_XGB & B_RF --> B_VOTE{Voter Engine}
@@ -46,8 +44,9 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph "SENSING"
-        D_YF[Live Ticks] --> D_POL[engineer_polars.py]
+    subgraph "SENSING (High Velocity)"
+        D_LIVE[⚡ 30-Min Live Ticks] --> D_POL
+        D_YF[Historical Streams] --> D_POL[engineer_polars.py]
     end
 
     subgraph "CORE (H-Orbital)"
@@ -77,23 +76,29 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph "COG-1: Experts"
-        HMM[HMM] & RF[RF] & XGB[XGB] & QR[QR] & RL[RL] & LSTM[LSTM]
+    subgraph "SENSING (Contextual)"
+        Z_LIVE[⚡ 30-Min Live Price] --> Z_FETCH
+        Z_DATA[Macro/Archive Data] --> Z_FETCH[data_fetcher.py]
+        Z_SENT[RSS/ET News] --> Z_BERT[BERT Sentiment]
     end
 
-    subgraph "COG-2: Sentinels"
-        AE[Anomaly Radar]
-        BERT[BERT Sentiment]
+    subgraph "COG-1: Experts"
+        Z_FETCH --> HMM[HMM]
+        Z_FETCH --> RF[RF]
+        Z_FETCH --> XGB[XGB]
+        Z_FETCH --> QR[QR]
+        Z_FETCH --> RL[RL]
+        Z_FETCH --> LSTM[LSTM]
     end
 
     subgraph "META: Meta-Cognition"
         HMM & RF & XGB & QR & RL & LSTM --> META[Meta-Judge]
-        META --> CAL[Calibrator]
+        META --> CAL[Confidence Calibrator]
         CAL --> JUDGE[Confidence Score]
     end
 
     subgraph "EXEC: Executive"
-        AE & BERT & JUDGE --> INF[infer.py]
+        AE[Anomaly Radar] & Z_BERT & JUDGE --> INF[infer.py]
         INF --> RED[Red Team Protocol]
         RED --> Z_JSON[rubix.json]
     end
@@ -103,22 +108,22 @@ graph TD
         LOG --> ACC[tracker.py]
         ACC --> LEARN[online_learner.py]
         LEARN --> BRAIN[brain_state.json]
-        BRAIN -.->|Reinforce Winners| META
-        BRAIN -.->|Penalize Losers| META
+        BRAIN -.->|Weight Adjustment| META
     end
 ```
 
 ---
 
-### 💎 ApeX: The AQL Grandmaster Sniper (v4.0)
-**Models:** PPO (Reinforcement), XGB Ensemble, GARCH (Volatility), DARTS (Cycle).
-**Loop:** Bayesian Nightly Self-Healing.
+### 💎 4. ApeX: The High-Precision Sniper (v4.0)
+**Philosophy:** Strategic Perfection.
+**Mechanism:** Reinforcement Learning (PPO) + AQL Risk Guards.
 
 ```mermaid
 graph TD
     subgraph "SENSING (The Accelerator)"
-        A_YF[yfinance 20Y Data] --> A_POL[engineer_polars.py]
-        A_POL --> A_REF[The Refinery]
+        A_LIVE[⚡ 30-Min Live Tick] --> A_POL
+        A_ARCH[yfinance 20Y Archive] --> A_POL
+        A_POL[engineer_polars.py] --> A_REF[The Refinery]
     end
 
     subgraph "ENGINE (The Sniper)"
