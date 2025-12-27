@@ -217,4 +217,90 @@ sequenceDiagram
 **Verdict:** The 30-minute price is effectively used to "complete" the latest candle. The engine then calculates how that price changes the RSI, SMA, and Volatility *right now*, and feeds that single updated snapshot to the models.
 
 ---
+
+## 🏗️ 9. THE DATA REFINERY: Raw to Intelligence
+A common doubt: "Do we pass raw prices to the ML?"  
+**The Answer is NO.** Raw prices are "too noisy" for an AI to learn from directly.
+
+### 🛡️ The Rule of the Refinery
+The ML models (`.pkl`) and the RL Brain (`.zip`) **NEVER** see a raw price like "24,150." They only see the **Indicators.**
+
+#### Step 1: Raw Data Fetching
+We fetch 20 years of `archive_nifty.csv`. This file has raw Open, High, Low, Close, Volume.
+
+#### Step 2: The Refinery (Feature Engineering)
+`engineer.py` calculates the relative math for every single row in that 20-year history:
+*   Instead of "24,150," it calculates **SMA_200.**
+*   Instead of "Price went up," it calculates **RSI.**
+*   **Crucial:** The 20 years of history is first converted into 20 years of **Calculated Math (Indicators).**
+
+#### Step 3: Training the `.pkl`
+We pass the **Calculated Indicators** to the ML Training script. The `.pkl` model learns: *"When RSI is 30, things usually go up."* (It does NOT care what the actual price was).
+
+#### Step 4: The 30-Min Snapshot
+When you send a 30-min price:
+1.  It is **Refined** into the 13 Pillars instantly.
+2.  The **Calculated Indicators** for that specific 30-minute tick are "matched" against the patterns stored in the `.pkl`.
+
+**Summary:** The `.pkl` is a library of **Mathematical Patterns**, not raw prices.
+
+---
+
+## 🏗️ 10. THE SEQUENCE OF INTELLIGENCE (The "Features-First" Rule)
+
+To answer your doubt: **We calculate RSI and others for 20 years FIRST, and then we pass that to the ML.**
+
+The AI is "blind" to raw prices. It must be "fed" indicators.
+
+### 📊 The Order of Operations
+
+#### **A. THE TRAINING SEQUENCE (Once a Week)**
+```mermaid
+graph LR
+    A["1. FETCH RAW DATA\n(20 Years OHLCV)"] --> B["2. COMPUTE PILLARS\n(Calculate RSI/SMA for every row)"]
+    B --> C["3. TRAIN MODELS (.pkl)\n(Pass the Indicators to the ML)"]
+    C --> D["4. SAVE BRAIN\n(Model now remembers patterns)"]
+```
+*   **Result:** The `.pkl` file contains a memory of **Indicator Patterns**, not prices.
+
+#### **B. THE INFERENCE SEQUENCE (Every 30 Mins)**
+```mermaid
+graph LR
+    E["1. FETCH SNAPSHOT\n(The Latest 30m Tick)"] --> F["2. COMPUTE SNAPSHOT\n(Calculate RSI for this Tick)"]
+    F --> G["3. QUERY THE BRAIN\n(Compare today's RSI to memory)"]
+    G --> H["4. CONCLUSIONS\n(Brain predicts based on training)"]
+```
+
+### ❓ Is the Snapshot "Mixed"?
+Yes, in Step 3! But "Mixed" means it is **Inputted**. 
+*   Today's RSI value (e.g., 34.5) is "mixed" into the mathematical formula inside the `.pkl`. 
+*   The formula then calculates: *"If today is 34.5, and 10 years ago 34.5 meant BULLISH, then the conclusion is BULLISH."*
+
+## ⚖️ 11. ML ENSEMBLE vs RL GRANDMASTER
+
+A common question: "Why do we have both?"  
+**The Answer:** One calculates the **Probability**, the other chooses the **Action.**
+
+### 📊 The Technical Difference
+
+| Feature | ML Ensemble (Supervised) | RL Grandmaster (Reinforcement) |
+| :--- | :--- | :--- |
+| **Analogy** | **The Librarian** | **The Pro Gamer** |
+| **Learning Source** | Labeled History (Indicators + Result) | Self-Simulation (Trial & Error) |
+| **Core Question** | "What is the % chance of an UP move?" | "What is the best move to make money?" |
+| **Output** | Probabilities (e.g. 65% Bullish) | Strategic Action (e.g. SCALE IN) |
+| **Mistake handling** | Learns price went wrong way. | Learns he lost "Points" (Money). |
+
+### 🎭 The Partnership Analogy
+Imagine you are at a Casino:
+*   **The ML Ensemble** is your math friend who says: *"The cards say there is a 60% chance the dealer has a 10."* (This is an **Observation**).
+*   **The RL Grandmaster** is your gambler friend who says: *"Even if the chance is 60%, the bet is too expensive right now. Don't play."* (This is a **Decision**).
+
+### 🤝 Why ApeX needs both:
+1.  **ML** tells us the **Environment** (Is it Bullish or Bearish?).
+2.  **RL** tells us the **Strategy** (Is it the right time to enter or exit?).
+
+When they both agree, you have a **"Convergence Signal"**—the strongest signal in the ApeX system.
+
+---
 © 2025 Zeta Aztra Technologies. All Rights Reserved.
