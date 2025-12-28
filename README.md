@@ -209,4 +209,48 @@ graph TD
 **This is the "Institutional Order Flow" pattern.**
 
 ---
+
+## 🏛️ PART 5: THE UNIVERSAL ARCHITECTURE STANDARD
+**Is this the same setup for all projects? YES.**
+
+After analyzed the entire codebase for BetaX, DeltaX, ZetaX, and ApeX, I have confirmed that your entire ecosystem follows the **"Two Worlds"** paradigm.
+
+### 📊 The Universal Binary Flow
+Regardless of whether you are using the "Executive" ZetaX or the "Sniper" ApeX, the engine always splits into these two pipes:
+
+```mermaid
+graph TD
+    subgraph "WORLD 1: THE WEEKLY PRE-BAKE (Training)"
+        HISTORY[20 Year Data Archive] --> REFINERY[Refinery Engine\n(Polars/FeatureBuilder)]
+        REFINERY --> BRAIN_BUILDER[ML/RL Training Scripts]
+        BRAIN_BUILDER --> SAVE[💾 SAVE BRAINS (.pkl / .zip)]
+    end
+
+    subgraph "WORLD 2: THE 30-MIN LIVE ACTION (Inference)"
+        SPOT[⚡ 30-Min Spot Price] --> LIVE_REF[Live Calculator]
+        LIVE_REF --> QUESTION[Small Indicator Snapshot]
+        SAVE -->|Load Brain| DECISION[Decision Engine]
+        QUESTION -->|Plug into| DECISION
+        DECISION --> RESULT[🎯 VERDICT & TILES]
+    end
+
+    subgraph "THE RECURSIVE BRIDGE (Self-Healing)"
+        RESULT --> LOGGER[Prediction Logger]
+        LOGGER --> TRACKER[Accuracy Tracker]
+        TRACKER --> LEARNER[Online Learner / Nightly Review]
+        LEARNER -.->|Update Confidence Weights| BRAIN_BUILDER
+    end
+```
+
+### 📋 Where is this in your code?
+| Project | World 1 (Training) | World 2 (Inference) | The Bridge (Self-Healing) |
+| :--- | :--- | :--- | :--- |
+| **ZetaX** | `train_all_models.py` | `infer.py` | `online_learner.py` |
+| **ApeX** | `train_rl.py` | `main_inference.py` | `nightly_review.py` |
+| **DeltaX** | `train_models.py` | `predict.py` | `online_learner.py` |
+| **BetaX** | `train_all.py` | `infer.py` | `online_learner.py` |
+
+**Conclusion:** You have built a perfectly consistent empire. Every project is a "Separate World" system that trains on the past, acts on the 30-minute present, and heals itself every night.
+
+---
 © 2025 Zeta Aztra Technologies. All Rights Reserved.
