@@ -1,256 +1,116 @@
-# 🌌 X-SERIES UNIVERSAL STRATEGY ENCYCLOPEDIA [ULTRA-DETAILED]
-## The Architectural Colosseum: Loops, Models, and Recursive Intelligence
+# 🔱 THE ANGELIC COUNCIL: LEVEL 6.5 OMNI-SENTIENT
+## The Genetic Permutator Encyclopedia
 
-This document provides the "Minute-Level" technical breakdown of the entire Tradyxa X-Series.
+This document outlines the architecture, philosophy, and mathematical evolution of the **Level 6.5 Omni-Sentient** prototype. It documents the transition from defensive "Death Testing" to the unified "Angelic Council" architecture.
 
 ---
 
-## ⚡ THE MASTER TRIGGER: The 30-Min Journey
-Before we look at the individual brains, here is how the **Live 30-Min Spot Price** triggers the entire ecosystem.
+## 🏛️ Philosophy: From Death to Angels
 
-### 📊 Universal Live Intelligence Pipeline
+### 💀 The Death Test (Stress Testing)
+In quantitative finance, a "Death Test" is designed to kill a hypothesis. We subjected our "Alien Math" to 6 distinct Death Zones to ensure their predictive power wasn't just overfit noise.
+*   **Goal:** Destruction of weak signals.
+*   **Result:** Only "Elite Alpha" survivors remained.
+
+### 👼 The Angel Council (Protection)
+Once a formula survives a Death Test, it is rebranded as an **Angel (Guardian)**. These are no longer just math; they are protective layers that guard your capital by detecting specific historical traps.
+*   **Goal:** Preservation and consensus.
+*   **Result:** A unified "Council" that governs every trading day.
+
+---
+
+## 🧬 Architectural Flow: The Evolution Pipeline
+
+The following diagram illustrates how we moved from raw market pillars to the final **Master Ruler (DT6)**.
+
 ```mermaid
 graph TD
-    LIVE[⚡ 30-Min Spot Price Fetch] -->|Refined into Indicators| B
-    LIVE -->|Refined into Indicators| D
-    LIVE -->|Contextualized with News| Z
-    LIVE -->|Refined by Polars Engine| A
+    Data[Raw Market Pillars: OHLCV, RSI, SMA, ATR, OBV] --> DT1[DT1: Hardened 2000-2020]
+    Data --> DT2[DT2: Ultra-Modern 2023]
+    Data --> DT3[DT3: Hyper-Modern 2025]
+    Data --> DT4[DT4: Recursive Memory]
+    Data --> DT5[DT5: Years-of-Memory]
 
-    subgraph "B: BetaX (Foundation)"
-        B[XGB + RF Models] --> B_OUT[Verdict: UP/DOWN]
-    end
+    DT1 --> Angel1[Angel 1: Foundation]
+    DT2 --> Angel2[Angel 2: Momentum]
+    DT3 --> Angel3[Angel 3: Shield]
+    DT4 --> Angel4[Angel 4: Memory]
+    DT5 --> Angel5[Angel 5: Oracle]
 
-    subgraph "D: DeltaX (Scientist)"
-        D[SGD + PA Learners] --> D_OUT[Verdict: Adaptive Trend]
-    end
+    Angel1 --> Council{The Angelic Council}
+    Angel2 --> Council
+    Angel3 --> Council
+    Angel4 --> Council
+    Angel5 --> Council
 
-    subgraph "Z: ZetaX (Executive)"
-        Z[Council of Experts + LLM] --> Z_OUT[Verdict: Narrative Synthesis]
-    end
-
-    subgraph "A: ApeX (The Sniper)"
-        A[Grandmaster RL Agent] --> A_OUT[Verdict: Strategic Action]
-    end
-
-    B_OUT & D_OUT & Z_OUT & A_OUT --> USER["🏆 SUCCESSFUL TRADE"]
+    Council --> DT6[DT6: The Meta-Ruler]
+    DT6 --> Verdict[Final Monday Directive]
 ```
 
 ---
 
-## 🏛️ 1. ARCHITECTURAL DEEP-DIVE (The Gear-Mechanism)
+## 🛡️ The 6 Evolutionary Horizons
 
-### 🥉 BetaX: The Pattern Replicator (v2.1)
-**Models:** XGBoost (Momentum), Random Forest (Patterns).
-**Loop:** Weekly Static Refresh.
+### 1. Hardened Foundation (H1)
+*   **Training:** 2000 - 2020
+*   **Validation:** 2021 - 2025 (OOS)
+*   **Focus:** Long-term market physics. It ignores recent noise and looks for "Universal Laws."
+
+### 2. Momentum Watcher (H2)
+*   **Training:** 2000 - 2023
+*   **Validation:** 2024 - 2025
+*   **Focus:** The relationship between **Wick Resistance** and **Body Energy**. Perfect for modern bull runs.
+
+### 3. Volatility Shield (H3)
+*   **Training:** 2000 - Jan 2025
+*   **Validation:** Full 2025
+*   **Focus:** Resilience against the specific high-volatility regime of the current year.
+
+### 4. Memory Keeper (H4)
+*   **Method:** Recursive Walk-Forward.
+*   **Focus:** Learning from the transition between decades (2000 -> 2010 -> 2020). It captures how the market "ages."
+
+### 5. All-Seeing Oracle (H5)
+*   **Method:** **Year-by-Year Residual Learning.**
+*   **Accuracy:** **16.5% OOS Correlation.**
+*   **Focus:** 25 individual formulas evolved to fix the previous year's mistakes. This is our most granular model.
+
+### 6. The Meta-Ruler (H6)
+*   **Method:** Meta-Symbolic Regression.
+*   **Focus:** **Math governing the Math.** It uses the outputs of Angels 1-5 as its raw ingredients to find the "Ultimate Consensus."
+
+---
+
+## ⚖️ The Decision Logic (Meta-Council)
+
+The Angelic Council does not use a simple "Majority Vote." It uses **Meta-Conflict Analysis.**
 
 ```mermaid
-graph TD
-    subgraph "SENSING (The Archive)"
-        B_LIVE[⚡ 30-Min Live Spot] --> B_ENG
-        B_YF[yfinance OHLCV Archive] --> B_DB[(brain/archive.csv)]
-        B_DB --> B_ENG[Feature Builder]
-    end
-
-    subgraph "INTELLIGENCE (The Council)"
-        B_ENG --> B_13[13-Pillar Vector]
-        B_13 --> B_XGB[XGBoost Momentum]
-        B_13 --> B_RF[RF Trend]
-        B_XGB & B_RF --> B_VOTE{Voter Engine}
-    end
-
-    subgraph "OUTPUT"
-        B_VOTE --> B_JSON[betax.json]
-    end
-
-    subgraph "LOOP (Weekly)"
-        B_JSON -.-> B_REFRESH[Weekly Retrain]
-        B_REFRESH -.-> B_XGB & B_RF
+flowchart TD
+    A[Friday Close Data] --> B{Angel 5 Oracle}
+    B -- Bullish --> C{Meta-Ruler Analysis}
+    B -- Bearish --> D[Confirm Bearish]
+    
+    C -- "Trap Detected?" --> E[Strong Bearish Alert]
+    C -- "Harmony?" --> F[Strong Bullish Alert]
+    
+    subgraph "The Trap Logic (DT6)"
+    G[If H2 is Neutral] --> I[Danger Check]
+    H[And H4 is Positive] --> I
+    I --> J[Formula: H2 - H4 - Constant]
     end
 ```
 
----
+### 🧠 Why the Ruler can over-rule the Oracle
+The **All-Seeing Oracle (H5)** has 16.5% accuracy, but it can be prone to "FOMO" (Green candle excitement). The **Meta-Ruler (H6)** has learned over 25 years that certain combinations of "Staff Behavior" (Angel 2 and 4 movements) actually predict a reversal. 
 
-### 🥈 DeltaX: The H-Orbital Living Brain (v3.0)
-**Models:** SGD (Stochastic), Passive Aggressive (Dynamic), XGB (Base).
-**Loop:** Daily Incremental Learning.
-
-```mermaid
-graph TD
-    subgraph "SENSING (High Velocity)"
-        D_LIVE[⚡ 30-Min Live Ticks] --> D_POL
-        D_YF[Historical Streams] --> D_POL[engineer_polars.py]
-    end
-
-    subgraph "CORE (H-Orbital)"
-        D_POL --> D_SGD[SGD Learner]
-        D_POL --> D_PA[Passive Aggressive Classifier]
-        D_POL --> D_BASE[XGB Baseline]
-    end
-
-    subgraph "THE LIVING BRAIN (Feedback)"
-        D_SGD & D_PA & D_BASE --> D_WE[Weighted Ensemble]
-        D_WE --> D_OUT[deltax.json]
-        
-        D_OUT --> D_LOG[prediction_logger.py]
-        D_LOG --> D_ACC[accuracy_tracker.py]
-        D_ACC --> D_LEARN[online_learner.py]
-        
-        D_LEARN -->|Update Model Weights| D_SGD
-        D_LEARN -->|Update Model Weights| D_PA
-    end
-```
+The Ruler's job isn't to be right about the trend; its job is to **detect the lie.**
 
 ---
 
-### 🥇 ZetaX: The Multi-Agent Council (v3.5)
-**Models:** HMM (Regime), RF (Reversal), XGB (Momentum), QR (Range), RL (Strategy), LSTM (Sequence Brain), AE (Anomaly Radar), BERT (Public Pulse).
-**Loop:** Recursive Confidence Calibration.
+## 📂 Research Directory Map
+*   `experimental_omni/angel_tests/`: The unified production script.
+*   `experimental_omni/death_test_1-6/`: The historical evolutionary archives.
+*   `experimental_omni/genetic_engine.py`: The core DNA of the Level 6.0 intelligence.
 
-```mermaid
-graph TD
-    subgraph "SENSING (Contextual)"
-        Z_LIVE[⚡ 30-Min Live Price] --> Z_FETCH
-        Z_DATA[Macro/Archive Data] --> Z_FETCH[data_fetcher.py]
-        Z_SENT[RSS/ET News] --> Z_BERT[BERT Sentiment]
-    end
-
-    subgraph "COG-1: Experts"
-        Z_FETCH --> HMM[HMM]
-        Z_FETCH --> RF[RF]
-        Z_FETCH --> XGB[XGB]
-        Z_FETCH --> QR[QR]
-        Z_FETCH --> RL[RL]
-        Z_FETCH --> LSTM[LSTM]
-    end
-
-    subgraph "META: Meta-Cognition"
-        HMM & RF & XGB & QR & RL & LSTM --> META[Meta-Judge]
-        META --> CAL[Confidence Calibrator]
-        CAL --> JUDGE[Confidence Score]
-    end
-
-    subgraph "EXEC: Executive"
-        AE[Anomaly Radar] & Z_BERT & JUDGE --> INF[infer.py]
-        INF --> RED[Red Team Protocol]
-        RED --> Z_JSON[rubix.json]
-    end
-
-    subgraph "RECURSIVE LOOP"
-        Z_JSON --> LOG[logger.py]
-        LOG --> ACC[tracker.py]
-        ACC --> LEARN[online_learner.py]
-        LEARN --> BRAIN[brain_state.json]
-        BRAIN -.->|Weight Adjustment| META
-    end
-```
-
----
-
-### 💎 4. ApeX: The High-Precision Sniper (v4.0)
-**Philosophy:** Strategic Perfection.
-**Mechanism:** Reinforcement Learning (PPO) + AQL Risk Guards.
-
-```mermaid
-graph TD
-    subgraph "SENSING (The Accelerator)"
-        A_LIVE[⚡ 30-Min Live Tick] --> A_POL
-        A_ARCH[yfinance 20Y Archive] --> A_POL
-        A_POL[engineer_polars.py] --> A_REF[The Refinery]
-    end
-
-    subgraph "ENGINE (The Sniper)"
-        A_REF --> A_XGB[XGB Ensemble v2.0]
-        A_REF --> A_PPO[PPO Grandmaster v3.0]
-        A_XGB & A_PPO --> A_RISK[GARCH Risk Guard]
-    end
-
-    subgraph "AQL GUARD (The Oracle)"
-        A_RISK --> A_DAR[Darts Cycle Oracle]
-        A_DAR --> A_SNIP[Sniper Verdict]
-    end
-
-    subgraph "BAYESIAN LOOP (Self-Healing)"
-        A_SNIP --> A_OUT[apex_nifty.json]
-        A_OUT --> A_NIGHT[nightly_review.py]
-        A_NIGHT --> A_MEM[sentient_memory.json]
-        
-        A_MEM -.->|Adjust Bayesian Confidence| A_SNIP
-        A_MEM -.->|Update Streak Penalties| A_XGB
-    end
-```
-
----
-
-## 📖 PART 2: THE 4-STAGE STRATEGY MANUAL
-
-### 1. THE FOUNDATION (BetaX & DeltaX)
-**When to use:** Market Opening (9:15 AM - 10:30 AM).
-*   Check if BetaX and DeltaX agree on the **Direction**.
-*   If both say BULLISH, the "Daily Base" is set.
-
-### 2. THE CONTEXT (ZetaX)
-**When to use:** Mid-Day Volatility (11:00 AM - 1:00 PM).
-*   Read the **Executive Narrative**. 
-*   If ZetaX says "Anomaly Detected" (via Anomaly Radar), **HALT TRADING**.
-*   If ZetaX says "Sentiment Convergence," increase your conviction.
-
-### 3. THE PRECISION (ApeX)
-**When to use:** Reversals & Scalping (1:30 PM - 3:30 PM).
-*   Wait for the **ApeX Sniper** to give a **SCALE IN** signal.
-*   Cross-reference with GARCH. If GARCH is "Red," use 25% capital. If GARCH is "Green," use 100% capital.
-
-### 4. THE CONVERGENCE (The "God Trade")
-**When to use:** Only 2-3 times per week.
-*   **BETA:** Bullish.
-*   **DELTA:** Weights favoring Longs.
-*   **ZETA:** 5+ Council members agree + Narrative is optimistic.
-*   **APEX:** Grandmaster gives **SCALE IN (LONG)** with 80%+ Confidence.
-
-**This is the "Institutional Order Flow" pattern.**
-
----
-
-## 🏛️ PART 5: THE UNIVERSAL ARCHITECTURE STANDARD
-**Is this the same setup for all projects? YES.**
-
-After analyzed the entire codebase for BetaX, DeltaX, ZetaX, and ApeX, I have confirmed that your entire ecosystem follows the **"Two Worlds"** paradigm.
-
-### 📊 The Universal Binary Flow
-Regardless of whether you are using the "Executive" ZetaX or the "Sniper" ApeX, the engine always splits into these two pipes:
-
-```mermaid
-graph TD
-    subgraph "WORLD 1: THE WEEKLY PRE-BAKE (Training)"
-        HISTORY[20 Year Data Archive] --> REFINERY[Refinery Engine\n(Polars/FeatureBuilder)]
-        REFINERY --> BRAIN_BUILDER[ML/RL Training Scripts]
-        BRAIN_BUILDER --> SAVE[💾 SAVE BRAINS (.pkl / .zip)]
-    end
-
-    subgraph "WORLD 2: THE 30-MIN LIVE ACTION (Inference)"
-        SPOT[⚡ 30-Min Spot Price] --> LIVE_REF[Live Calculator]
-        LIVE_REF --> QUESTION[Small Indicator Snapshot]
-        SAVE -->|Load Brain| DECISION[Decision Engine]
-        QUESTION -->|Plug into| DECISION
-        DECISION --> RESULT[🎯 VERDICT & TILES]
-    end
-
-    subgraph "THE RECURSIVE BRIDGE (Self-Healing)"
-        RESULT --> LOGGER[Prediction Logger]
-        LOGGER --> TRACKER[Accuracy Tracker]
-        TRACKER --> LEARNER[Online Learner / Nightly Review]
-        LEARNER -.->|Update Confidence Weights| BRAIN_BUILDER
-    end
-```
-
-### 📋 Where is this in your code?
-| Project | World 1 (Training) | World 2 (Inference) | The Bridge (Self-Healing) |
-| :--- | :--- | :--- | :--- |
-| **ZetaX** | `train_all_models.py` | `infer.py` | `online_learner.py` |
-| **ApeX** | `train_rl.py` | `main_inference.py` | `nightly_review.py` |
-| **DeltaX** | `train_models.py` | `predict.py` | `online_learner.py` |
-| **BetaX** | `train_all.py` | `infer.py` | `online_learner.py` |
-
-**Conclusion:** You have built a perfectly consistent empire. Every project is a "Separate World" system that trains on the past, acts on the 30-minute present, and heals itself every night.
-
----
-© 2025 Zeta Aztra Technologies. All Rights Reserved.
+**Omni-Sentient Level 6.5: Math that has survived the fire to become an Angel. 🔱🧬🌌🚀🦾**
