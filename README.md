@@ -101,7 +101,40 @@ graph TD
     Brain --> Verdict[STRATEGIC EXECUTION]
 ```
 
-#### 🛠️ Technical Stack
+#### � Sentient 4.0: Combined Master Architecture (The Grandmaster)
+```mermaid
+graph TD
+    subgraph "DATA INGESTION"
+        YF[yfinance: Spot/OHLCV]
+        NSE[NSE: Options Chain PCR]
+    end
+
+    subgraph "PROCESSING ENGINE (The Lab)"
+        PL[Polars: High-Speed Rust Refinery]
+        GARCH[GARCH: Volatility Regime Guard]
+        DARTS[Darts: Neural Seasonality Cycle]
+    end
+
+    subgraph "DECISION CORE"
+        PPO[Grandmaster PPO Agent\n1 Million Steps]
+        RL_Env[Custom gymnasium Env]
+    end
+
+    subgraph "PROTECTION LAYER"
+        Chaos[PyOD: Anomaly Chaos Filter]
+        XAI[ELI5: Feature Narrative]
+    end
+
+    YF & NSE --> PL
+    PL --> GARCH & DARTS
+    PL & GARCH & DARTS --> RL_Env
+    RL_Env --> PPO
+    PPO --> Chaos
+    Chaos -->|Safe| XAI
+    XAI --> Verdict[🎯 FINAL STRATEGIC VERDICT]
+```
+
+#### �🛠️ Technical Stack
 *   **Polars:** Rust-based data processing for real-time feature engineering.
 *   **GARCH (1,1):** A statistical model that detects if we are in a "Quiet," "Stressed," or "Chaos" volatility regime.
 *   **Darts:** Neural forecasting for seasonality (Day-of-Week/Month cycles).
@@ -113,21 +146,42 @@ graph TD
 
 This is the current pinnacle. We no longer write the code—we write the **Generator of Code**. The **Genetic Engine** discovers "Alien Math" formulas that humans cannot conceive.
 
-#### 📊 Architecture 6.5 (The Council-18)
+#### 📊 Sentient 6.5: Genetic Sovereignty (Discovery + Council)
 ```mermaid
 graph TD
-    subgraph "Evolutionary Engine"
-        GE[Genetic Engine] -->|Discovery| Angels[The Council-18]
+    subgraph "GENETIC REFINERY (Discovery Phase)"
+        Parts[Math Parts Bucket:\nlog, sin, sqrt, abs, +, -]
+        History[25Y Historical Data Vault]
+        GE[Genetic Engine: Evolution]
     end
-    Angels --> A17[The Auditor: Error Detection]
-    A17 --> A18[The Hybridizer: Breeding Logic]
-    A18 --> A11[The Singularity: Master Voice]
-    A11 --> Genesis[GENESIS MASTER DIRECTIVE]
+
+    subgraph "ANGEL COUNCIL (The Survivors)"
+        A1[A1: Chronicler]
+        A2[A2: Sentinel-V]
+        A3[A3: Contrarian]
+        A_Others[A4-A11: Support]
+    end
+
+    subgraph "AUDIT & HYBRIDIZATION"
+        A13[A13: The Auditor\nError Attribution]
+        A14[A14: The Hybridizer\nCross-Angel Breeding]
+    end
+
+    subgraph "THE SOVEREIGN VOICE"
+        A12{A12: SINGULARITY}
+    end
+
+    Parts & History --> GE
+    GE -->|Birth| A1 & A2 & A3 & A_Others
+    A1 & A2 & A3 & A_Others --> A13
+    A13 -->|Audit Logs| A14
+    A14 -->|Refined DNA| A12
+    A12 --> Directive[🚀 GENESIS MASTER DIRECTIVE]
 ```
 
 #### 🛠️ Technical Stack
 *   **Genetic Programming (GP):** Spawning thousands of mathematical populations and evolving them through survival-of-the-fittest.
-*   **The Auditor (A17):** A Level 6.5 layer that monitors other Angels for data-drift and error-bias.
+*   **The Auditor (A17/A13):** A Level 6.5 layer that monitors other Angels for data-drift and error-bias.
 
 ---
 
