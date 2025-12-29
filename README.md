@@ -1,52 +1,163 @@
-# 📑 APEX ENGINE: INTEGRITY AUDIT & APPENDIX
+# 🏛️ CROSS-PROJECT ARCHITECTURE COMPARISON
+## DeltaX vs ZetaX vs ApeX: Full Pipeline Analysis
 
-This document serves as the final technical audit of the Tradyxa-ApeX project, highlighting the gaps between documentation and production code, and providing a comprehensive appendix of system components.
+This document provides a side-by-side comparison of the data flow, training loops, and self-learning mechanisms for the three Tradyxa projects.
 
 ---
 
-## 🔍 1. INTEGRITY AUDIT: DOCUMENTATION VS. CODE
-Our audit reveals several architectural "Discrepancies" where the high-level documentation (Encyclopedias/Blueprints) describes features that are currently skeletal or placeholder-based in the Python engine.
+## ✅ YOUR UNDERSTANDING IS CORRECT:
+**ApeX has 3 distinct pipelines:**
+1.  **ML Training Pipeline:** XGBoost, LightGBM, Random Forest.
+2.  **PPO Grandmaster Pipeline:** Reinforcement Learning (1M Steps).
+3.  **Genetic Engine Pipeline:** Alien Math Discovery (Experimental).
 
-| Feature Area | Documentation Claim | Actual Implementation Status | Impact |
+---
+
+## 📊 DELTAX ARCHITECTURE (Living Brain Active)
+
+```mermaid
+graph TD
+    subgraph "1. DATA FETCH"
+        YF_D[yfinance: NIFTY/BANKNIFTY]
+    end
+
+    subgraph "2. INFERENCE (predict.py)"
+        ML_D[ML Ensemble: XGB/LGB/RF]
+        TILES_D[Tile Calculators: PCR, GEX, etc.]
+        JSON_D[auztinx_data.json]
+    end
+
+    subgraph "3. LOGGING (prediction_logger.py)"
+        CSV_D[predictions.csv]
+    end
+
+    subgraph "4. VERIFICATION (accuracy_tracker.py)"
+        VERIFY_D{Next Day Close?}
+    end
+
+    subgraph "5. SELF-LEARNING (online_learner.py)"
+        BRAIN_D[brain_state.json]
+        ADAPT_D[Adjust Model Weights]
+    end
+
+    YF_D --> ML_D & TILES_D
+    ML_D & TILES_D --> JSON_D
+    JSON_D --> CSV_D
+    CSV_D --> VERIFY_D
+    VERIFY_D -->|Correct| BRAIN_D
+    VERIFY_D -->|Wrong| ADAPT_D
+    ADAPT_D --> BRAIN_D
+    BRAIN_D -.->|Next Run| ML_D
+```
+
+---
+
+## 📊 ZETAX ARCHITECTURE (Similar to DeltaX)
+
+```mermaid
+graph TD
+    subgraph "1. DATA FETCH"
+        YF_Z[yfinance: NIFTY/BANKNIFTY]
+        NSE_Z[NSE Scraper: Options Chain]
+    end
+
+    subgraph "2. INFERENCE (rubix_inference.py)"
+        RUBIX_Z[RubiX Engine: Bayesian + Kalman]
+        ML_Z[ML Ensemble]
+        SENTIENT_Z[Sentient Pipeline v2.0]
+        JSON_Z[rubix_data.json]
+    end
+
+    subgraph "3. LOGGING"
+        CSV_Z[predictions.csv]
+    end
+
+    subgraph "4. VERIFICATION"
+        VERIFY_Z{Next Day Close?}
+    end
+
+    subgraph "5. SELF-LEARNING"
+        BRAIN_Z[brain_state.json]
+        ADAPT_Z[Adjust Weights]
+    end
+
+    YF_Z & NSE_Z --> RUBIX_Z & ML_Z
+    RUBIX_Z & ML_Z --> SENTIENT_Z --> JSON_Z
+    JSON_Z --> CSV_Z --> VERIFY_Z
+    VERIFY_Z --> BRAIN_Z
+    BRAIN_Z -.->|Next Run| SENTIENT_Z
+```
+
+---
+
+## 📊 APEX ARCHITECTURE (Living Brain MISSING)
+
+```mermaid
+graph TD
+    subgraph "1. DATA FETCH"
+        YF_A[yfinance: NIFTY/BANKNIFTY]
+        NSE_A[NSE Scraper: Options Chain]
+    end
+
+    subgraph "2. ML TRAINING PIPELINE (train_models.py)"
+        POLARS_A[Polars: Feature Refinery]
+        XGB_A[XGBoost]
+        LGB_A[LightGBM]
+        RF_A[Random Forest]
+        PKL_A[.pkl Models]
+    end
+
+    subgraph "3. PPO GRANDMASTER PIPELINE (train_rl.py)"
+        GYM_A[Gymnasium Env]
+        PPO_A[PPO Agent: 1M Steps]
+        ZIP_A[.zip Brain]
+    end
+
+    subgraph "4. GENETIC ENGINE PIPELINE (genetic_engine.py) [LAB ONLY]"
+        PARTS_A[Math Parts Bucket]
+        EVOLVE_A[Genetic Evolution]
+        ANGELS_A[Angel Council A1-A12]
+    end
+
+    subgraph "5. LIVE INFERENCE (main_inference.py)"
+        INF_A[Run ML + PPO]
+        JSON_A[apex_nifty.json]
+    end
+
+    subgraph "6. SELF-LEARNING [MISSING]"
+        MISS_A["❌ No prediction_logger.py"]
+        MISS_B["❌ No accuracy_tracker.py"]
+        MISS_C["❌ No online_learner.py"]
+    end
+
+    YF_A --> POLARS_A --> XGB_A & LGB_A & RF_A --> PKL_A
+    POLARS_A --> GYM_A --> PPO_A --> ZIP_A
+    POLARS_A -.-> PARTS_A --> EVOLVE_A --> ANGELS_A
+
+    PKL_A & ZIP_A --> INF_A --> JSON_A
+    JSON_A -.->|NO FEEDBACK LOOP| MISS_A & MISS_B & MISS_C
+```
+
+---
+
+## 🔑 KEY DIFFERENCES
+
+| Feature | DeltaX | ZetaX | ApeX |
 | :--- | :--- | :--- | :--- |
-| **Options PCR** | Live NSE Put-Call Ratio integration. | `PillarEngine` accepts options data but doesn't calculate PCR. Returns static status. | **HIGH**: Sentiment weighting is lower than advertised. |
-| **GARCH Guard** | Statistical Volatility Regime detection. | `VolatilityGuard.py` uses simplified rolling standard deviation math. | **MEDIUM**: Risk detection is functional but less "scientific." |
-| **Darts Oracle** | Neural Seasonality & Cycle detection. | `CyclicalOracle.py` uses basic SMA crossovers (20/50). | **MEDIUM**: Seasonal cycles are trend-following, not predictive. |
-| **Sentiment** | Multimodal global news integration. | **NON-EXISTENT**. No sentiment scripts found in `engine`. | **HIHG**: Missing a major advertised data dimension. |
-| **Intermarket** | Real-time global market correlation. | `_pillar_intermarket` returns a static `Bullish` status. | **LOW**: Global bias is fetched but not integrated into pillars. |
-| **Sovereign 6.5** | Integrated Angel Council (A1-A18). | **SHADOW MODE**. Currently a discovery tool in `experimental_omni`, not wired to live UI. | **CRITICAL**: The Singularity is currently a "Lab Entity." |
+| **ML Ensemble** | ✅ XGB/LGB/RF | ✅ XGB/LGB/RF | ✅ XGB/LGB/RF |
+| **PPO Grandmaster** | ❌ | ❌ | ✅ 1M Steps |
+| **Genetic Engine** | ❌ | ❌ | ✅ (Lab Only) |
+| **Living Brain (Self-Learning)** | ✅ | ✅ | ❌ MISSING |
+| **Sentient Pipeline** | v2.0 | v2.0 | v4.0 (Partial) |
 
 ---
 
-## 📂 2. TECHNICAL APPENDIX: FILE REGISTRY
-The following is the definitive map of the ApeX system components as they exist *physically* on the drive.
+## 🚀 RECOMMENDATION FOR APEX
 
-### 🗄️ A. Core Engine (`engine/`)
-*   [main_inference.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/engine/main_inference.py): The central heart that orchestrates data fetch, feature engineering, and verdict generation.
-*   [sentient/brain.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/engine/sentient/brain.py): The logic gate that decides the final Bullish/Bearish direction.
-*   [defense/chaos_filter.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/engine/defense/chaos_filter.py): Anomaly detection to protect against market flash-crashes.
+To complete ApeX Sentient 6.0, migrate the "Living Brain" loop from DeltaX:
+1.  `prediction_logger.py` → Log `apex_nifty.json` to CSV.
+2.  `accuracy_tracker.py` → Verify next-day outcomes.
+3.  `online_learner.py` → Adapt weights for ML, PPO, and Angels.
 
-### 📊 B. Feature Laboratory (`engine/features/`)
-*   [calculators.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/engine/features/calculators.py): Implementation of the 13 Pillars (using skeletal math for now).
-*   [engineer_polars.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/engine/features/engineer_polars.py): The high-speed Rust-based refinery for historical training.
-
-### 🧬 C. The Sovereign Lab (`experimental_omni/`)
-*   [genetic_engine.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/experimental_omni/genetic_engine.py): The engine that births "Alien Math" formulas.
-*   [angel_council_genesis.py](file:///c:/Users/hp/Desktop/Compare/Tradyxa-ApeX/experimental_omni/angel_council_genesis.py): The birthing script for the modern Angel Council.
-
-### 🧠 D. Model Vault (`engine/models/`)
-*   `rl_ppo_nifty.zip`: The pre-trained Grandmaster PPO brain (1M Steps).
-*   `NIFTY_xgb.pkl` / `lgb.pkl` / `rf.pkl`: The ensemble probability models.
-
----
-
-## 🏛️ 3. RECOMMENDATIONS FOR "CODE-DOC ALIGNMENT"
-To move from a "Placeholder" state to the "Encyclopedia" state, the following upgrades are required:
-1.  **PCR Implementation**: Update `calculators.py` to actually parse the `df_options` JSON for NIFTY.
-2.  **GARCH Upgrade**: Install the `arch` library and implement the GARCH(1,1) formula in `volatility_guard.py`.
-3.  **Sentiment Bridge**: Create a script to scrape news/social headlines and feed them into the `PillarEngine`.
-4.  **A11/A12 Wiring**: Modify `main_inference.py` to import and execute the winning formulas from the Sovereign Layer.
-
----
-© 2025 Zeta Aztra Technologies.  
-**Philosophy:** Pure Mathematical Transparency.
+🔱🧬🌌🚀🦾
+© 2025 Zeta Aztra Technologies.
