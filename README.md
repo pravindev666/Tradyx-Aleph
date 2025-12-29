@@ -17,8 +17,9 @@ This document provides a side-by-side comparison of the data flow, training loop
 
 ```mermaid
 graph TD
-    subgraph "1. DATA FETCH"
-        YF_D[yfinance: NIFTY/BANKNIFTY]
+    subgraph "1. DATA FETCH (Every 30 Mins)"
+        YF_D[yfinance: 30-Min Spot Price]
+        HIST_D[Historical Archive: archive_nifty.csv]
     end
 
     subgraph "2. INFERENCE (predict.py)"
@@ -31,16 +32,17 @@ graph TD
         CSV_D[predictions.csv]
     end
 
-    subgraph "4. VERIFICATION (accuracy_tracker.py)"
+    subgraph "4. VERIFICATION (accuracy_tracker.py - Daily)"
         VERIFY_D{Next Day Close?}
     end
 
-    subgraph "5. SELF-LEARNING (online_learner.py)"
+    subgraph "5. SELF-LEARNING (online_learner.py - Daily)"
         BRAIN_D[brain_state.json]
         ADAPT_D[Adjust Model Weights]
     end
 
-    YF_D --> ML_D & TILES_D
+    YF_D -->|Live Tick| ML_D & TILES_D
+    HIST_D -.->|Training Context| ML_D
     ML_D & TILES_D --> JSON_D
     JSON_D --> CSV_D
     CSV_D --> VERIFY_D
@@ -56,9 +58,10 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph "1. DATA FETCH"
-        YF_Z[yfinance: NIFTY/BANKNIFTY]
+    subgraph "1. DATA FETCH (Every 30 Mins)"
+        YF_Z[yfinance: 30-Min Spot Price]
         NSE_Z[NSE Scraper: Options Chain]
+        HIST_Z[Historical Archive]
     end
 
     subgraph "2. INFERENCE (rubix_inference.py)"
@@ -72,16 +75,18 @@ graph TD
         CSV_Z[predictions.csv]
     end
 
-    subgraph "4. VERIFICATION"
+    subgraph "4. VERIFICATION (Daily)"
         VERIFY_Z{Next Day Close?}
     end
 
-    subgraph "5. SELF-LEARNING"
+    subgraph "5. SELF-LEARNING (Daily)"
         BRAIN_Z[brain_state.json]
         ADAPT_Z[Adjust Weights]
     end
 
-    YF_Z & NSE_Z --> RUBIX_Z & ML_Z
+    YF_Z -->|Live Tick| RUBIX_Z & ML_Z
+    NSE_Z -->|Options Data| RUBIX_Z
+    HIST_Z -.->|Training Context| ML_Z
     RUBIX_Z & ML_Z --> SENTIENT_Z --> JSON_Z
     JSON_Z --> CSV_Z --> VERIFY_Z
     VERIFY_Z --> BRAIN_Z
@@ -94,12 +99,13 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph "1. DATA FETCH"
-        YF_A[yfinance: NIFTY/BANKNIFTY]
+    subgraph "1. DATA FETCH (Every 30 Mins)"
+        YF_A[yfinance: 30-Min Spot Price]
         NSE_A[NSE Scraper: Options Chain]
+        HIST_A[Historical Archive: archive_nifty.csv]
     end
 
-    subgraph "2. ML TRAINING PIPELINE (train_models.py)"
+    subgraph "2. ML TRAINING PIPELINE (Weekly - train_models.py)"
         POLARS_A[Polars: Feature Refinery]
         XGB_A[XGBoost]
         LGB_A[LightGBM]
@@ -107,19 +113,19 @@ graph TD
         PKL_A[.pkl Models]
     end
 
-    subgraph "3. PPO GRANDMASTER PIPELINE (train_rl.py)"
+    subgraph "3. PPO GRANDMASTER PIPELINE (Weekly - train_rl.py)"
         GYM_A[Gymnasium Env]
         PPO_A[PPO Agent: 1M Steps]
         ZIP_A[.zip Brain]
     end
 
-    subgraph "4. GENETIC ENGINE PIPELINE (genetic_engine.py) [LAB ONLY]"
+    subgraph "4. GENETIC ENGINE PIPELINE (Lab Only)"
         PARTS_A[Math Parts Bucket]
         EVOLVE_A[Genetic Evolution]
         ANGELS_A[Angel Council A1-A12]
     end
 
-    subgraph "5. LIVE INFERENCE (main_inference.py)"
+    subgraph "5. LIVE INFERENCE (Every 30 Mins - main_inference.py)"
         INF_A[Run ML + PPO]
         JSON_A[apex_nifty.json]
     end
@@ -130,10 +136,11 @@ graph TD
         MISS_C["❌ No online_learner.py"]
     end
 
-    YF_A --> POLARS_A --> XGB_A & LGB_A & RF_A --> PKL_A
+    HIST_A --> POLARS_A --> XGB_A & LGB_A & RF_A --> PKL_A
     POLARS_A --> GYM_A --> PPO_A --> ZIP_A
     POLARS_A -.-> PARTS_A --> EVOLVE_A --> ANGELS_A
 
+    YF_A -->|Live Tick| INF_A
     PKL_A & ZIP_A --> INF_A --> JSON_A
     JSON_A -.->|NO FEEDBACK LOOP| MISS_A & MISS_B & MISS_C
 ```
