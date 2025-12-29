@@ -76,7 +76,6 @@ graph TD
     subgraph UI [6. User Interface]
         Abstain -->|Daily Verdict| Tile1[Tile: TOMORROW'S DIRECTION]
         Abstain -->|Momentum Verdict| Tile2[Tile: LIVE MOMENTUM]
-        Sig_PPO -->|Strategy| Tile3[Tile: GRANDMASTER]
         
         %% Logging Loop
         Tile1 & Tile2 -->|Log Result| Logs
