@@ -39,8 +39,8 @@ graph TD
         end
         B -->|Isolated T-1 Stream| M
         E -->|Lab Seed Data| O
-        N -.- x|BLOCKED| P
-        Q -.- x|BLOCKED| P
+        N -. BLOCKED .-> P
+        Q -. BLOCKED .-> P
     end
 
     subgraph "5. TELEMETRY & FEEDBACK (The Loop)"
