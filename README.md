@@ -1,106 +1,106 @@
-The system generates market beliefs using frozen Supervised Learning models, enforces restraint via **Meta-Cognitive Self-Correction**, and evaluates Reinforcement Learning (RL) policies strictly in **Shadow Mode**. The primary innovation is **Strategic Isolation**—the absolute decoupling of macro-trend beliefs from micro-momentum noise to ensure architectural stability.
+# 🗺️ ApeX v7.0: Comprehensive Codebase Map
 
-> [!NOTE]
-> **Versioning Note**: "ApeX v7.0" refers to the holistic platform release. "Sentient Brain 4.0" refers to the internal meta-cognition module handled independently from the production baseline.
-
----
-
-## 2. Sentient Evolution Timeline
-The trajectory of ApeX reflects a transition from "Guesswork" to "Sovereignty."
-
-| Version | Core Philosophy | Machine Learning Role | Control Logic |
-| :--- | :--- | :--- | :--- |
-| **v2.0 - v4.0** | Pattern Recognition | Online Learning (Auto-Retraining) | Symmetric Ensemble Voting |
-| **v5.0 - v6.0** | Experimental RL Path | RL-Led Execution (Live Strategy) | Hybrid ML/RL Authority |
-| **v7.0 (Current)**| **Strategic Isolation** | Frozen Weights & Drift Monitoring | **Hierarchical Belief Suppression** |
+This document provides a high-fidelity mapping of the **Tradyxa-ApeX v7.0** architecture, tracing the lifecycle of a single market verdict from raw data ingestion to telemetry logging.
 
 ---
 
-## 3. Architectural Layers: The v7.0 Stack
-
-### A. The Oracle Layer (Supervised Belief)
-- **Engine**: Static Ensemble (XGBoost, LightGBM, Random Forest).
-- **Weights**: **Frozen**. Performance is managed via confidence suppression rather than parameter updates.
-- **Horizon**: Strategic Trend (Daily) vs. Tactical Pulse (Intraday).
-
-### B. The Shadow Research Layer (Reinforcement Learning)
-- **Engine**: PPO (Proximal Policy Optimization) Grandmaster.
-- **Status**: **SHADOW ONLY**. 
-- **Role**: PPO agents observe strategic states and log hypothetical actions for offline research. This data does **not** influence the live final verdict or UI strategy tiles. It serves as a validation gate for future architectural iterations.
-
-### C. The Sentinel Layer (Defense & Veto)
-- **Volatility Guard**: GARCH(1,1) regime detection.
-- **Chaos Filter**: Isolation Forest anomaly detection (PyOD).
-- **Abstain Logic**: A hard-coded meta-cognitive gate that neutralizes signals if adaptive thresholds are not met.
-
----
-
-## 4. v7.0 Innovation: Strategic Isolation (The Firewall)
-The v7.0 engine implements a temporal firewall between Trend and Noise. Unlike prior versions that mixed live data into the core model, v7.0 isolates them to resolve the "Noise Pollution" problem.
+## 🔱 The Universal Data Flow (Full Architecture)
 
 ```mermaid
 graph TD
-    subgraph "DATA SOURCE"
-        RAW["Polars Refinery (Rust-Speed)"]
+    subgraph "1. DATA INGESTION (The Vault)"
+        A["yfinance_fetcher.py"] -->|Real-time Snapshot| B["main_inference.py"]
+        A -->|Historical Payload| C["vault.py"]
+        C -->|Archive Backup| D[(".csv Archive")]
     end
 
-    subgraph "STRATEGIC PATH (Primary)"
-        T1["T-1 Baseline (Yesterday's Close)"] --> S_ML["Strategic Oracle"]
-        S_ML --> S_BELIEF["Strategic Trend (IMMUNE)"]
+    subgraph "2. FEATURE FOUNDRY (The 13 Pillars)"
+        B -->|Raw History| E["engineer.py (FeatureEngineer)"]
+        E -->|ML Features| F["XGB/LGB/RF Models"]
+        B -->|History| G["calculators.py (PillarEngine)"]
+        G -->|13-Pillar UI Data| H["JSON UI Tiles"]
     end
 
-    subgraph "TACTICAL PATH (Secondary)"
-        T0["Live Snap (Current 30m)"] --> T_ML["Momentum Engine"]
-        T_ML --> T_SIGNAL["Tactical Modulation"]
+    subgraph "3. LIVE INFERENCE ORBIT (Contextual Awareness)"
+        B -->|History| I["volatility_guard.py (GARCH-Lite)"]
+        B -->|History| J["cyclical_oracle.py (Cycle Logic)"]
+        I -->|Regime Score| K["Sentient Synthesis"]
+        J -->|Cycle Bias| K
+        F -->|Strategic/Tactical Probs| K
     end
 
-    S_BELIEF --> MERGE["Belief Integrator"]
-    T_SIGNAL --> MERGE
-    
-    subgraph "SELF-CORRECTING BRAIN (Veto)"
-        SUPRESS["Confidence Suppression"]
-        ABSTAIN["Adaptive Abstain Gate"]
+    subgraph "4. SENTIENT SYNTHESIS (The Decision Gate)"
+        K --> L["brain.py (SentientBrain)"]
+        L -->|Bayesian Update| M["Streak Multipliers"]
+        L -->|Suppression| N["Confidence Penalty"]
+        L -->|Abstain Logic| O["Conviction Filter"]
+        M & N & O --> P["🎯 FINAL SYSTEM VERDICT"]
     end
 
-    MERGE --> SUPRESS --> ABSTAIN
-    ABSTAIN --> FINAL["🎯 FINAL VERDICT"]
+    subgraph "5. SHADOW & R&D (The Lab)"
+        B --> Q["main_inference.py (Shadow RL)"]
+        Q -->|T-1 Observation| R["rl_ppo_nifty.zip"]
+        R --> S["PPO Shadow Strategy"]
+        S -->|Isolated Metadata| T["JSON Payload"]
+        U["genetic_engine.py"] -.->|Formula Discovery| V["Elite 12 (Angel Council)"]
+    end
+
+    subgraph "6. TELEMETRY & FEEDBACK (The Loop)"
+        P --> W["prediction_logger.py"]
+        W --> X["predictions.csv"]
+        X --> Y["accuracy_tracker.py"]
+        Y --> Z["online_learner.py"]
+        Z -->|Confidence Adjustments| AA["brain_state.json"]
+        AA -->|Load State| L
+    end
+
+    %% Legend & Connections
+    P --> T
+    H --> T
+    T -->|"public/data/apex.json"| AB["(ApeX UI Dashboard)"]
 ```
 
-- **Operational Logic**: Tactical data can *modulate* confidence but cannot override the Strategic Trend. The system respects the T-1 baseline as the **Primary Prior** (Anchor Belief), treating intraday action as high-entropy noise.
+---
+
+## 📂 Module Breakdown (Detailed Descriptions)
+
+### 🧱 Core Orchestrator
+| File | Role |
+| :--- | :--- |
+| `engine/main_inference.py` | The heartbeat of ApeX. Orchestrates data fetching, feature engineering, model prediction, and sentient synthesis. |
+
+### 📊 Data & Features
+| File | Role |
+| :--- | :--- |
+| `engine/data/yfinance_fetcher.py` | Robust wrapper for `yfinance`. Handles multi-ticker snapshots and historical payloads. |
+| `engine/features/engineer.py` | Core `FeatureEngineer` class. Converts raw OHLCV into the technical input required by ML models. |
+| `engine/features/calculators.py` | The `PillarEngine`. Logic for the 13 specific pillars displayed on the UI dashboard. |
+| `engine/features/cyclical_oracle.py` | Detects market cycles (Correction, Positive, Neutral) using dual-SMA slope analysis. |
+
+### 🧠 The Sentient Brain
+| File | Role |
+| :--- | :--- |
+| `engine/sentient/brain.py` | Implements the `SentientBrain`. Handles streak-based Bayesian updates, conviction suppression, and the "Abstain" veto logic. |
+| `engine/scripts/online_learner.py` | Acts as a Drift Monitor. It calculates "Brain States" based on recent performance to adjust conviction levels. |
+
+### 🛡️ Defensive Layers
+| File | Role |
+| :--- | :--- |
+| `engine/defense/volatility_guard.py` | Performs regime detection using GARCH-inspired rolling volatility. Signals when the market enters high-stress outliers. |
+
+### 🔬 Shadow (R&D) Layers
+| File | Role |
+| :--- | :--- |
+| `engine/models/train_rl.py` | Retraining script for the PPO agent. |
+| `engine/models/trading_env.py` | The Gymnasium environment where the shadow RL agent "practices" strategy. |
+
+### 📈 Telemetry & Audit
+| File | Role |
+| :--- | :--- |
+| `engine/scripts/prediction_logger.py` | Commits every verdict and confidence score to a CSV ledger for permanent audit. |
+| `engine/scripts/accuracy_tracker.py` | The "Truth Engine". Fetches actual outcomes to verify prediction results. |
 
 ---
 
-## 5. Pipeline Architecture: Data Flow Logic
-The pipeline follows a unidirectional flow from raw extraction to high-conviction telemetry:
-
-```mermaid
-graph LR
-    YF["yfinance / NSE"] --> POLARS["Polars Engineer"]
-    POLARS --> STRAT["Strategic Path (T-1)"]
-    POLARS --> TACT["Tactical Path (T)"]
-    
-    STRAT --> ML_ORACLE["Supervised Ensemble"]
-    TACT --> MOMENTUM["Momentum Engine"]
-    
-    ML_ORACLE & MOMENTUM --> BRAIN["Sentient Brain 4.0"]
-    BRAIN -- "Process Errors" --> MEMORY["sentient_memory.json"]
-    BRAIN -- "Veto/Abstain" --> JSON["apex_nifty.json (UI Payload)"]
-    
-    subgraph "SHADOW PROCESS"
-        ML_ORACLE --> PPO["PPO Evaluator"]
-        PPO --> SHADOW_LOGS["Shadow Evaluation Logs"]
-    end
-```
-
----
-
-## 6. Self-Correction Loop: Meta-Cognition (Not Learning)
-ApeX v7.0 is **self-correcting, not self-learning**. It does not perform online parameter optimization during market hours to avoid data leakage and distribution shift.
-
-1. **Drift Monitoring**: Every night, `accuracy_tracker.py` fetches actual closes and compares them to Strategic Beliefs.
-2. **Confidence Suppression**: If a pattern of error is detected (3+ day streak), the **Sentient Brain** applies a **bounded confidence penalty (~10-20%)** to all sub-layer outputs, rather than retraining live weights.
-3. **Adaptive Abstain**: High-stress regimes (VIX > 25) automatically raise the conviction bar (e.g., from 55% to 65%), forcing the system into a "NEUTRAL" state.
-4. **Offline Retraining**: Model updates occur strictly during scheduled weekend cycles in a sandboxed environment, ensuring no live-process pollution.
-
----
-*© 2026 Zeta Aztra Technologies. Authoritative v7.0 Technical Documentation.*
+> [!NOTE]
+> **Strategic Isolation Enforcement**: Note how **Phase 5 (Shadow)** and **Phase 2 (ML Features)** are strictly separate streams that only converge in the final metadata payload, ensuring experimental RL never pollutes the core verdict.
