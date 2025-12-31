@@ -1,108 +1,106 @@
-# ApeX Living Brain 7.0: The Complete Master Flow
+The system generates market beliefs using frozen Supervised Learning models, enforces restraint via **Meta-Cognitive Self-Correction**, and evaluates Reinforcement Learning (RL) policies strictly in **Shadow Mode**. The primary innovation is **Strategic Isolation**—the absolute decoupling of macro-trend beliefs from micro-momentum noise to ensure architectural stability.
 
-## 🌐 End-to-End System Architecture
-This diagram represents the full logic flow of the current **ApeX System (v6.5+)**, from the initial data fetch to the final pixel on the user's screen.
+> [!NOTE]
+> **Versioning Note**: "ApeX v7.0" refers to the holistic platform release. "Sentient Brain 4.0" refers to the internal meta-cognition module handled independently from the production baseline.
 
 ---
 
+## 2. Sentient Evolution Timeline
+The trajectory of ApeX reflects a transition from "Guesswork" to "Sovereignty."
+
+| Version | Core Philosophy | Machine Learning Role | Control Logic |
+| :--- | :--- | :--- | :--- |
+| **v2.0 - v4.0** | Pattern Recognition | Online Learning (Auto-Retraining) | Symmetric Ensemble Voting |
+| **v5.0 - v6.0** | Experimental RL Path | RL-Led Execution (Live Strategy) | Hybrid ML/RL Authority |
+| **v7.0 (Current)**| **Strategic Isolation** | Frozen Weights & Drift Monitoring | **Hierarchical Belief Suppression** |
+
+---
+
+## 3. Architectural Layers: The v7.0 Stack
+
+### A. The Oracle Layer (Supervised Belief)
+- **Engine**: Static Ensemble (XGBoost, LightGBM, Random Forest).
+- **Weights**: **Frozen**. Performance is managed via confidence suppression rather than parameter updates.
+- **Horizon**: Strategic Trend (Daily) vs. Tactical Pulse (Intraday).
+
+### B. The Shadow Research Layer (Reinforcement Learning)
+- **Engine**: PPO (Proximal Policy Optimization) Grandmaster.
+- **Status**: **SHADOW ONLY**. 
+- **Role**: PPO agents observe strategic states and log hypothetical actions for offline research. This data does **not** influence the live final verdict or UI strategy tiles. It serves as a validation gate for future architectural iterations.
+
+### C. The Sentinel Layer (Defense & Veto)
+- **Volatility Guard**: GARCH(1,1) regime detection.
+- **Chaos Filter**: Isolation Forest anomaly detection (PyOD).
+- **Abstain Logic**: A hard-coded meta-cognitive gate that neutralizes signals if adaptive thresholds are not met.
+
+---
+
+## 4. v7.0 Innovation: Strategic Isolation (The Firewall)
+The v7.0 engine implements a temporal firewall between Trend and Noise. Unlike prior versions that mixed live data into the core model, v7.0 isolates them to resolve the "Noise Pollution" problem.
+
 ```mermaid
 graph TD
-    %% --- STEP 1: DATA INGESTION ---
-    subgraph INGESTION [1. Data Ingestion Layer]
-        NSE[NSE/Yahoo Feed] -->|Live tick| Fetcher[Fetcher Engine]
-        NSE -->|Option Chain| OptScraper[Options Scraper]
-        
-        Fetcher -->|OHLCV History| RawData[Raw Market Data]
-        OptScraper -->|OI/PCR| RawData
+    subgraph "DATA SOURCE"
+        RAW["Polars Refinery (Rust-Speed)"]
     end
 
-    %% --- STEP 2: PILLAR ANALYTICS ---
-    subgraph ANALYTICS [2. Analytics Layer]
-        RawData --> Engine[Pillar Engine]
-        Engine -->|Calculates| Pillars[Trend / Vol / Struct Pillars]
-        
-        %% Regime Context
-        RawData --> VolGuard[Volatility Guard]
-        VolGuard -->|Stress Score %| Context[Market Context]
-        
-        %% Drift Feedback (Drift++)
-        Logs[(predictions.csv)] -.->|Read Hit-Rate/MAE| Drift[Drift Monitor]
-        Drift -->|Self-Correction| Context
+    subgraph "STRATEGIC PATH (Primary)"
+        T1["T-1 Baseline (Yesterday's Close)"] --> S_ML["Strategic Oracle"]
+        S_ML --> S_BELIEF["Strategic Trend (IMMUNE)"]
     end
 
-    %% --- STEP 3: THE STRATEGIC SPLIT (Level 5) ---
-    subgraph SPLIT [3. The Strategic Fork]
-        RawData -->|Slice: T-1 (Yesterday)| Data_S[Strategic Data]
-        RawData -->|Slice: T (Current)| Data_T[Tactical Data]
-        
-        %% Feature Engineering
-        Data_S --> Feat_S[Feature Eng (Daily)]
-        Data_T --> Feat_T[Feature Eng (Intraday)]
+    subgraph "TACTICAL PATH (Secondary)"
+        T0["Live Snap (Current 30m)"] --> T_ML["Momentum Engine"]
+        T_ML --> T_SIGNAL["Tactical Modulation"]
     end
 
-    %% --- STEP 4: DUAL INFERENCE ---
-    subgraph INFERENCE [4. Inference Engine]
-        %% Path A: Strategic
-        Feat_S --> XGB_D[XGBoost Daily]
-        XGB_D -->|Raw Prob| Sig_S(Strategic Signal)
-        
-        %% Path B: Tactical
-        Feat_T --> XGB_M[XGBoost Momentum]
-        XGB_M -->|Raw Prob| Sig_T(Tactical Signal)
-        
-        %% PPO (Shadow Mode)
-        Feat_S -.-> PPO[PPO Agent]
-        PPO -.->|Action| Sig_PPO(RL Strategy)
+    S_BELIEF --> MERGE["Belief Integrator"]
+    T_SIGNAL --> MERGE
+    
+    subgraph "SELF-CORRECTING BRAIN (Veto)"
+        SUPRESS["Confidence Suppression"]
+        ABSTAIN["Adaptive Abstain Gate"]
     end
 
-    %% --- STEP 5: THE SENTIENT BRAIN (Level 6.5) ---
-    subgraph BRAIN [5. Sentient Brain Logic]
-        Sig_S & Sig_T --> Processor
-        Context --> Processor
-        
-        %% Logic Blocks
-        subgraph LOGIC [Meta-Cognition]
-            Immunity[1. Strategic Immunity <br/> (No Decay for Daily)]
-            RegimeDecay[2. Regime-Weighted Decay <br/> (Factor * Stress%)]
-            Abstain[3. Abstain Filter <br/> (Conf < 55% = Neutral)]
-        end
-        
-        Processor --- Immunity
-        Processor --- RegimeDecay
-        RegimeDecay --> Abstain
-    end
+    MERGE --> SUPRESS --> ABSTAIN
+    ABSTAIN --> FINAL["🎯 FINAL VERDICT"]
+```
 
-    %% --- STEP 6: OUTPUT & UI ---
-    subgraph UI [6. User Interface]
-        Abstain -->|Daily Verdict| Tile1[Tile: TOMORROW'S DIRECTION]
-        Abstain -->|Momentum Verdict| Tile2[Tile: LIVE MOMENTUM]
-        
-        %% Logging Loop
-        Tile1 & Tile2 -->|Log Result| Logs
-    end
+- **Operational Logic**: Tactical data can *modulate* confidence but cannot override the Strategic Trend. The system respects the T-1 baseline as the **Primary Prior** (Anchor Belief), treating intraday action as high-entropy noise.
 
-    %% Styles
-    linkStyle default stroke:#666,stroke-width:1px
-    style BRAIN fill:#1e1e2e,stroke:#8b5cf6,stroke-width:3px
-    style SPLIT fill:#0f172a,stroke:#3b82f6,stroke-width:2px
-    style INFERENCE fill:#18181b,stroke:#22c55e,stroke-width:2px
-    style UI fill:#000,stroke:#f59e0b,stroke-width:2px
-    style Logs fill:#4a0404,stroke:#ef4444
-    style Context fill:#4338ca,stroke:#818cf8
+---
+
+## 5. Pipeline Architecture: Data Flow Logic
+The pipeline follows a unidirectional flow from raw extraction to high-conviction telemetry:
+
+```mermaid
+graph LR
+    YF["yfinance / NSE"] --> POLARS["Polars Engineer"]
+    POLARS --> STRAT["Strategic Path (T-1)"]
+    POLARS --> TACT["Tactical Path (T)"]
+    
+    STRAT --> ML_ORACLE["Supervised Ensemble"]
+    TACT --> MOMENTUM["Momentum Engine"]
+    
+    ML_ORACLE & MOMENTUM --> BRAIN["Sentient Brain 4.0"]
+    BRAIN -- "Process Errors" --> MEMORY["sentient_memory.json"]
+    BRAIN -- "Veto/Abstain" --> JSON["apex_nifty.json (UI Payload)"]
+    
+    subgraph "SHADOW PROCESS"
+        ML_ORACLE --> PPO["PPO Evaluator"]
+        PPO --> SHADOW_LOGS["Shadow Evaluation Logs"]
+    end
 ```
 
 ---
 
-## 🏗️ Technical Pipeline Summary
+## 6. Self-Correction Loop: Meta-Cognition (Not Learning)
+ApeX v7.0 is **self-correcting, not self-learning**. It does not perform online parameter optimization during market hours to avoid data leakage and distribution shift.
 
-1.  **Ingestion:** Fetches standard `yfinance` data + Option Chain.
-2.  **Context Building:** Calculates `Volatility Stress` (for decay) and `Drift Error` (for self-awareness).
-3.  **The Split:**
-    *   **Strategic Path:** Cuts data at `Index[-2]` (Yesterday). **Immune** to today's noise.
-    *   **Tactical Path:** Uses `Index[-1]` (Today). **Exposed** to live volatility.
-4.  **Inference:** Runs separated XGBoost models for each path.
-5.  **The Brain (v6.5):**
-    *   Applies **Strategic Immunity** (Daily signal stays strong).
-    *   Applies **Regime Decay** (Tactical signal rots faster if Stress is high).
-    *   Applies **Abstain Logic** (Vetoes weak signals < 55%).
-6.  **Display:** Renders the final cleansed verdict to the specific tiles.
+1. **Drift Monitoring**: Every night, `accuracy_tracker.py` fetches actual closes and compares them to Strategic Beliefs.
+2. **Confidence Suppression**: If a pattern of error is detected (3+ day streak), the **Sentient Brain** applies a **bounded confidence penalty (~10-20%)** to all sub-layer outputs, rather than retraining live weights.
+3. **Adaptive Abstain**: High-stress regimes (VIX > 25) automatically raise the conviction bar (e.g., from 55% to 65%), forcing the system into a "NEUTRAL" state.
+4. **Offline Retraining**: Model updates occur strictly during scheduled weekend cycles in a sandboxed environment, ensuring no live-process pollution.
+
+---
+*© 2026 Zeta Aztra Technologies. Authoritative v7.0 Technical Documentation.*
