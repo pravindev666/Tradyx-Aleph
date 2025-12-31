@@ -1,51 +1,49 @@
-# 🗺️ ApeX v7.0: Comprehensive Codebase Map
+# 🗺️ ApeX v7.0: Comprehensive Codebase Map (Deep Dive)
 
-This document provides a high-fidelity mapping of the **Tradyxa-ApeX v7.0** architecture, tracing the lifecycle of a single market verdict from raw data ingestion to telemetry logging.
+This document provides a high-fidelity mapping of the **Tradyxa-ApeX v7.0** architecture, specifically highlighting the **Strategic Isolation** firewall and the disconnected nature of the **Shadow Research Layers**.
 
 ---
 
-## 🔱 The Universal Data Flow (Full Architecture)
+## 🔱 The Universal Architecture & Shadow Firewall
 
 ```mermaid
 graph TD
-    subgraph "1. DATA INGESTION (The Vault)"
-        A["yfinance_fetcher.py"] -->|Real-time Snapshot| B["main_inference.py"]
+    subgraph "1. INPUT LAYER (The Ingestion Vault)"
+        A["yfinance_fetcher.py"] -->|OHLCV Snapshot| B["main_inference.py"]
         A -->|Historical Payload| C["vault.py"]
         C -->|Archive Backup| D[(".csv Archive")]
     end
 
     subgraph "2. FEATURE FOUNDRY (The 13 Pillars)"
         B -->|Raw History| E["engineer.py (FeatureEngineer)"]
-        E -->|ML Features| F["XGB/LGB/RF Models"]
+        E -->|11 Trained Features| F["Ensemble ML (XGB/LGB/RF)"]
         B -->|History| G["calculators.py (PillarEngine)"]
         G -->|13-Pillar UI Data| H["JSON UI Tiles"]
     end
 
-    subgraph "3. LIVE INFERENCE ORBIT (Contextual Awareness)"
-        B -->|History| I["volatility_guard.py (GARCH-Lite)"]
-        B -->|History| J["cyclical_oracle.py (Cycle Logic)"]
-        I -->|Regime Score| K["Sentient Synthesis"]
+    subgraph "3. LIVE EXECUTION ORBIT (The Active Brain)"
+        F -->|Probabilistic Beliefs| K["Sentient Synthesis"]
+        B -->|Vol Detection| I["volatility_guard.py"]
+        B -->|Cycle Detection| J["cyclical_oracle.py"]
+        I -->|Regime Score| K
         J -->|Cycle Bias| K
-        F -->|Strategic/Tactical Probs| K
-    end
-
-    subgraph "4. SENTIENT SYNTHESIS (The Decision Gate)"
         K --> L["brain.py (SentientBrain)"]
-        L -->|Bayesian Update| M["Streak Multipliers"]
-        L -->|Suppression| N["Confidence Penalty"]
-        L -->|Abstain Logic| O["Conviction Filter"]
-        M & N & O --> P["🎯 FINAL SYSTEM VERDICT"]
+        L -->|Veto/Suppression| P["🎯 FINAL SYSTEM VERDICT"]
     end
 
-    subgraph "5. SHADOW & R&D (The Lab)"
-        B --> Q["main_inference.py (Shadow RL)"]
-        Q -->|T-1 Observation| R["rl_ppo_nifty.zip"]
-        R --> S["PPO Shadow Strategy"]
-        S -->|Isolated Metadata| T["JSON Payload"]
-        U["genetic_engine.py"] -.->|Formula Discovery| V["Elite 12 (Angel Council)"]
+    subgraph "4. THE SHADOW FIREWALL (Disconnected R&D)"
+        direction TB
+        subgraph "Shadow Layer (Experimental)"
+            M["PPO Research (PPO.load)"] -.->|Evaluates| N["Action Policy"]
+            O["Angel Council (Genetic Engine)"] -.->|Evolves| Q["Elite 12 Formulas"]
+        end
+        B -->|Isolated T-1 Stream| M
+        E -->|Lab Seed Data| O
+        N -.- x|BLOCKED| P
+        Q -.- x|BLOCKED| P
     end
 
-    subgraph "6. TELEMETRY & FEEDBACK (The Loop)"
+    subgraph "5. TELEMETRY & FEEDBACK (The Loop)"
         P --> W["prediction_logger.py"]
         W --> X["predictions.csv"]
         X --> Y["accuracy_tracker.py"]
@@ -54,53 +52,66 @@ graph TD
         AA -->|Load State| L
     end
 
-    %% Legend & Connections
-    P --> T
+    %% JSON Convergence
+    P --> T["JSON Payload"]
     H --> T
+    N -->|Shadow Metadata| T
     T -->|"public/data/apex.json"| AB["(ApeX UI Dashboard)"]
 ```
 
 ---
 
-## 📂 Module Breakdown (Detailed Descriptions)
+## � Feature & Indicator Mapping
 
-### 🧱 Core Orchestrator
-| File | Role |
-| :--- | :--- |
-| `engine/main_inference.py` | The heartbeat of ApeX. Orchestrates data fetching, feature engineering, model prediction, and sentient synthesis. |
+ApeX v7.0 distinguishes between **Trained Model Inputs** and **UI Contextual Pillars**.
 
-### 📊 Data & Features
-| File | Role |
-| :--- | :--- |
-| `engine/data/yfinance_fetcher.py` | Robust wrapper for `yfinance`. Handles multi-ticker snapshots and historical payloads. |
-| `engine/features/engineer.py` | Core `FeatureEngineer` class. Converts raw OHLCV into the technical input required by ML models. |
-| `engine/features/calculators.py` | The `PillarEngine`. Logic for the 13 specific pillars displayed on the UI dashboard. |
-| `engine/features/cyclical_oracle.py` | Detects market cycles (Correction, Positive, Neutral) using dual-SMA slope analysis. |
+### �️ ML Ensemble Features (Trained & Active)
+Used by XGBoost, LightGBM, and Random Forest for core probability generation:
+*   `body_size`: Absolute (Close - Open)
+*   `upper_wick` / `lower_wick`: Shadow length
+*   `RSI`: 14-period momentum
+*   `SMA_20` / `SMA_50` / `SMA_200`: Trend structural baselines
+*   `Above_200`: Binary indicator (Price > 200 SMA)
+*   `ATR`: Volatility range
+*   `BB_Width`: Bollinger Band squeeze factor
+*   `OBV`: On-Balance Volume (Trend confirmation)
 
-### 🧠 The Sentient Brain
-| File | Role |
-| :--- | :--- |
-| `engine/sentient/brain.py` | Implements the `SentientBrain`. Handles streak-based Bayesian updates, conviction suppression, and the "Abstain" veto logic. |
-| `engine/scripts/online_learner.py` | Acts as a Drift Monitor. It calculates "Brain States" based on recent performance to adjust conviction levels. |
+### 🕹️ Shadow PPO Features (Reinforcement Learning)
+A restricted set for the agent's observation space to minimize overfitting:
+*   `body_size`, `RSI`, `SMA_20`, `SMA_50`, `SMA_200`, `ATR`, `BB_Width`, `OBV`.
 
-### 🛡️ Defensive Layers
-| File | Role |
-| :--- | :--- |
-| `engine/defense/volatility_guard.py` | Performs regime detection using GARCH-inspired rolling volatility. Signals when the market enters high-stress outliers. |
-
-### 🔬 Shadow (R&D) Layers
-| File | Role |
-| :--- | :--- |
-| `engine/models/train_rl.py` | Retraining script for the PPO agent. |
-| `engine/models/trading_env.py` | The Gymnasium environment where the shadow RL agent "practices" strategy. |
-
-### 📈 Telemetry & Audit
-| File | Role |
-| :--- | :--- |
-| `engine/scripts/prediction_logger.py` | Commits every verdict and confidence score to a CSV ledger for permanent audit. |
-| `engine/scripts/accuracy_tracker.py` | The "Truth Engine". Fetches actual outcomes to verify prediction results. |
+### 🔱 The 13 Sentient Pillars (UI Facing)
+The logic defined in `calculators.py` for the dashboard tiles:
+1.  **Price Action**: Candle color & score.
+2.  **Momentum**: RSI-based strength.
+3.  **CPR**: Pivot Point width/structural narrowness.
+4.  **Volume Profile**: Relative volume against 20-day mean.
+5.  **Volatility Regime**: ATR-based regime classification.
+6.  **Intermarket Sync**: (Experimental) Global market correlation.
+7.  **Mean Reversion**: Percentage Deviation from 20 SMA.
+8.  **Seasonality**: Day of Week bias.
+9.  **Gap Analysis**: Overnight gap percentage.
+10. **Fibonacci Levels**: Current price relative to 20-day 50% retracement.
+11. **Trend Regime**: SMA-slope analysis.
+12. **Event Volatility**: Macro-economic calendar status.
+13. **Moving Averages**: Fast (20) SMA structural position.
 
 ---
 
-> [!NOTE]
-> **Strategic Isolation Enforcement**: Note how **Phase 5 (Shadow)** and **Phase 2 (ML Features)** are strictly separate streams that only converge in the final metadata payload, ensuring experimental RL never pollutes the core verdict.
+## 🔬 The Shadow Lab (Disconnected Components)
+
+### 1. PPO Grandmaster (`engine/models/`)
+*   **Role**: Evaluates if a Reinforcement Learning policy can outperform the Supervised Ensemble.
+*   **Connectivity**: **None.** Its output (`ppo_strategy`) is recorded in JSON metadata for research but is physically unable to alter the `FINAL VERDICT` due to the SentientBrain logic.
+*   **Environment**: Custom `TradyxaApeXEnv` (Gymnasium).
+
+### 2. Angel Council (`experimental_omni/genetic_engine.py`)
+*   **Role**: Symbolic Regression. It attempts to "discover" new indicators by mathematically combining OHLCV terminals.
+*   **Method**: Genetic Programming (Crossover, Mutation, Evolution).
+*   **Fitness**: Correlation to "Tomorrow's Direction."
+*   **Connectivity**: **Zero.** It runs in a separate process/module to feed into future architectural blueprints.
+
+---
+
+> [!IMPORTANT]
+> **The v7.0 Invariant**: All "learning" (Online Learner) is applied as a **conviction multiplier** to the final verdict, NEVER as an update to the underlying model weights during live rounds. This ensures the engine remains stable and defensible against "learning drift."
