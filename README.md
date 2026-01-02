@@ -1,6 +1,6 @@
-# 🗺️ ApeX v7.0: Comprehensive Codebase Map (Deep Dive)
+# 🗺️ ApeX v7.1: Comprehensive Codebase Map (Deep Dive)
 
-This document provides a high-fidelity mapping of the **Tradyxa-ApeX v7.0** architecture, specifically highlighting the **Strategic Isolation** firewall and the disconnected nature of the **Shadow Research Layers**.
+architecture, specifically highlighting the **Strategic Isolation** firewall and the disconnected nature of the **Shadow Research Layers**.
 
 ---
 
@@ -15,9 +15,9 @@ graph TD
     end
 
     subgraph "2. FEATURE FOUNDRY (The 13 Pillars)"
-        B -->|Raw History| E["engineer.py (FeatureEngineer)"]
-        E -->|11 Trained Features| F["Ensemble ML (XGB/LGB/RF)"]
-        B -->|History| G["calculators.py (PillarEngine)"]
+        B -->|T-1 Data Only| E["engineer.py (FeatureEngineer)"]
+        E -->|Stored Strategic Features| F["Ensemble ML (XGB/LGB/RF)"]
+        B -->|T-1 + T (Read-Only)| G["calculators.py (PillarEngine)"]
         G -->|13-Pillar UI Data| H["JSON UI Tiles"]
     end
 
@@ -27,7 +27,7 @@ graph TD
         B -->|Cycle Detection| J["cyclical_oracle.py"]
         I -->|Regime Score| K
         J -->|Cycle Bias| K
-        K --> L["brain.py (SentientBrain)"]
+        K --> L["brain.py (MetaProbabilisticController)"]
         L -->|Veto/Suppression| P["🎯 FINAL SYSTEM VERDICT"]
     end
 
@@ -40,32 +40,31 @@ graph TD
         B -->|Isolated T-1 Stream| M
         E -->|Lab Seed Data| O
         N -. BLOCKED .-> P
-        Q -. BLOCKED .-> P
+    A["Exchange (Yahoo Finance / NSE)"] --> B["data/ (YF & NSE Fetchers)"]
+    B --> C["features/ (Pillar Calculators)"]
+    C --> D["engine/main_inference.py"]
+    
+    subgraph "The Meta-Probabilistic Controller (v7.1)"
+    D --> E{Session Detector}
+    E -- "Pre/Live/Post" --> F["Dual-Path Analytics"]
+    F --> G["Meta-Probabilistic Suppression Logic"]
+    G --> H["public/data/apex.json"]
     end
-
-    subgraph "5. TELEMETRY & FEEDBACK (The Loop)"
-        P --> W["prediction_logger.py"]
-        W --> X["predictions.csv"]
-        X --> Y["accuracy_tracker.py"]
-        Y --> Z["online_learner.py"]
-        Z -->|Confidence Adjustments| AA["brain_state.json"]
-        AA -->|Load State| L
+    
+    subgraph "Internal Research (Shadow Layer)"
+    F --> I["brain/internal_research.json"]
     end
-
-    %% JSON Convergence
-    P --> T["JSON Payload"]
-    H --> T
-    N -->|Shadow Metadata| T
-    T -->|"public/data/apex.json"| AB["(ApeX UI Dashboard)"]
+    
+    H --> J["Frontend (App.tsx / Dashboard)"]
 ```
 
 ---
 
-## � Feature & Indicator Mapping
+## 📊 Feature & Indicator Mapping
 
 ApeX v7.0 distinguishes between **Trained Model Inputs** and **UI Contextual Pillars**.
 
-### �️ ML Ensemble Features (Trained & Active)
+### 🧠 ML Ensemble Features (Trained & Active)
 Used by XGBoost, LightGBM, and Random Forest for core probability generation:
 *   `body_size`: Absolute (Close - Open)
 *   `upper_wick` / `lower_wick`: Shadow length
@@ -114,4 +113,4 @@ The logic defined in `calculators.py` for the dashboard tiles:
 ---
 
 > [!IMPORTANT]
-> **The v7.0 Invariant**: All "learning" (Online Learner) is applied as a **conviction multiplier** to the final verdict, NEVER as an update to the underlying model weights during live rounds. This ensures the engine remains stable and defensible against "learning drift."
+> **The v7.1 Invariant**: All "learning" (Confidence Controller) is applied as a **conviction multiplier** to the final verdict, NEVER as an update to the underlying model weights during live rounds. This ensures the engine remains stable and defensible against "learning drift." **No model weights are updated in this path.**
