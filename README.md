@@ -11,22 +11,22 @@ The previous architecture focused on presenting all raw telemetry to the user si
 
 ```mermaid
 graph TD
-    subgraph Data Sources
-        NSE[NSE Option Chain]
-        YF[Yahoo Finance / VIX]
+    subgraph DS ["Data Sources"]
+        NSE["NSE Option Chain"]
+        YF["Yahoo Finance / VIX"]
     end
 
-    subgraph Logic Layer
-        ML[ML Models v2.0]
-        SENT[Sentiment Analysis]
-        HUD[Context Engine]
+    subgraph LL ["Logic Layer"]
+        ML["ML Models v2.0"]
+        SENT["Sentiment Analysis"]
+        HUD["Context Engine"]
     end
 
-    subgraph UI (Legacy)
-        T1[Raw Metric Tiles]
-        T2[Secondary Numeric HUD]
-        T3[Sentiment Badges]
-        V1[Verdict Tile + Safety Score]
+    subgraph UIL ["UI (Legacy)"]
+        T1["Raw Metric Tiles"]
+        T2["Secondary Numeric HUD"]
+        T3["Sentiment Badges"]
+        V1["Verdict Tile + Safety Score"]
     end
 
     NSE --> ML
@@ -42,20 +42,20 @@ The new architecture introduces a **Neural Core** that synthesizes data into bin
 
 ```mermaid
 graph TD
-    subgraph Data Sources
-        DS[NSE + YF Real-time Feed]
+    subgraph DS2 ["Data Sources"]
+        DS["NSE + YF Real-time Feed"]
     end
 
-    subgraph Sentient Neural Core (v6.1.0)
-        NC[Epistemic Auditor]
-        SH[Self-Healing Logic]
-        VB[Verdict Bit: Amber/Rose]
+    subgraph SNC ["Sentient Neural Core (v6.1.0)"]
+        NC["Epistemic Auditor"]
+        SH["Self-Healing Logic"]
+        VB["Verdict Bit: Amber/Rose"]
     end
 
-    subgraph Guided Governance UI
-        KV[Kinetic Visualizers: Centered Metrics]
-        SA[Synthesized Analysis: Logic Narrative]
-        EF[Ecosystem Footer: Distributional Unity]
+    subgraph GGUI ["Guided Governance UI"]
+        KV["Kinetic Visualizers: Centered Metrics"]
+        SA["Synthesized Analysis: Logic Narrative"]
+        EF["Ecosystem Footer: Distributional Unity"]
     end
 
     DS --> NC
