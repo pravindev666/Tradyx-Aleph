@@ -1,116 +1,139 @@
-# 🗺️ ApeX v7.1: Comprehensive Codebase Map (Deep Dive)
+# AuztinX 4.0: Universal Architecture & Pipeline Audit
 
-architecture, specifically highlighting the **Strategic Isolation** firewall and the disconnected nature of the **Shadow Research Layers**.
+This report documents the architectural shift from the legacy **"Cognitive Dashboard"** to the **AuztinX 4.0 Institutional Sovereign HUD**. It details the mathematical pipelines, cognitive hierarchies, and the "Risk Silence" philosophy implemented in Tradyxa-DeltaX.
 
 ---
 
-## 🔱 The Universal Architecture & Shadow Firewall
+## 🏗️ 1. Architecture: Before vs. After
+
+### 🔴 Legacy Architecture (Visual Noise Model)
+The previous architecture focused on presenting all raw telemetry to the user simultaneously. This led to high cognitive load and "Analysis Paralysis" where conflicting signals (Sentiment vs. Math) confused the trader.
 
 ```mermaid
 graph TD
-    subgraph "1. INPUT LAYER (The Ingestion Vault)"
-        A["yfinance_fetcher.py"] -->|OHLCV Snapshot| B["main_inference.py"]
-        A -->|Historical Payload| C["vault.py"]
-        C -->|Archive Backup| D[(".csv Archive")]
+    subgraph Data Sources
+        NSE[NSE Option Chain]
+        YF[Yahoo Finance / VIX]
     end
 
-    subgraph "2. FEATURE FOUNDRY (The 13 Pillars)"
-        B -->|T-1 Data Only| E["engineer.py (FeatureEngineer)"]
-        E -->|Stored Strategic Features| F["Ensemble ML (XGB/LGB/RF)"]
-        B -->|T-1 + T (Read-Only)| G["calculators.py (PillarEngine)"]
-        G -->|13-Pillar UI Data| H["JSON UI Tiles"]
+    subgraph Logic Layer
+        ML[ML Models v2.0]
+        SENT[Sentiment Analysis]
+        HUD[Context Engine]
     end
 
-    subgraph "3. LIVE EXECUTION ORBIT (The Active Brain)"
-        F -->|Probabilistic Beliefs| K["Sentient Synthesis"]
-        B -->|Vol Detection| I["volatility_guard.py"]
-        B -->|Cycle Detection| J["cyclical_oracle.py"]
-        I -->|Regime Score| K
-        J -->|Cycle Bias| K
-        K --> L["brain.py (MetaProbabilisticController)"]
-        L -->|Veto/Suppression| P["🎯 FINAL SYSTEM VERDICT"]
+    subgraph UI (Legacy)
+        T1[Raw Metric Tiles]
+        T2[Secondary Numeric HUD]
+        T3[Sentiment Badges]
+        V1[Verdict Tile + Safety Score]
     end
 
-    subgraph "4. THE SHADOW FIREWALL (Disconnected R&D)"
-        direction TB
-        subgraph "Shadow Layer (Experimental)"
-            M["PPO Research (PPO.load)"] -.->|Evaluates| N["Action Policy"]
-            O["Angel Council (Genetic Engine)"] -.->|Evolves| Q["Elite 12 Formulas"]
-        end
-        B -->|Isolated T-1 Stream| M
-        E -->|Lab Seed Data| O
-        N -. BLOCKED .-> P
-    A["Exchange (Yahoo Finance / NSE)"] --> B["data/ (YF & NSE Fetchers)"]
-    B --> C["features/ (Pillar Calculators)"]
-    C --> D["engine/main_inference.py"]
-    
-    subgraph "The Meta-Probabilistic Controller (v7.1)"
-    D --> E{Session Detector}
-    E -- "Pre/Live/Post" --> F["Dual-Path Analytics"]
-    F --> G["Meta-Probabilistic Suppression Logic"]
-    G --> H["public/data/apex.json"]
+    NSE --> ML
+    YF --> SENT
+    ML --> T1
+    SENT --> T2
+    HUD --> T3
+    ML & SENT --> V1
+```
+
+### 🟢 Institutional Architecture (Sovereign HUD Model)
+The new architecture introduces a **Neural Core** that synthesizes data into binary "Axioms" before presentation. The UI is designed for "Risk Silence," where only the final outcome and its structural reason are foregrounded.
+
+```mermaid
+graph TD
+    subgraph Data Sources
+        DS[NSE + YF Real-time Feed]
     end
-    
-    subgraph "Internal Research (Shadow Layer)"
-    F --> I["brain/internal_research.json"]
+
+    subgraph Sentient Neural Core (v6.1.0)
+        NC[Epistemic Auditor]
+        SH[Self-Healing Logic]
+        VB[Verdict Bit: Amber/Rose]
     end
-    
-    H --> J["Frontend (App.tsx / Dashboard)"]
+
+    subgraph Guided Governance UI
+        KV[Kinetic Visualizers: Centered Metrics]
+        SA[Synthesized Analysis: Logic Narrative]
+        EF[Ecosystem Footer: Distributional Unity]
+    end
+
+    DS --> NC
+    NC --> SH
+    SH --> VB
+    VB --> KV
+    SH --> SA
+    KV & SA --> EF
 ```
 
 ---
 
-## 📊 Feature & Indicator Mapping
+## ⚙️ 2. The Universal Neural Core Pipeline
 
-ApeX v7.0 distinguishes between **Trained Model Inputs** and **UI Contextual Pillars**.
+The pipeline evolution marks the shift from **Direct Injection** (Scripts → JSON) to **Mediated Intelligence** (Scripts → Neural Core → JSON).
 
-### 🧠 ML Ensemble Features (Trained & Active)
-Used by XGBoost, LightGBM, and Random Forest for core probability generation:
-*   `body_size`: Absolute (Close - Open)
-*   `upper_wick` / `lower_wick`: Shadow length
-*   `RSI`: 14-period momentum
-*   `SMA_20` / `SMA_50` / `SMA_200`: Trend structural baselines
-*   `Above_200`: Binary indicator (Price > 200 SMA)
-*   `ATR`: Volatility range
-*   `BB_Width`: Bollinger Band squeeze factor
-*   `OBV`: On-Balance Volume (Trend confirmation)
+### 🔴 Legacy Pipeline (Direct Injection)
+In the legacy model, scripts directly modified the data file. There was no recursive audit layer to check for signal divergence or entropy, leading to potential "Blind Spots."
 
-### 🕹️ Shadow PPO Features (Reinforcement Learning)
-A restricted set for the agent's observation space to minimize overfitting:
-*   `body_size`, `RSI`, `SMA_20`, `SMA_50`, `SMA_200`, `ATR`, `BB_Width`, `OBV`.
+```mermaid
+sequenceDiagram
+    participant S as Scripts (Python)
+    participant J as auztinx_data.json
+    participant U as UI (React)
 
-### 🔱 The 13 Sentient Pillars (UI Facing)
-The logic defined in `calculators.py` for the dashboard tiles:
-1.  **Price Action**: Candle color & score.
-2.  **Momentum**: RSI-based strength.
-3.  **CPR**: Pivot Point width/structural narrowness.
-4.  **Volume Profile**: Relative volume against 20-day mean.
-5.  **Volatility Regime**: ATR-based regime classification.
-6.  **Intermarket Sync**: (Experimental) Global market correlation.
-7.  **Mean Reversion**: Percentage Deviation from 20 SMA.
-8.  **Seasonality**: Day of Week bias.
-9.  **Gap Analysis**: Overnight gap percentage.
-10. **Fibonacci Levels**: Current price relative to 20-day 50% retracement.
-11. **Trend Regime**: SMA-slope analysis.
-12. **Event Volatility**: Macro-economic calendar status.
-13. **Moving Averages**: Fast (20) SMA structural position.
+    S->>S: Run ML Inference
+    S->>J: Overwrite JSON Data
+    Note right of J: No Audit / No Safety Check
+    U->>J: Fetch Static JSON
+    U->>U: Render Tiles
+```
 
----
+### 🟢 Institutional Pipeline (Neural Core Mediation)
+The new pipeline introduces the **Sentient v6.1 Neural Core**. Scripts now feed a logic layer that performs an **Epistemic Audit** (ML vs. V3 Logic) and calculates **Belief Entropy** before any data is committed to the public state.
 
-## 🔬 The Shadow Lab (Disconnected Components)
+```mermaid
+sequenceDiagram
+    participant S as Scripts (Python)
+    participant C as Neural Core (Logic)
+    participant J as auztinx_data.json
+    participant U as UI (React)
 
-### 1. PPO Grandmaster (`engine/models/`)
-*   **Role**: Evaluates if a Reinforcement Learning policy can outperform the Supervised Ensemble.
-*   **Connectivity**: **None.** Its output (`ppo_strategy`) is recorded in JSON metadata for research but is physically unable to alter the `FINAL VERDICT` due to the SentientBrain logic.
-*   **Environment**: Custom `TradyxaApeXEnv` (Gymnasium).
+    Note over S, C: Daily Learning Cycle
+    S->>C: Push Raw Telemetry
+    C->>C: Epistemic Audit: (ML1 vs ML2 vs V3)
+    C->>C: Calculate Belief Entropy (Safety Filter)
+    C->>J: Write Atomic JSON State
+    Note over J, U: UI Synchronization
+    U->>J: Poll for State Update
+    J-->>U: Return JSON (AuztinX Score + Tiles)
+    U->>U: Render Kinetic HUD (Risk Silence)
+```
 
-### 2. Angel Council (`experimental_omni/genetic_engine.py`)
-*   **Role**: Symbolic Regression. It attempts to "discover" new indicators by mathematically combining OHLCV terminals.
-*   **Method**: Genetic Programming (Crossover, Mutation, Evolution).
-*   **Fitness**: Correlation to "Tomorrow's Direction."
-*   **Connectivity**: **Zero.** It runs in a separate process/module to feed into future architectural blueprints.
+### Key Components of the Pipeline:
+1.  **Epistemic Auditor:** Compares the "Master" (v3.0 logic) with the "Apprentice" (ML predictions). If they diverge, the system flags a "Conflict Detected" state.
+2.  **Belief Entropy:** Instead of a simple percentage, the system 📜 measures the "Confusion Level" of the models. High entropy = System Verdict: NEUTRAL.
+3.  **Risk Scaling (Informational):** The previous "Kelly Bet" is now framed as Risk Scaling to prevent users from treating it as direct financial advice, emphasizing the "Educational" nature.
 
 ---
 
-> [!IMPORTANT]
-> **The v7.1 Invariant**: All "learning" (Confidence Controller) is applied as a **conviction multiplier** to the final verdict, NEVER as an update to the underlying model weights during live rounds. This ensures the engine remains stable and defensible against "learning drift." **No model weights are updated in this path.**
+## 🎨 3. UI Engineering: From Noise to "Risk Silence"
+
+The transition to AuztinX 4.0 involved a deliberate "de-cluttering" process:
+
+| Element | Previous State | New Institutional State | Rationale |
+| :--- | :--- | :--- | :--- |
+| **Numeric Display** | Large value below animation | **Centered inside Visualizer** | Reduces visual jumping; creates a single focal point. |
+| **Color Logic** | Green/Red (Price based) | **Amber (Neutral) / Rose (Energy)** | Aligns with "Living HUD" aesthetic; signals energy vs. observation. |
+| **HUD Cards** | Safety Score + Live Context | **Removed / Synthesized** | Eliminates redundant "Sentiment Noise"; prioritizes Math. |
+| **Options Tab** | Directional Badges | **Distributional Focus** | Enforces discipline; options are about range, not just direction. |
+| **Footer** | Sparse Links | **High-Density Ecosystem Card** | Professionalizes the brand; provides transparency into data ownership. |
+
+---
+
+## ⚖️ 4. Mathematical Integrity & Epistemic Contract
+
+The final layer of the architecture is the **Institutional Governance**. 
+*   **The Contract:** The UI specifically renders "Sovereign oversight only" and "Educational use" notices to protect both the platform and the user.
+*   **Precision:** Standardizing on 2 decimal places (`26,328.55`) ensures the dashboard looks and feels like a professional trading terminal rather than a hobbyist tool.
+
+**Implementation Status:** ✅ **FULLY RATIFIED & SYNCED**
