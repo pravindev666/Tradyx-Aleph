@@ -79,10 +79,10 @@ flowchart TD
     Live[("Live Daily Data")] --> Loop
     
     subgraph Daily Loop
-        Step1{"Is Uptrend?"}
-        Step1 -- Yes --> Trend["Force LONG<br/>(Trend Following)"]
-        Step1 -- No --> CheckML{"ML Score > 0.6?"}
-        CheckML -- Yes --> Bottom["Bottom Fishing<br/>(Contrarian Buy)"]
+        Step1{"Large Trend?<br/>(SMA50 > 200)"}
+        Step1 -- "Bullish Trend" --> Trend["Force LONG<br/>(Trend Following)"]
+        Step1 -- "Bearish/Neutral" --> CheckML{"ML Score > 0.6?"}
+        CheckML -- Yes --> Bottom["Bottom Fishing<br/>(ML Contrarian Buy)"]
         CheckML -- No --> Cash["Stay in CASH<br/>(Defensive)"]
     end
     
