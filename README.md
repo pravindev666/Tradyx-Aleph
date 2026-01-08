@@ -10,30 +10,30 @@ mindmap
         layout.tsx
         page.tsx
       components
-        LegalModal.tsx (Developer Vault)
+        LegalModal.tsx["LegalModal.tsx<br/>(Developer Vault)"]
         Dashboard.tsx
     backtests_v7
       data
-        (Historical CSVs)
-        backtest_results.csv
+        CSV_Hist["(Historical CSVs)"]
+        Results["backtest_results.csv"]
       models_extended
-        (XGB/LGB/RF .pkl files)
-      trainer.py (Model Creator)
-      engine.py (Backtest Simulator)
-      visualizer.py (Chart/JSON Generator)
+        PKL["(XGB/LGB/RF .pkl files)"]
+      trainer.py["trainer.py<br/>(Model Creator)"]
+      engine.py["engine.py<br/>(Backtest Simulator)"]
+      visualizer.py["visualizer.py<br/>(Chart/JSON Generator)"]
     engine
-      main_inference.py (Live Signals)
+      main_inference.py["main_inference.py<br/>(Live Signals)"]
       scripts
-        accuracy_tracker.py (Self-Correction)
+        accuracy_tracker.py["accuracy_tracker.py<br/>(Self-Correction)"]
         prediction_logger.py
     public
       assets
         backtests
-          vault_stats.json (Live Data Source)
-          (Charts.png)
+          vault_stats.json["vault_stats.json<br/>(Live Data Source)"]
+          Charts["(Charts.png)"]
     .github
       workflows
-        apex_inference.yml (Automation Pipeline)
+        apex_inference.yml["apex_inference.yml<br/>(Automation Pipeline)"]
 ```
 
 ## 2. CI/CD Pipeline Architecture (GitHub Actions)
@@ -42,15 +42,15 @@ mindmap
 
 ```mermaid
 graph TD
-    Start[Trigger: Cron Schedule] --> Checkout[Checkout Repo]
-    Checkout --> Install[Install Deps\n(Pandas, XGBoost, Matplotlib)]
-    Install --> Inf[Run Inference\n(Global Sentinel)]
-    Inf --> Log[Log Predictions\n(prediction_logger.py)]
-    Log --> Acc[Self-Correction\n(accuracy_tracker.py)]
-    Acc --> BT[Run Backtest Engine\n(engine.py --start 2024)]
-    BT --> Vis[Run Visualizer\n(visualizer.py)]
-    Vis --> Commit[Commit Results\n(JSON + PNGs)]
-    Commit --> Deploy[Deploy to Frontend]
+    Start["Trigger: Cron Schedule"] --> Checkout["Checkout Repo"]
+    Checkout --> Install["Install Deps<br/>(Pandas, XGBoost, Matplotlib)"]
+    Install --> Inf["Run Inference<br/>(Global Sentinel)"]
+    Inf --> Log["Log Predictions<br/>(prediction_logger.py)"]
+    Log --> Acc["Self-Correction<br/>(accuracy_tracker.py)"]
+    Acc --> BT["Run Backtest Engine<br/>(engine.py --start 2024)"]
+    BT --> Vis["Run Visualizer<br/>(visualizer.py)"]
+    Vis --> Commit["Commit Results<br/>(JSON + PNGs)"]
+    Commit --> Deploy["Deploy to Frontend"]
     
     style Start fill:#f9f,stroke:#333
     style Deploy fill:#9f9,stroke:#333
@@ -62,44 +62,44 @@ graph TD
 **File**: `backtests_v7/trainer.py`
 ```mermaid
 flowchart LR
-    Raw[Raw Stock Data\n(2005-2023)] --> Eng[Feature Engineer]
-    Eng --> Feats[Technical Features\n(RSI, MACD, Volatility)]
-    Feats --> Split[Train/Test Split]
-    Split --> XGB[XGBoost Training]
-    Split --> LGB[LightGBM Training]
-    Split --> RF[Random Forest Training]
-    XGB & LGB & RF --> Models[Saved Models\n(.pkl)]
+    Raw["Raw Stock Data<br/>(2005-2023)"] --> Eng["Feature Engineer"]
+    Eng --> Feats["Technical Features<br/>(RSI, MACD, Volatility)"]
+    Feats --> Split["Train/Test Split"]
+    Split --> XGB["XGBoost Training"]
+    Split --> LGB["LightGBM Training"]
+    Split --> RF["Random Forest Training"]
+    XGB & LGB & RF --> Models["Saved Models<br/>(.pkl)"]
 ```
 
 ### B. The Engine (Decision Maker)
 **File**: `backtests_v7/engine.py`
 ```mermaid
 flowchart TD
-    Models[(Trained Models)] --> Loop
-    Live[(Live Daily Data)] --> Loop
+    Models[("Trained Models")] --> Loop
+    Live[("Live Daily Data")] --> Loop
     
     subgraph Daily Loop
-        Step1{Is Uptrend?}
-        Step1 -- Yes --> Trend[Force LONG\n(Trend Following)]
-        Step1 -- No --> CheckML{ML Score > 0.6?}
-        CheckML -- Yes --> Bottom[Bottom Fishing\n(Contrarian Buy)]
-        CheckML -- No --> Cash[Stay in CASH\n(Defensive)]
+        Step1{"Is Uptrend?"}
+        Step1 -- Yes --> Trend["Force LONG<br/>(Trend Following)"]
+        Step1 -- No --> CheckML{"ML Score > 0.6?"}
+        CheckML -- Yes --> Bottom["Bottom Fishing<br/>(Contrarian Buy)"]
+        CheckML -- No --> Cash["Stay in CASH<br/>(Defensive)"]
     end
     
-    Loop --> Rec[Record Equity]
-    Rec --> CSV[backtest_results.csv]
+    Loop --> Rec["Record Equity"]
+    Rec --> CSV["backtest_results.csv"]
 ```
 
 ### C. The Visualizer (Translator)
 **File**: `backtests_v7/visualizer.py`
 ```mermaid
 flowchart LR
-    CSV[backtest_results.csv] --> Load[Load Data]
-    Load --> Calc[Calculate Stats\n(Returns, Drawdowns)]
-    Calc --> Plot[Generate Plots\n(Matplotlib)]
-    Calc --> JSON[Generate JSON\n(vault_stats.json)]
+    CSV["backtest_results.csv"] --> Load["Load Data"]
+    Load --> Calc["Calculate Stats<br/>(Returns, Drawdowns)"]
+    Calc --> Plot["Generate Plots<br/>(Matplotlib)"]
+    Calc --> JSON["Generate JSON<br/>(vault_stats.json)"]
     
-    Plot --> Assets[(PNG Assets)]
+    Plot --> Assets[("PNG Assets")]
     JSON --> Assets
 ```
 
