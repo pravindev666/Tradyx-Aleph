@@ -1,121 +1,88 @@
-# ApeX V8.0 Master Architecture Documentation
+# CryptiX-ZetaX | Neural Architecture & Pipeline
 
-## 1. Codebase Structure Mindmap
+This document outlines the 7-Layer Sentient Pipeline, the self-correction feedback loop, and the data orchestration logic powering the CryptiX-ZetaX dashboard.
 
-```mermaid
-mindmap
-  root((Tradyxa ApeX))
-    src
-      app
-        layout.tsx
-        page.tsx
-      components
-        LegalModal.tsx["LegalModal.tsx<br/>(Developer Vault)"]
-        Dashboard.tsx
-    backtests_v7
-      data
-        CSV_Hist["(Historical CSVs)"]
-        Results["backtest_results.csv"]
-      models_extended
-        PKL["(XGB/LGB/RF .pkl files)"]
-      trainer.py["trainer.py<br/>(Model Creator)"]
-      engine.py["engine.py<br/>(Backtest Simulator)"]
-      visualizer.py["visualizer.py<br/>(Chart/JSON Generator)"]
-    engine
-      main_inference.py["main_inference.py<br/>(Live Signals)"]
-      scripts
-        accuracy_tracker.py["accuracy_tracker.py<br/>(Self-Correction)"]
-        prediction_logger.py
-    public
-      assets
-        backtests
-          vault_stats.json["vault_stats.json<br/>(Live Data Source)"]
-          Charts["(Charts.png)"]
-    .github
-      workflows
-        apex_inference.yml["apex_inference.yml<br/>(Automation Pipeline)"]
-```
+## 1. High-Level System Architecture
 
-## 2. CI/CD Pipeline Architecture (GitHub Actions)
-**Frequency**: Daily (Market Hours)
-**File**: `.github/workflows/apex_inference.yml`
+The system follows a **Backend-Intelligence, Frontend-Display** model. All heavy lifting, ML inference, and LLM narrative generation occur locally on the Python backend to ensure zero-latency and data privacy.
 
 ```mermaid
 graph TD
-    Start["Trigger: Cron Schedule"] --> Checkout["Checkout Repo"]
-    Checkout --> Install["Install Deps<br/>(Pandas, XGBoost, Matplotlib)"]
-    Install --> Inf["Run Inference<br/>(Global Sentinel)"]
-    Inf --> Log["Log Predictions<br/>(prediction_logger.py)"]
-    Log --> Acc["Self-Correction<br/>(accuracy_tracker.py)"]
-    Acc --> BT["Run Backtest Engine<br/>(engine.py --start 2024)"]
-    BT --> Vis["Run Visualizer<br/>(visualizer.py)"]
-    Vis --> Commit["Commit Results<br/>(JSON + PNGs)"]
-    Commit --> Deploy["Deploy to Frontend"]
-    
-    style Start fill:#f9f,stroke:#333
-    style Deploy fill:#9f9,stroke:#333
-```
-
-## 3. Algorithmic Logic Architecture
-
-### A. The Trainer (Knowledge Base)
-**File**: `backtests_v7/trainer.py`
-```mermaid
-flowchart LR
-    Raw["Raw Stock Data<br/>(2005-2023)"] --> Eng["Feature Engineer"]
-    Eng --> Feats["Technical Features<br/>(RSI, MACD, Volatility)"]
-    Feats --> Split["Train/Test Split"]
-    Split --> XGB["XGBoost Training"]
-    Split --> LGB["LightGBM Training"]
-    Split --> RF["Random Forest Training"]
-    XGB & LGB & RF --> Models["Saved Models<br/>(.pkl)"]
-```
-
-### B. The Engine (Decision Maker)
-**File**: `backtests_v7/engine.py`
-```mermaid
-flowchart TD
-    Models[("Trained Models")] --> Loop
-    Live[("Live Daily Data")] --> Loop
-    
-    subgraph Daily Loop
-        Step1{"Large Trend?<br/>(SMA50 > 200)"}
-        Step1 -- "Bullish Trend" --> Trend["Force LONG<br/>(Trend Following)"]
-        Step1 -- "Bearish/Neutral" --> CheckML{"ML Score > 0.6?"}
-        CheckML -- Yes --> Bottom["Bottom Fishing<br/>(ML Contrarian Buy)"]
-        CheckML -- No --> Cash["Stay in CASH<br/>(Defensive)"]
+    subgraph "Data Acquisition Layer"
+        A[yfinance API] -->|90m OHLCV| B[Data Fetcher]
+        B -->|Raw CSV| C[engine/data]
     end
-    
-    Loop --> Rec["Record Equity"]
-    Rec --> CSV["backtest_results.csv"]
+
+    subgraph "Neural Intelligence Core (Python)"
+        C --> D[Feature Generator]
+        D -->|7-Layer Matrix| E[Multi-Model Ensemble]
+        E -->|Raw Predictions| F[Self-Correction System]
+        F -->|Adjusted Confidence/Multiplier| G[Inference Orchestrator]
+    end
+
+    subgraph "Narrative Brain (SmolLM2-135M)"
+        G -->|Technical Context| H[Narrative Engine]
+        H -->|ELIF5 Syntesis| I[Sentient Payload]
+    end
+
+    subgraph "Frontend Layer (React + Vite)"
+        I -->|sentient_payload.json| J[Dashboard UI]
+        J -->|Cache Bursting Polling| I
+    end
 ```
 
-### C. The Visualizer (Translator)
-**File**: `backtests_v7/visualizer.py`
+## 2. The 7-Layer Intelligence Pipeline
+
+ZetaX uses a layered approach to feature engineering and inference:
+
+1.  **Microstructure Layer**: Calculates Volume Profile POC (Point of Control) and rolling Support/Resistance.
+2.  **Fractal Layer**: Aligns trends across 4.5h, 9h, and 24h timeframes using resampled 90m data.
+3.  **Regime Layer**: Classifies the market as Neural Bull, Neural Bear, or Chaotic.
+4.  **Smart Money Layer**: Detects order absorption and significant volume deltas.
+5.  **Momentum Layer**: Real-time RSI and MACD convergence/divergence.
+6.  **Reversal Layer**: Scans for exhaustion points near Support/Resistance.
+7.  **Ensemble Layer**: Combines all above layers into a finalized Meta-Verdict (Buy/Sell/Wait).
+
+## 3. Self-Correction Feedback Loop
+
+The "Sentient" part of the engine comes from its ability to learn from its own mistakes without retraining the core weights.
+
 ```mermaid
-flowchart LR
-    CSV["backtest_results.csv"] --> Load["Load Data"]
-    Load --> Calc["Calculate Stats<br/>(Returns, Drawdowns)"]
-    Calc --> Plot["Generate Plots<br/>(Matplotlib)"]
-    Calc --> JSON["Generate JSON<br/>(vault_stats.json)"]
-    
-    Plot --> Assets[("PNG Assets")]
-    JSON --> Assets
+sequenceDiagram
+    participant I as Inference Orchestrator
+    participant L as Prediction Logger
+    participant V as Verifier
+    participant C as Correction Matrix
+
+    I->>L: Log Prediction (Verdict, Price, Time)
+    Note over L,V: Wait 90-180 minutes
+    V->>L: Fetch Past Prediction
+    V->>I: Fetch Current Price
+    V->>C: Calculate Accuracy (Price Delta)
+    C->>I: Output Bias Multiplier (e.g. 0.8x if failing, 1.2x if winning)
+    Note over I: Future confidence is dampened or boosted by Multiplier
 ```
 
-## 4. Self-Correction Architecture
-**Concept**: The system adapts its weights based on recent performance.
+## 4. Price Fetching & ML Feeding
 
-```mermaid
-stateDiagram-v2
-    [*] --> Monitor
-    Monitor --> Check: Weekly Review
-    state "Accuracy Tracker" as Check {
-        [*] --> Compare
-        Compare --> WinRate: Calculate Last 10 Trades
-        WinRate --> Threshold: Adjust Threshold
-        Threshold --> Weights: Re-balance Model Weights
-    }
-    Weights --> Engine: Update Logic
-    Engine --> Monitor: Generate New Data
-```
+1.  **Fetching**: `DataFetcher` requests the last 5 days of 90m interval data from `yfinance`.
+2.  **Normalization**: Data is saved to `engine/data` and cleaned for NaN values.
+3.  **Feature Mapping**: The `FeatureGenerator` creates a technical matrix:
+    - `poc_proxy`: Volume-weighted average price.
+    - `fractal_alignment`: Trend sync across timeframes.
+    - `support/resistance`: Rolling 3-day high/low extremes.
+4.  **Inference**: The `joblib`-loaded XGBoost/Random Forest ensemble processes the latest row of the matrix to generate a probability score.
+5.  **Payload**: The final verdict, support/resistance levels, and SmolLM2 narratives are packaged into `public/sentient_payload.json`.
+
+## 5. Summary of Key Files
+
+| Component | Responsibility |
+| :--- | :--- |
+| `main_inference.py` | Orchestrates the entire pipeline run. |
+| `feature_generator.py` | The technical "eye" calculating SR and indicators. |
+| `narrative_engine.py` | Local SmolLM2 brain translating data to ELIF5 advice. |
+| `self_correction.py` | The learning module that adjusts confidence multipliers. |
+| `Index.tsx` | The React hub mirroring the backend's sentient state. |
+
+---
+*Generated by ZetaX Neural Documentation System*
