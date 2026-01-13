@@ -1,88 +1,48 @@
-# CryptiX-ZetaX | Neural Architecture & Pipeline
+# Experiment: Historical Backtest (2024-2025)
 
-This document outlines the 7-Layer Sentient Pipeline, the self-correction feedback loop, and the data orchestration logic powering the CryptiX-ZetaX dashboard.
+## 🎯 Objective
+Determine the performance of the ZetaX 7-Layer Ensemble model when trained on historical data up to **December 31, 2023**, and tested against the unseen market regimes of **2024 and 2025**.
 
-## 1. High-Level System Architecture
+## 📊 Methodology
+1.  **Selection**: BTC-USD, ETH-USD, LTC-USD, XRP-USD.
+2.  **Training Window**: Max historical data available -> 2023-12-31.
+3.  **Testing Window**: 2024-01-01 -> Present (2025).
+4.  **Engine**: Specialized `backtest_engine.py` using the main project's `FeatureGenerator`.
+5.  **Metrics**:
+    - Directional Accuracy (Hit Rate).
+    - Cumulative Returns vs Buy & Hold.
+    - Max Drawdown.
+    - Sharpe Ratio.
 
-The system follows a **Backend-Intelligence, Frontend-Display** model. All heavy lifting, ML inference, and LLM narrative generation occur locally on the Python backend to ensure zero-latency and data privacy.
+## 📁 Structure
+- `backtest_engine.py`: Core logic for data splitting, training, and simulation.
+- `results/`: Directory for performance plots and CSV logs.
+- `BACKTEST_REPORT.md`: This file (to be updated with results).
 
-```mermaid
-graph TD
-    subgraph "Data Acquisition Layer"
-        A[yfinance API] -->|90m OHLCV| B[Data Fetcher]
-        B -->|Raw CSV| C[engine/data]
-    end
-
-    subgraph "Neural Intelligence Core (Python)"
-        C --> D[Feature Generator]
-        D -->|7-Layer Matrix| E[Multi-Model Ensemble]
-        E -->|Raw Predictions| F[Self-Correction System]
-        F -->|Adjusted Confidence/Multiplier| G[Inference Orchestrator]
-    end
-
-    subgraph "Narrative Brain (SmolLM2-135M)"
-        G -->|Technical Context| H[Narrative Engine]
-        H -->|ELIF5 Syntesis| I[Sentient Payload]
-    end
-
-    subgraph "Frontend Layer (React + Vite)"
-        I -->|sentient_payload.json| J[Dashboard UI]
-        J -->|Cache Bursting Polling| I
-    end
+## 🚀 Execution
+Run the following from the project root:
+```bash
+python experiments/backtest_2024_2025/backtest_engine.py
 ```
 
-## 2. The 7-Layer Intelligence Pipeline
+## Performance Results (Finalized)
 
-ZetaX uses a layered approach to feature engineering and inference:
+| Symbol | Accuracy | Strategy Return | Market Return | Outperformance |
+| :--- | :--- | :--- | :--- | :--- |
+| BTC-USD | 50.34% | 97.02% | 107.80% | -10.78% |
+| ETH-USD | 49.39% | 75.98% | 33.08% | +42.90% |
+| LTC-USD | 53.43% | 231.58% | 2.10% | +229.48% |
+| XRP-USD | 50.47% | 16.38% | 227.71% | -211.33% |
 
-1.  **Microstructure Layer**: Calculates Volume Profile POC (Point of Control) and rolling Support/Resistance.
-2.  **Fractal Layer**: Aligns trends across 4.5h, 9h, and 24h timeframes using resampled 90m data.
-3.  **Regime Layer**: Classifies the market as Neural Bull, Neural Bear, or Chaotic.
-4.  **Smart Money Layer**: Detects order absorption and significant volume deltas.
-5.  **Momentum Layer**: Real-time RSI and MACD convergence/divergence.
-6.  **Reversal Layer**: Scans for exhaustion points near Support/Resistance.
-7.  **Ensemble Layer**: Combines all above layers into a finalized Meta-Verdict (Buy/Sell/Wait).
+*Backtest generated on 2026-01-13 11:14:18*
 
-## 3. Self-Correction Feedback Loop
+### Visual Evidence
+#### BTC-USD Performance
+![BTC-USD Chart](results/BTC-USD_performance.png)
+#### ETH-USD Performance
+![ETH-USD Chart](results/ETH-USD_performance.png)
+#### LTC-USD Performance
+![LTC-USD Chart](results/LTC-USD_performance.png)
+#### XRP-USD Performance
+![XRP-USD Chart](results/XRP-USD_performance.png)
 
-The "Sentient" part of the engine comes from its ability to learn from its own mistakes without retraining the core weights.
-
-```mermaid
-sequenceDiagram
-    participant I as Inference Orchestrator
-    participant L as Prediction Logger
-    participant V as Verifier
-    participant C as Correction Matrix
-
-    I->>L: Log Prediction (Verdict, Price, Time)
-    Note over L,V: Wait 90-180 minutes
-    V->>L: Fetch Past Prediction
-    V->>I: Fetch Current Price
-    V->>C: Calculate Accuracy (Price Delta)
-    C->>I: Output Bias Multiplier (e.g. 0.8x if failing, 1.2x if winning)
-    Note over I: Future confidence is dampened or boosted by Multiplier
-```
-
-## 4. Price Fetching & ML Feeding
-
-1.  **Fetching**: `DataFetcher` requests the last 5 days of 90m interval data from `yfinance`.
-2.  **Normalization**: Data is saved to `engine/data` and cleaned for NaN values.
-3.  **Feature Mapping**: The `FeatureGenerator` creates a technical matrix:
-    - `poc_proxy`: Volume-weighted average price.
-    - `fractal_alignment`: Trend sync across timeframes.
-    - `support/resistance`: Rolling 3-day high/low extremes.
-4.  **Inference**: The `joblib`-loaded XGBoost/Random Forest ensemble processes the latest row of the matrix to generate a probability score.
-5.  **Payload**: The final verdict, support/resistance levels, and SmolLM2 narratives are packaged into `public/sentient_payload.json`.
-
-## 5. Summary of Key Files
-
-| Component | Responsibility |
-| :--- | :--- |
-| `main_inference.py` | Orchestrates the entire pipeline run. |
-| `feature_generator.py` | The technical "eye" calculating SR and indicators. |
-| `narrative_engine.py` | Local SmolLM2 brain translating data to ELIF5 advice. |
-| `self_correction.py` | The learning module that adjusts confidence multipliers. |
-| `Index.tsx` | The React hub mirroring the backend's sentient state. |
-
----
-*Generated by ZetaX Neural Documentation System*
