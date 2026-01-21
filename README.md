@@ -1,123 +1,34 @@
-# 🏆 Tradyxa Ecosystem: The Ultimate Comparative Analysis
+# 📊 Comparative Backtest Report (2025)
 
-This report provides a deep-dive analysis into the four pillars of the Tradyxa X-Series: **ApeX**, **ZetaX**, **DeltaX**, and **BetaX**.
+This report compares the performance of the three tactical engines against the full historical dataset of 2025.
 
----
+## 🏁 Master Comparison Table
 
-## 📊 Executive Overview
-
-| Project | Codename | Sentient Version | Primary Logic | Target User |
+| Engine | Primary Metric | Accuracy | Macro F1 | Verdict |
 | :--- | :--- | :--- | :--- | :--- |
-| **ApeX** | **The Sniper** | **v4.0 (AQL)** | RL (PPO) + GARCH + Trend v8.0 | Quant / HFT |
-| **ZetaX** | The Executive | v3.0 (Neural) | 15-Model Ensemble + TinyLlama | Institutional |
-| **DeltaX** | The Architect | v2.0 (Defense) | XGBoost Fusion + Kalman | Retail Scalper |
-| **BetaX** | The Student | v2.0 (Base) | 3-Engine (Shield/Pulse/Core) | Options Buyer |
+| **Strangle Engine** | Range Survival (Binary) | 59.11% | -- | Moderate stability filter |
+| **Strangle Engine** | Vol Risk Detector (Binary) | 82.59% | -- | **Superior Risk Gating** |
+| **Directional Engine** | Bias (T+5 Multiclass) | 61.13% | 0.3610 | Reliable trend baseline |
+| **Multi-Horizon** | Bias (T+1 Daily) | 90.69% | 0.3171 | Noise-Dominant (Sideways-biased) |
+| **Multi-Horizon** | Bias (T+3 Swing) | 70.85% | 0.3333 | Transitional Stability |
+| **Multi-Horizon** | Bias (T+5 Weekly) | 49.80% | 0.3834 | Signal-Emergent |
+
+## 🔍 Key Insights
+
+### 1. The Power of Volatility Detection
+The **Strangle Engine's Vol Risk model (82.59%)** is the most robust component. It successfully flags when volatility is about to explode, which is critical for preventing "black swan" losses in short options.
+
+### 2. The Accuracy Paradox (Multi-Horizon)
+- Notice how **T+1 Accuracy (90.69%)** is much higher than **T+5 Accuracy (49.80%)**. 
+- However, the **Macro F1-score for T+5 (0.3834)** is higher than T+1. 
+- **Reason**: T+1 follows the "Sideways" bias of the market. T+5 is actually trying to catch directional trends, which is harder but more valuable for trading.
+
+### 3. Directional Bias Baseline
+The **Directional Engine (61.13%)** provides a solid middle-ground between short-term noise and long-term signal, making it a good "anchor" for determining trade posture.
 
 ---
 
-## 🏗️ Architectural Blueprints
-
-### 1. ApeX: The High-Frequency Sniper
-*Optimized for math-over-words and sheer execution speed.*
-
-```mermaid
-graph TD
-    Data[Live NSE/YF Data] --> StratPath["Strategic Path (T-1)"]
-    Data --> TactPath["Tactical Path (T-Live)"]
-    
-    subgraph Engine["ApeX v7.1.0 Core"]
-        StratPath --> ML_S["Daily Models (XGB/LGB/RF)"]
-        TactPath --> ML_T["Momentum Models (XGB/LGB/RF)"]
-        ML_S --> Trend["Trend Override v8.0 (SMA 50/200)"]
-    end
-    
-    Trend --> Brain["Meta-Probabilistic Controller"]
-    ML_T --> Brain
-    Brain --> ELI5["ELI5 Math Explainer"]
-    ELI5 --> UI["3-Tile Verdict System"]
-```
-
-### 2. ZetaX: The Institutional Researcher
-*The most complex architecture, featuring a massive parallel model array.*
-
-```mermaid
-graph LR
-    Data[Macro/Tape/Chain] --> Pipe["Inference Pipeline"]
-    
-    subgraph Models["26-Script Ensemble"]
-        Pipe --> DL[Deep Learning: LSTM/TCN]
-        Pipe --> Stat[Statistical: HMM/GBM]
-        Pipe --> Risk[Risk: VaR/Kelly]
-        Pipe --> Red[Red Team Protocol]
-    end
-    
-    Models --> Meta["Meta-Learning Controller"]
-    Meta --> LLM["TinyLlama Synthesizer"]
-    LLM --> UI["30+ Research Tiles"]
-```
-
----
-
-## 🧠 Brain Logic Analysis
-
-### 🏆 Best Pipeline: ApeX (Meta-Probabilistic Dual-Path)
-ApeX wins the pipeline battle due to its **Strategic vs. Tactical** split. 
-- **Strategic Path**: Uses T-1 data to prevent leakage, ensuring robust daily forecasts.
-- **Tactical Path**: Uses live data for a "Live Pulse," allowing the system to react to intraday volatility instantly.
-- **Trend-Dominant Hybrid**: The v8.0 upgrade ensures that ML doubt never overrides major trend signals (Trend is King).
-
-### 🏆 Best Architecture: ZetaX (Multi-Engine Lab)
-ZetaX is the architectural masterpiece. It doesn't just predict; it **cross-examines**.
-- **Red Team Protocol**: Actively challenges bullish/bearish hypotheses.
-- **Diversity**: Combines HMM (Regimes), TCN (Temporal Patterns), and RL (Strategy) into one massive meta-consensus.
-
-### 🏆 Best Logic: ApeX (PPO + GARCH)
-While ZetaX is broad, ApeX is **refined**.
-- **RL (PPO)**: Learns optimal exit/scale-out strategies rather than just direction.
-- **GARCH**: Provides institutional-grade volatility forecasting to adjust confidence levels.
-
----
-
-## 🎯 Use Cases & Profiles
-
-### 🔴 ApeX: The Professional Quant
-- **Trader**: "I don't care why it's move, I just want the direction and the strategy."
-- **Scenario**: High-frequency options buying/selling where every 0.1% confidence shift matters.
-- **Strength**: Raw math, high signal-to-noise ratio.
-
-### 🟢 ZetaX: The Wealth Manager
-- **Trader**: "I need a full analyst report before I commit capital."
-- **Scenario**: Weekly swing trading where understanding the "Why" (Macro, Hurst, VaR) is critical for risk.
-- **Strength**: Breadth of analysis, human-readable AI reports.
-
-### 🔵 DeltaX: The Morning Scalper
-- **Trader**: "I have 5 minutes before the market opens to set my bias."
-- **Scenario**: Checking the "AuztinX Score" at 9:00 AM to decide whether to look for Long or Short scalps.
-- **Strength**: Simplicity, speed to decision.
-
-### 🟠 BetaX: The Options Student
-- **Trader**: "I want to sell options safely or buy breakouts."
-- **Scenario**: Using "RangeShield" to identify strike prices that won't be hit.
-- **Strength**: Dedicated engines for different option styles.
-
----
-
-## ⭐ Project Ratings (1-10)
-
-| Metric | ApeX | ZetaX | DeltaX | BetaX |
-| :--- | :---: | :---: | :---: | :---: |
-| **Logic Depth** | 10 | 9 | 7 | 6 |
-| **Ease of Use** | 9 | 6 | 10 | 8 |
-| **Accuracy (Est)** | 72% | 65% | 62% | 60% |
-| **Innovation** | 10 | 8 | 7 | 7 |
-| **Overall Score** | **👑 9.4** | **🥈 8.8** | **🥉 8.2** | **4th 7.5** |
-
----
-
-### 💡 Final Recommendation
-- **For Profits**: Use **ApeX**. Its Trend + RL logic is statistically superior.
-- **For Learning**: Use **DeltaX**. Its educational tooltips and simplicity are unmatched.
-- **For Science**: Use **ZetaX**. Its 26-script engine is a goldmine for researcher.
-
----
-*Generated by Antigravity | Tradyxa Comparative Intelligence Unit v3.0*
+## 📂 Data Inventory
+- **Strangle Results**: `backtest_results/strangle/results_2025.json`
+- **Directional Results**: `backtest_results/directional/results_2025.json`
+- **Multi-Horizon Results**: `backtest_results/multi_horizon/results_2025.json`
